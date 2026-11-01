@@ -1,0 +1,30 @@
+# Who you are. Edit any line, commit, and the site rebuilds in about a minute.
+name: Elijah Walker
+location: Boise, Idaho
+headline: AI and cloud computing student with fab-floor experience at Micron. I build data and AI tools in Python, from machine learning classifiers to LLM-powered agents.
+
+email: elijahjames.walker@gmail.com
+github: https://github.com/ennels
+linkedin: https://www.linkedin.com/in/elijah-the-walker/
+
+# Put a PDF in the public/ folder (for example public/resume.pdf) and set this to "/resume.pdf".
+# Leave it empty to hide the download button. Use a version without your phone number.
+resume_pdf: ""
+
+photo: /headshot.jpg
+photo_caption: Boise, Idaho
+
+about:
+  - I'm finishing an associate's degree in AI and cloud computing at the College of Western Idaho, wrapping up in May 2027. This past summer I interned as a process control technician at Micron's fab in Manassas, Virginia, reviewing metrology data and SPC charts on chemical vapor deposition tools.
+  - "Before that I spent ten years at Quaker Hill, a camp and conference center in McCall, Idaho. I started on support staff and left as the digital media manager. Most of what I build now is in Python: classifiers for class, LLM agents on my own hardware, and a scheduling app for the camp. Next fall I'm planning to start a B.S. at Boise State."
+
+facts:
+  - label: School
+    value: College of Western Idaho, 4.0 GPA
+  - label: Leadership
+    value: VP of Leadership, Phi Theta Kappa · Event Coordinator, TechForge
+  - label: Off the clock
+    value: Gaussian splats, PC builds, running, philosophy of mind
+
+contact_heading: Let's make something
+contact_text: I'm in Boise, Idaho. Email is the fastest way to reach me.

@@ -1,0 +1,19 @@
+# Lab notes. Leave date empty to show "In progress".
+# When a post is written, add it as a Markdown file in src/pages/notes/ (e.g. gemma-radeon.md)
+# and set url to /notes/gemma-radeon/ to link it.
+
+intro: Longer write-ups on things I've built or broken. First drafts are in progress.
+
+items:
+  - title: Running Gemma on a Radeon card with Ollama, Vulkan, and WSL2
+    tag: Local LLM
+    date: ""
+    url: ""
+  - title: "Two models, one trade: how hermes merged Claude and Gemini"
+    tag: Agents
+    date: ""
+    url: ""
+  - title: What SPC charts taught me about watching a model drift
+    tag: Fab · ML
+    date: ""
+    url: ""

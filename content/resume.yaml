@@ -1,0 +1,32 @@
+# Resume section.
+
+entries:
+  - when: Jun – Aug 2026
+    title: Process Control Technician Intern
+    org: Micron Technology · Manassas, VA
+    text: Reviewed metrology data and analyzed SPC charts. Supported tool troubleshooting and engineering escalations. Learned CVD process and chemistry fundamentals and cleanroom protocol, and contributed to shift passdowns.
+
+  - when: Jun 2016 – May 2026
+    title: Digital Media Manager and Support Staff
+    org: Quaker Hill Camp & Conference Center · McCall, ID
+    text: Ran IT services, managed digital assets and media marketing, trained support staff, and coordinated teams.
+
+  - when: Expected May 2027
+    title: AAS, Artificial Intelligence and Cloud Computing
+    org: College of Western Idaho · 4.0 GPA
+    text: "Machine learning, agentic engineering, computer vision, cloud computing, and data visualization. Planned next: a B.S. at Boise State University, fall 2027."
+
+  - when: "2026"
+    title: Vice President of Leadership · Event Coordinator
+    org: Phi Theta Kappa, Beta Sigma Pi chapter · TechForge, CWI's AI club
+    text: ""
+
+skills:
+  - label: AI and ML
+    value: Machine learning with PyTorch, LLM apps and RAG, AI agents and automation, AI-assisted development
+  - label: Data
+    value: Python with pandas and NumPy, SQL, Tableau, statistical analysis
+  - label: Manufacturing
+    value: SPC, metrology data review, cleanroom protocol, tool troubleshooting
+  - label: Media
+    value: Video editing, InDesign, brand and logo work, media marketing

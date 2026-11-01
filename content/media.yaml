@@ -1,0 +1,23 @@
+# Media and design pieces.
+#   image -> put a file in public/media/ and set e.g. /media/firm-foundation.jpg (16:10 looks best).
+#            Leave it empty ("") and the piece shows as text only.
+
+- title: The Firm Foundation
+  meta: Motion · 30 s each
+  description: Intro bumpers for a 31-week sermon series in six parts, cut one week at a time. Week 1 is "The Unseen Reality."
+  image: ""
+
+- title: Quaker Hill summer camp 2027
+  meta: Print · InDesign
+  description: The camp brochure gets a new theme and layout every year around the same core details.
+  image: ""
+
+- title: Logo recovery pipeline
+  meta: Brand · Python
+  description: Turns old, low-resolution logo files into clean transparent PNGs with a 4× Lanczos upscale and a luminance threshold.
+  image: ""
+
+- title: Gaussian splats
+  meta: 3D capture · Scaniverse
+  description: Room-scale captures from phone LiDAR, plus single-image tests that fill hidden geometry with AI inpainting.
+  image: ""

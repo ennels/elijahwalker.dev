@@ -1,0 +1,68 @@
+# Projects, in the order they appear.
+#   featured: true  -> large card at the top of Projects. false -> compact row below.
+#   label           -> the short tag under the name in the icon strip below the hero.
+#   icon            -> a built-in icon (chart, calendar, database, chat, scatter, tag)
+#                      or your own image path, e.g. /icons/hermes.png (put the file in public/icons/).
+#   links           -> leave empty ([]) to show no link. Add {label, url} items when you have them.
+
+- id: hermes
+  name: hermes
+  label: Trading bot
+  icon: chart
+  featured: true
+  status: Ran on a droplet, March to April 2026
+  summary: An autonomous paper-trading bot built on Claude, Gemini, and Alpaca.
+  description: A paper-trading bot that ran unattended for two months. Every weekday at 9:45 ET it pulled prices and news, asked Claude and Gemini for a call on each ticker, merged the two calls, ran them through risk rules, and placed paper orders through Alpaca. It never touched real money.
+  stack: [Python, Claude, Gemini, Alpaca, APScheduler, systemd]
+  links:
+    - label: Read the code on GitHub
+      url: https://github.com/ennels/hermes
+
+- id: quorum
+  name: Quorum
+  label: Scheduling app
+  icon: calendar
+  featured: true
+  status: In progress
+  summary: A desktop scheduling app for a conference center.
+  description: A desktop scheduling app for the conference center I worked at. It pulls staff from QuickBooks Payroll, form data from Cognito Forms, and reads PDF activity sheets with Claude Vision so nobody has to retype them.
+  stack: [Tauri, React, FastAPI, SQLAlchemy, Claude Vision]
+  links: []
+
+- id: rag
+  name: RAG + MCP server
+  label: Retrieval server
+  icon: database
+  featured: false
+  summary: Web search, PDF ingestion, and retrieval tools an assistant can call, backed by ChromaDB.
+  stack: [Python, MCP, ChromaDB]
+  links: []
+
+- id: hal
+  name: HAL 9000
+  label: Local LLM bot
+  icon: chat
+  featured: false
+  summary: A Discord bot answering from Gemma 4 12B on my own Radeon GPU, no cloud account.
+  stack: [NanoClaw, Ollama, Vulkan]
+  links: []
+
+- id: labs
+  name: Classifier labs
+  label: ML coursework
+  icon: scatter
+  featured: false
+  summary: RBF SVM at 96.5% with 0.95 malignant recall; KNN just over 97% on full MNIST.
+  stack: [scikit-learn, NumPy]
+  links:
+    - label: GitHub
+      url: https://github.com/ennels/project-demos
+
+- id: blackfriday
+  name: Black Friday trends
+  label: Survey study
+  icon: tag
+  featured: false
+  summary: "A 39-person survey and χ² tests: no significant shift online (p = 0.72), yet 49% plan fewer store trips."
+  stack: [SurveyMonkey, Sheets]
+  links: []
