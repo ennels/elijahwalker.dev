@@ -18,7 +18,12 @@
 }
 .sleeve:has(img) .sleeve-mono { display: none; }
 .sleeve-mono { font: var(--weight-display) 38cqi/1 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-cover-ink); }
-.cover h1 { font: var(--weight-display) var(--text-display)/var(--leading-display) var(--font-display); letter-spacing: var(--tracking-display); }
+/* The name sizes to its own column, so "Walker" never breaks mid-word at wide widths (the column stops growing at --page-max). */
+.cover-text { container-type: inline-size; }
+.cover h1 {
+  font: var(--weight-display) min(var(--text-display), 22cqi)/var(--leading-display) var(--font-display);
+  letter-spacing: var(--tracking-display); hyphens: manual;
+}
 .cover h1 span { display: block; }
 .lede { font-size: var(--text-md); line-height: var(--leading-lede); max-width: 30rem; margin-top: var(--space-7); }
 .cta { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-7); }
