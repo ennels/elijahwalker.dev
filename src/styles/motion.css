@@ -1,0 +1,40 @@
+/* Motion. One orchestrated moment (the cover), cross-fades between pages and themes, and small
+   press/hover feedback. Everything else is still on purpose. Durations and easing come from tokens.css.
+   Reduced motion keeps the opacity cross-fades and drops every slide, rise, and scale. */
+
+/* ---------- Page-to-page cross-fade ----------
+   Cross-document view transitions; browsers without support simply navigate. */
+@view-transition { navigation: auto; }
+::view-transition-group(root) { animation-duration: var(--dur-page); animation-timing-function: var(--ease-out); }
+/* The theme toggle reuses the same whole-page cross-fade, a little longer (theme.js sets data-vt for the swap),
+   so text and backgrounds change together instead of text snapping over a still-fading background. */
+:root[data-vt="theme"]::view-transition-group(root) { animation-duration: var(--dur-theme); }
+
+/* ---------- Press and hover feedback ---------- */
+.btn, .mode { transition: transform var(--dur-press) var(--ease-out); }
+.btn:active, .mode:active { transform: scale(var(--press-scale)); }
+@media (hover: hover) and (pointer: fine) {
+  .btn { transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-hover) var(--ease-out); }
+  .nav a { transition: background-color var(--dur-hover) var(--ease-out); }
+}
+
+/* ---------- The cover: the portrait leaves the sleeve, the name rises beside it ----------
+   Lead: portrait (slides 28px, clip reveals right to left). Support: name lines rise 14px, 90ms apart.
+   Then the lede and the buttons fade in place. Plays once per page load; nothing waits on it. */
+@media (prefers-reduced-motion: no-preference) {
+  .cover .sleeve { animation: sleeve-out var(--dur-sleeve) var(--ease-out) both; }
+  .cover h1 span { animation: rise var(--dur-rise) var(--ease-out) both; }
+  .cover h1 span:nth-child(2) { animation-delay: var(--stagger); }
+  .cover h1 span:nth-child(3) { animation-delay: calc(var(--stagger) * 2); }
+  .cover .lede { animation: fade var(--dur-fade) var(--ease-out) calc(var(--stagger) * 2.5) both; }
+  .cover .cta, .cover .where { animation: fade var(--dur-fade) var(--ease-out) calc(var(--stagger) * 3.3) both; }
+}
+@keyframes sleeve-out { from { clip-path: inset(0 0 0 100%); transform: translateX(-28px); } to { clip-path: inset(0); transform: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Reduced motion: collapse, don't just shorten ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .cover .sleeve, .cover .cover-text { animation: fade var(--dur-page) var(--ease-out) both; }
+  .btn:active, .mode:active { transform: none; }
+}

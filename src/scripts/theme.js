@@ -18,9 +18,15 @@ function sync() {
 
 btn?.addEventListener('click', () => {
   const next = isDark() ? 'light' : 'dark';
-  root.dataset.theme = next;
-  try { localStorage.setItem('ew-mode', JSON.stringify(next)); } catch (e) { /* private mode: still switches for this page */ }
-  sync();
+  const apply = () => {
+    root.dataset.theme = next;
+    try { localStorage.setItem('ew-mode', JSON.stringify(next)); } catch (e) { /* private mode: still switches for this page */ }
+    sync();
+  };
+  // One whole-page cross-fade (opacity only, so it stays on under reduced motion). Instant where unsupported.
+  if (!document.startViewTransition) return apply();
+  root.dataset.vt = 'theme';
+  document.startViewTransition(apply).finished.finally(() => delete root.dataset.vt);
 });
 darkMQ.addEventListener('change', sync);
 sync();
