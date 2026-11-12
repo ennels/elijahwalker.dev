@@ -9,7 +9,7 @@ linkedin: https://www.linkedin.com/in/elijah-the-walker/
 
 # Put a PDF in the public/ folder (for example public/resume.pdf) and set this to "/resume.pdf".
 # Leave it empty to hide the download button. Use a version without your phone number.
-resume_pdf: ""
+resume_pdf: "/resume.pdf"
 
 photo: /headshot.jpg
 photo_caption: Boise, Idaho
