@@ -4,6 +4,7 @@
 import Base from '../layouts/Base.astro';
 import ProjectName from '../components/ProjectName.astro';
 import FilmStrip from '../components/FilmStrip.astro';
+import SectionEdge from '../components/SectionEdge.astro';
 import { profile, projects, media, resume, notes, now, studio, hasStudio } from '../lib/content.js';
 
 const initials = (name) => {
@@ -45,6 +46,7 @@ const [user, domain] = profile.email.split('@');
 
     {projects.length > 0 && (
       <section class="sec" id="projects" aria-labelledby="h-projects">
+        <SectionEdge material="kraft" />
         <h2 class="sh" id="h-projects"><span class="side" aria-hidden="true">A</span>Projects</h2>
         <ol class="tracks">
           {projects.map((p, i) => (
@@ -74,6 +76,8 @@ const [user, domain] = profile.email.split('@');
       </section>
     )}
 
+    <div class="liner-notes">
+    <SectionEdge material="liner" />
     <section class="sec" id="about" aria-labelledby="h-about">
       <h2 class="sh" id="h-about">About</h2>
       <div class="liner">
@@ -103,9 +107,11 @@ const [user, domain] = profile.email.split('@');
       )}
       {profile.resume_pdf && <p class="cta"><a class="btn btn-solid" href={profile.resume_pdf} download>Download resume (PDF)</a></p>}
     </section>
+    </div>
 
     {hasStudio() && (
       <section class="side-b" id="studio" aria-labelledby="h-studio">
+        <SectionEdge material="film" />
         <div class="side-b-in">
           <h2 class="sh" id="h-studio"><span class="side" aria-hidden="true">B</span>Studio</h2>
           <p class="intro">{studioIntro}</p>
@@ -144,6 +150,7 @@ const [user, domain] = profile.email.split('@');
     )}
 
     <section class="sec contact" id="contact" aria-labelledby="h-contact">
+      <SectionEdge material="stamp" />
       <h2 class="sh" id="h-contact">{profile.contact_heading}</h2>
       <p class="muted">{profile.contact_text}</p>
       <p class="mail"><span id="email">{user}<wbr />@{domain}</span><button type="button" class="btn" data-copy={profile.email} aria-controls="email">Copy email</button></p>

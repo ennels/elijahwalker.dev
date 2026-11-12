@@ -113,6 +113,19 @@
   --dur-sleeve:  800ms;  /* portrait slides out of the sleeve */
   --stagger:     90ms;   /* between cover name lines */
   --press-scale: .97;
+
+  /* ---------- Section borders (paper, film, stamp in the side margins) ---------- */
+  --edge-overlap: 72px;   /* how far a border reaches past its section, so the next one can lay over it */
+  --edge-max:     232px;  /* widest a border gets on very wide screens */
+  --edge-drift:   5%;     /* parallax: border travels ±5% of its height, so it scrolls at roughly 85-90% of text speed */
+  --paper-dim:    brightness(1);
+  --shadow-paper: drop-shadow(0 1px 0 rgb(0 0 0 / .14)) drop-shadow(0 6px 10px rgb(0 0 0 / .16));
+  --grid-ink:     rgb(30 74 80 / .17);
+  --paper-shade:  #D8CBAE;
+  --stamp-ink:    rgb(30 74 80 / .55);
+  --reel-metal:   #A9AFAB;
+  --reel-groove:  rgb(0 0 0 / .12);
+  --reel-hub:     #7C8481;
 }
 
 /* ---------- Color · dark (system preference) ---------- */
@@ -137,6 +150,8 @@
     --color-film-ink-muted:  #A8A49B;
     --color-film-edge:       #E5C266;
     --color-film-hole:       #24403F;
+    --paper-dim:    brightness(.56) saturate(.8);
+    --shadow-paper: drop-shadow(0 1px 0 rgb(0 0 0 / .3)) drop-shadow(0 8px 14px rgb(0 0 0 / .35));
     color-scheme: dark;
   }
 }
@@ -162,5 +177,7 @@
   --color-film-ink-muted:  #A8A49B;
   --color-film-edge:       #E5C266;
   --color-film-hole:       #24403F;
+  --paper-dim:    brightness(.56) saturate(.8);
+  --shadow-paper: drop-shadow(0 1px 0 rgb(0 0 0 / .3)) drop-shadow(0 8px 14px rgb(0 0 0 / .35));
   color-scheme: dark;
 }

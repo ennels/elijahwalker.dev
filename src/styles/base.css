@@ -39,7 +39,9 @@ body::before {
 }
 
 /* ---------- Header ---------- */
-.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--color-ground); }
+/* Only the text column is opaque, so the section borders in the margins stay visible beside the header. */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; }
+.top-in { background: var(--color-ground); }
 .top-row { height: var(--header-h); display: flex; align-items: center; gap: var(--space-5); border-bottom: 1.5px solid var(--color-ink); }
 .brand {
   font: var(--weight-heavy) var(--text-md)/1 var(--font-display);
