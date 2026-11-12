@@ -1,0 +1,7 @@
+---
+// A project's icon + name as one link. The icon hangs left of the text column, centered on the first line.
+import Icon from './Icon.astro';
+import { projectHref } from '../lib/content.js';
+const { project, current = false } = Astro.props;
+---
+<a class="pname" href={projectHref(project.id)} aria-current={current ? 'page' : undefined}><span class="pico"><Icon name={project.icon} /></span><span class="pname-t">{project.name}</span></a>

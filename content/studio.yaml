@@ -1,0 +1,36 @@
+# Studio: drawings, photographs, and music, shown in the Studio section after Media and design.
+# Any list left empty hides its part of the section (and the whole section hides if everything is empty).
+#
+# Images go in public/studio/. For each one:
+#   title:  what a screen reader announces; also shown if the image fails to load
+#   image:  the thumbnail shown in the film strip (about 560 px tall is plenty)
+#   full:   the full-size file the frame links to (optional)
+#   width, height: the full image's pixel size. They set the frame's shape, so nothing gets cropped.
+
+drawings:
+  - title: "Portrait study in blue pencil: a young man looking back over his shoulder"
+    image: /studio/portrait-blue-thumb.webp
+    full: /studio/portrait-blue.webp
+    width: 1412
+    height: 1412
+  - title: "Sketch in blue: a wide-eyed figure with a backpack"
+    image: /studio/backpack-blue-thumb.webp
+    full: /studio/backpack-blue.webp
+    width: 1546
+    height: 1545
+  - title: "Grayscale study: a winged figure under a spiked halo"
+    image: /studio/winged-halo-thumb.webp
+    full: /studio/winged-halo.webp
+    width: 1880
+    height: 2000
+  - title: "Color key art: three armed figures backlit by fire and smoke"
+    image: /studio/key-art-fire-thumb.webp
+    full: /studio/key-art-fire.webp
+    width: 2000
+    height: 1125
+
+# Same fields as drawings.
+photos: []
+
+# Each track: title, audio (a file in public/studio/, e.g. /studio/track.mp3), and an optional note.
+music: []

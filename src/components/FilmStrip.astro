@@ -1,0 +1,37 @@
+---
+// Contact-sheet film strip. Frames in a strip share one height; each frame's width follows its image's
+// proportions (width/height from the YAML), so nothing is cropped. A short row is finished with
+// unexposed film. Edge-print numbers run across the whole studio via `start`.
+//   format: 'square' (drawings, 4 per strip) | 'film' (photos, 3 per strip) | 'single' (one media frame)
+//   items:  { title, image?, full?, width?, height?, note? }. With no image, the frame prints `note` as text.
+const { items, label, format = 'film', start = 1 } = Astro.props;
+const FORMATS = {
+  square: { per: 4, cls: 'strip is-square' },
+  film: { per: 3, cls: 'strip' },
+  single: { per: 1, cls: 'strip strip-one' },
+};
+const { per, cls } = FORMATS[format];
+const rows = [];
+for (let i = 0; i < items.length; i += per) rows.push(items.slice(i, i + per));
+const ar = (it) => (it.width && it.height ? `--ar:${(it.width / it.height).toFixed(4)}` : undefined);
+---
+<div class="strips">
+  {rows.map((row, r) => (
+    <ul class={cls} aria-label={label}>
+      {row.map((it, j) => {
+        const Tag = it.full ? 'a' : 'span';
+        return (
+          <li class={it.image ? 'frame' : 'frame is-text'} style={ar(it)}>
+            <span class="edge" aria-hidden="true">{start + r * per + j}</span>
+            <Tag class="pic" href={it.full}>
+              <span class="art" aria-hidden={it.image ? 'true' : undefined}>{it.image ? it.title : it.note}</span>
+              {it.image && <img src={it.image} alt={it.title} loading="lazy" data-fallback />}
+              {it.full && <span class="vh"> (full size)</span>}
+            </Tag>
+          </li>
+        );
+      })}
+      {Array.from({ length: per - row.length }, () => <li class="frame is-unexposed" aria-hidden="true"><span class="pic"></span></li>)}
+    </ul>
+  ))}
+</div>

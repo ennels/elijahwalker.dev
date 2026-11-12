@@ -1,207 +1,157 @@
 ---
-import '../styles/site.css';
-import yaml from 'js-yaml';
-import Icon from '../components/Icon.astro';
-import profileRaw from '../../content/profile.yaml?raw';
-import projectsRaw from '../../content/projects.yaml?raw';
-import mediaRaw from '../../content/media.yaml?raw';
-import resumeRaw from '../../content/resume.yaml?raw';
-import notesRaw from '../../content/notes.yaml?raw';
-import nowRaw from '../../content/now.yaml?raw';
+// Homepage, laid out as a record: the cover, Side A (engineering), liner notes, and Side B (studio).
+// Every old #anchor still lands: #top, #projects, #p-<id>, #notes, #about, #now, #resume, #media, #contact, #footer.
+import Base from '../layouts/Base.astro';
+import ProjectName from '../components/ProjectName.astro';
+import FilmStrip from '../components/FilmStrip.astro';
+import { profile, projects, media, resume, notes, now, studio, hasStudio } from '../lib/content.js';
 
-const profile = yaml.load(profileRaw);
-const projects = yaml.load(projectsRaw) ?? [];
-const media = yaml.load(mediaRaw) ?? [];
-const resume = yaml.load(resumeRaw);
-const notes = yaml.load(notesRaw);
-const now = yaml.load(nowRaw);
-const featured = projects.filter((p) => p.featured);
-const rest = projects.filter((p) => !p.featured);
-const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+const initials = (name) => {
+  const words = name.trim().split(/\s+/);
+  const seg = new Intl.Segmenter('en', { granularity: 'grapheme' });
+  const first = (w) => [...seg.segment(w)][0]?.segment ?? '';
+  return (first(words[0]) + (words.length > 1 ? first(words.at(-1)) : '')).toUpperCase();
+};
 
-// Each section is a planet in the hero game. Order here = orbit order (inner to outer).
-const SECTIONS = [
-  { id: 'about', name: 'About', title: 'About me', color: '#FFC66B', cname: 'gold', teaser: 'bio and photo' },
-  { id: 'projects', name: 'Projects', title: 'Projects', color: '#FFA65C', cname: 'orange', teaser: plural(projects.length, 'project') },
-  { id: 'media', name: 'Media', title: 'Media and design', color: '#FF7A59', cname: 'coral', teaser: plural(media.length, 'piece') },
-  { id: 'resume', name: 'Resume', title: 'Resume', color: '#E8578A', cname: 'pink', teaser: 'experience, education, skills' },
-  { id: 'notes', name: 'Lab notes', title: 'Lab notes', color: '#C25DC0', cname: 'violet', teaser: plural(notes.items.length, 'note') },
-  { id: 'now', name: 'Now', title: 'Now', color: '#8C7CFF', cname: 'periwinkle', teaser: plural(now.items.length, 'current thing') },
-  { id: 'contact', name: 'Contact', title: 'Contact', color: '#6FB2E8', cname: 'blue', teaser: 'email and links' },
-];
-const LOCK = '<rect x="2" y="5.5" width="8" height="5.5" rx="1.2" fill="currentColor"/><path d="M3.8 5.5V4a2.2 2.2 0 0 1 4.4 0v1.5" fill="none" stroke="currentColor" stroke-width="1.2"/>';
-const site = 'https://elijahwalker.dev';
+// Studio intro names only what's there.
+const kinds = [studio.drawings.length && 'drawings', studio.photos.length && 'photographs', studio.music.length && 'music', media.length && 'design work'].filter(Boolean);
+const list = kinds.length > 1 ? `${kinds.slice(0, -1).join(', ')}${kinds.length > 2 ? ',' : ''} and ${kinds.at(-1)}` : kinds[0] ?? '';
+const studioIntro = list ? list[0].toUpperCase() + list.slice(1) + '.' : '';
+
+// Edge-print numbers run through the whole studio, as on one roll.
+const photoStart = 1 + studio.drawings.length;
+const mediaStart = photoStart + studio.photos.length;
+const [user, domain] = profile.email.split('@');
 ---
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>{profile.name}</title>
-  <meta name="description" content={profile.headline} />
-  <link rel="canonical" href={site + '/'} />
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <meta name="theme-color" content="#0A0712" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content={site + '/'} />
-  <meta property="og:title" content={profile.name} />
-  <meta property="og:description" content={profile.headline} />
-  <meta property="og:image" content={site + '/og.jpg'} />
-  <meta name="twitter:card" content="summary_large_image" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Montserrat:ital,wght@0,400..800;1,400..600&display=swap" />
-  <script is:inline>try{var m=JSON.parse(localStorage.getItem('ew-mode'));if(m==='dark'||m==='light')document.documentElement.classList.add('mode-'+m)}catch(e){}</script>
-</head>
-<body>
-<header class="nav" id="nav">
-  <div class="wrap nav-in">
-    <a class="brand" href="#top" data-scroll>
-      <svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="14" cy="14" r="4" fill="#FFB25C"/><circle cx="23.5" cy="9" r="2.4" fill="#FF7A59"/></svg>
-      {profile.name}
-    </a>
-    <nav class="menu" id="menu" aria-label="Sections">
-      {SECTIONS.map((s, i) => <a href={'#' + s.id} data-scroll data-i={i}><svg class="lk" viewBox="0 0 12 12" aria-hidden="true" set:html={LOCK} />{s.name}</a>)}
-    </nav>
-    <div class="nav-act">
-      <button type="button" class="icon-btn" id="themeBtn" aria-label="Switch to dark mode">
-        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
-        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
-      </button>
-      <button type="button" class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
-    </div>
-  </div>
-</header>
+<Base>
+  <main id="main" tabindex="-1">
+    <section class="cover" id="top" aria-labelledby="name">
+      <figure class="sleeve">
+        <span class="sleeve-mono" aria-hidden="true">{initials(profile.name)}</span>
+        {profile.photo && <img src={profile.photo} alt={`Portrait of ${profile.name}`} width="460" height="460" fetchpriority="high" data-fallback />}
+      </figure>
+      <div class="cover-text">
+        <h1 id="name">{profile.name.split(/\s+/).map((w, i) => <>{i > 0 && ' '}<span>{w}</span></>)}</h1>
+        <p class="lede">{profile.headline}</p>
+        <p class="cta">
+          {projects.length > 0 && <a class="btn btn-solid" href="#projects">Projects</a>}
+          <a class={projects.length ? 'btn' : 'btn btn-solid'} href="#contact">Contact</a>
+          <a class="btn" href={profile.github}>GitHub</a>
+          <a class="btn" href={profile.linkedin}>LinkedIn</a>
+        </p>
+        <p class="where">{profile.location}</p>
+      </div>
+    </section>
 
-<section class="hero" id="top" aria-label="Introduction">
-  <canvas id="heroCv" role="img" aria-label="A small solar system. Each planet is a section of this page; hitting one with a probe unlocks it."></canvas>
-  <div class="hero-ui">
-    <div class="wrap" id="heroCopy">
-      <p class="where mono">{profile.location}</p>
-      <h1>{profile.name}</h1>
-      <p class="lead">{profile.headline}</p>
-      <div class="cta"><a class="btn btn-primary" href="#footer" data-scroll>Get in touch</a><button type="button" class="btn skip-all">Skip the game</button></div>
-    </div>
-  </div>
-  <div class="hud">
-    <div class="hud-card">
-      <p class="hint" id="cStatus">Each planet unlocks a section. Click the sky to launch from the pad and bend your path around the star.</p>
-      <p class="mono read">Score <b id="cScore">0</b> · Open <b id="cOpen">0/7</b> · Launches <b id="cLaunch">0</b></p>
-      <div class="btns"><button type="button" class="btn" id="cNew">New game</button></div>
-    </div>
-  </div>
-</section>
-
-<section class="built" aria-label="Projects I've built">
-  <div class="wrap built-in">
-    <p class="built-lbl mono">Built</p>
-    <ul>
-      {projects.map((p) => (
-        <li><a class="tile" href="#projects" data-scroll data-card={'p-' + p.id}><span class="ico"><Icon name={p.icon} /></span><span><b>{p.name}</b><small>{p.label}</small></span></a></li>
-      ))}
-    </ul>
-  </div>
-</section>
-
-<main>
-  {SECTIONS.map((s, i) => (
-    <section class="sec locked" id={s.id} data-i={i} data-name={s.name} data-color={s.color} data-cname={s.cname} data-teaser={s.teaser} style={`--c:${s.color}`}>
-      <header class="gate"><canvas aria-hidden="true"></canvas><div class="wrap gate-in"><div class="gate-t"><span class="num">{String(i + 1).padStart(2, '0')}</span><h2 tabindex="-1">{s.title}</h2></div><p class="gate-state"><span class="sw"></span><span class="st">Locked</span><button type="button" class="skip skip-all">Skip the game</button></p></div></header>
-      <div class="sec-body"><div class="inner"><div class={s.id === 'contact' ? 'wrap contact' : 'wrap'}>
-
-        {s.id === 'about' && (
-          <div class="about">
-            <figure class="photo"><img src={profile.photo} alt={profile.name} width="460" height="460" loading="lazy" /><figcaption>{profile.photo_caption}</figcaption></figure>
-            <div class="text">
-              {profile.about.map((para) => <p>{para}</p>)}
-              <dl class="facts">{profile.facts.map((f) => <><dt>{f.label}</dt><dd>{f.value}</dd></>)}</dl>
-            </div>
-          </div>
-        )}
-
-        {s.id === 'projects' && (
-          <>
-            <div class="feature">
-              {featured.map((p) => (
-                <article class="card" id={'p-' + p.id}>
-                  <div class="card-top"><span class="ico"><Icon name={p.icon} /></span><div><h3>{p.name}</h3>{p.status && <p class="status">{p.status}</p>}</div></div>
-                  <p>{p.description ?? p.summary}</p>
-                  <p class="stack">{p.stack.map((t) => <span>{t}</span>)}</p>
-                  {p.links?.length > 0 && <p class="links">{p.links.map((l) => <a href={l.url}>{l.label}</a>)}</p>}
-                </article>
-              ))}
-            </div>
-            <ul class="more">
-              {rest.map((p) => (
-                <li id={'p-' + p.id}><span class="ico"><Icon name={p.icon} /></span><div><h3>{p.name}</h3><p>{p.summary}</p></div><span class="tech">{p.stack.join(' · ')}</span><span class="links">{(p.links ?? []).map((l) => <a href={l.url}>{l.label}</a>)}</span></li>
+    {projects.length > 0 && (
+      <section class="sec" id="projects" aria-labelledby="h-projects">
+        <h2 class="sh" id="h-projects"><span class="side" aria-hidden="true">A</span>Projects</h2>
+        <ol class="tracks">
+          {projects.map((p, i) => (
+            <li class={p.featured ? 'track is-feat' : 'track'} id={`p-${p.id}`}>
+              <span class="no" aria-hidden="true">A{i + 1}</span>
+              <div class="t-main">
+                <h3 class="t-title"><ProjectName project={p} /></h3>
+                <p class="t-label">{p.label}{p.status && <> <span class="t-status">{p.status}</span></>}</p>
+                <p class="t-desc">{p.featured && p.description ? p.description : p.summary}</p>
+                {p.stack?.length > 0 && <p class="credits"><span>Built with</span> {p.stack.join(', ')}</p>}
+                {p.links?.length > 0 && <p class="t-links">{p.links.map((l) => <a href={l.url}>{l.label}</a>)}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+        {notes.items?.length > 0 && (
+          <div class="aside-list" id="notes">
+            <h3>Lab notes</h3>
+            {notes.intro && <p class="muted">{notes.intro}</p>}
+            <ul>
+              {notes.items.map((n) => (
+                <li><span class="al-t">{n.url ? <a href={n.url}>{n.title}</a> : n.title}</span><span class="muted">{n.tag}, {n.date || 'in progress'}</span></li>
               ))}
             </ul>
-          </>
-        )}
-
-        {s.id === 'media' && (
-          <div class="media">
-            {media.map((m) => (
-              <figure class={m.image ? '' : 'noimg'}>
-                {m.image && <div class="frame"><img src={m.image} alt={m.title} loading="lazy" /></div>}
-                <figcaption><p class="mono meta">{m.meta}</p><h3>{m.title}</h3><p>{m.description}</p></figcaption>
-              </figure>
-            ))}
           </div>
         )}
+      </section>
+    )}
 
-        {s.id === 'resume' && (
-          <>
-            {resume.entries.map((r) => (
-              <div class="row"><span class="when">{r.when}</span><div><h3>{r.title}</h3><p class="org">{r.org}</p>{r.text && <p>{r.text}</p>}</div></div>
-            ))}
-            <dl class="skills">{resume.skills.map((k) => <><dt>{k.label}</dt><dd>{k.value}</dd></>)}</dl>
-            {profile.resume_pdf && <div class="cv-actions"><a class="btn btn-primary" href={profile.resume_pdf} download>Download resume (PDF)</a></div>}
-          </>
+    <section class="sec" id="about" aria-labelledby="h-about">
+      <h2 class="sh" id="h-about">About</h2>
+      <div class="liner">
+        <div class="prose">{profile.about.map((t) => <p>{t}</p>)}</div>
+        {profile.facts?.length > 0 && (
+          <dl class="credits-list">{profile.facts.map((f) => <div><dt>{f.label}</dt><dd>{f.value}</dd></div>)}</dl>
         )}
-
-        {s.id === 'notes' && (
-          <>
-            {notes.intro && <p class="intro">{notes.intro}</p>}
-            <ol class="notes">
-              {notes.items.map((n) => (
-                <li><span class="when mono">{n.date || 'In progress'}</span><h3>{n.url ? <a href={n.url}>{n.title}</a> : n.title}</h3><span class="tag mono">{n.tag}</span></li>
-              ))}
-            </ol>
-          </>
-        )}
-
-        {s.id === 'now' && (
-          <>
-            <p class="stamp mono">Updated {now.updated}</p>
-            <ul class="now">{now.items.map((t) => <li>{t}</li>)}</ul>
-          </>
-        )}
-
-        {s.id === 'contact' && (
-          <>
-            <h3>{profile.contact_heading}</h3>
-            <p class="intro" style="margin-bottom:0">{profile.contact_text}</p>
-            <div class="mail"><code id="email">{profile.email}</code><button type="button" class="btn" id="copyBtn">Copy address</button></div>
-            <div class="elsewhere"><a href={profile.github}>GitHub</a><a href={profile.linkedin}>LinkedIn</a></div>
-          </>
-        )}
-
-      </div></div></div>
+      </div>
+      {now.items?.length > 0 && (
+        <div class="aside-list now" id="now">
+          <h3>Now</h3>
+          {now.updated && <p class="muted">Updated {now.updated}</p>}
+          <ul>{now.items.map((t) => <li><span>{t}</span></li>)}</ul>
+        </div>
+      )}
     </section>
-  ))}
-</main>
-<script is:inline>(function(){try{var o=JSON.parse(localStorage.getItem('ew-open'));if(Array.isArray(o)){document.body.classList.add('no-anim');document.querySelectorAll('main .sec').forEach(function(el,i){if(o[i])el.classList.remove('locked')})}}catch(e){}})();</script>
 
-<footer class="foot" id="footer"><div class="wrap foot-in">
-  <div class="ct"><span>© {new Date().getFullYear()} {profile.name}</span><span class="sel">{profile.email}</span><a href={profile.github}>GitHub</a><a href={profile.linkedin}>LinkedIn</a></div>
-  <span>Built with Astro and hosted on GitHub Pages. Set in Montserrat. The planets orbit at speeds that follow Kepler's third law.</span>
-</div></footer>
+    <section class="sec" id="resume" aria-labelledby="h-resume">
+      <h2 class="sh" id="h-resume">Resume</h2>
+      <ol class="cv">
+        {resume.entries.map((r) => (
+          <li><p class="when">{r.when}</p><div><h3>{r.title}</h3><p class="org">{r.org}</p>{r.text && <p>{r.text}</p>}</div></li>
+        ))}
+      </ol>
+      {resume.skills?.length > 0 && (
+        <dl class="credits-list wide">{resume.skills.map((k) => <div><dt>{k.label}</dt><dd>{k.value}</dd></div>)}</dl>
+      )}
+      {profile.resume_pdf && <p class="cta"><a class="btn btn-solid" href={profile.resume_pdf} download>Download resume (PDF)</a></p>}
+    </section>
 
-<button type="button" class="orbit-pill" id="backOrbit" hidden><span class="dot"></span>Score <b id="pillScore">0</b><span>Back to orbit</span></button>
+    {hasStudio() && (
+      <section class="side-b" id="studio" aria-labelledby="h-studio">
+        <div class="side-b-in">
+          <h2 class="sh" id="h-studio"><span class="side" aria-hidden="true">B</span>Studio</h2>
+          <p class="intro">{studioIntro}</p>
+          {studio.drawings.length > 0 && (
+            <div class="roll"><h3>Drawings</h3><FilmStrip items={studio.drawings} label="Drawings" format="square" start={1} /></div>
+          )}
+          {studio.photos.length > 0 && (
+            <div class="roll"><h3>Photographs</h3><FilmStrip items={studio.photos} label="Photographs" start={photoStart} /></div>
+          )}
+          {studio.music.length > 0 && (
+            <div class="roll"><h3>Music</h3>
+              <ul class="audio">
+                {studio.music.map((m) => (
+                  <li>
+                    <div class="a-text"><span class="tt">{m.title}</span>{m.note && <span class="a-meta">{m.note}</span>}</div>
+                    <audio controls preload="none" src={m.audio} aria-label={m.title}></audio>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {media.length > 0 && (
+            <div class="roll" id="media"><h3>Media and design</h3>
+              <ul class="sheet">
+                {media.map((m, i) => (
+                  <li class="shot">
+                    <FilmStrip items={[{ title: m.title, image: m.image, note: m.meta }]} label={m.title} format="single" start={mediaStart + i} />
+                    <div class="cap"><h4>{m.title}</h4><p class="kind">{m.meta}</p><p>{m.description}</p></div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </section>
+    )}
 
-<script>
-  import '../scripts/site.js';
-</script>
-</body>
-</html>
+    <section class="sec contact" id="contact" aria-labelledby="h-contact">
+      <h2 class="sh" id="h-contact">{profile.contact_heading}</h2>
+      <p class="muted">{profile.contact_text}</p>
+      <p class="mail"><span id="email">{user}<wbr />@{domain}</span><button type="button" class="btn" data-copy={profile.email} aria-controls="email">Copy email</button></p>
+      <p class="t-links big"><a href={profile.github}>GitHub</a><a href={profile.linkedin}>LinkedIn</a></p>
+    </section>
+  </main>
+
+  <script>
+    import '../scripts/home.js';
+  </script>
+</Base>
