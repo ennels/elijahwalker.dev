@@ -1,0 +1,52 @@
+---
+// hermes signal path, drawn from its description in content/projects.yaml.
+// Two layouts of the same graph: horizontal for wide screens, vertical for phones (CSS picks one).
+const NODES = [
+  { id: 'clock', t: ['Weekdays', '9:45 ET'], s: 'APScheduler' },
+  { id: 'feed', t: ['Prices', 'and news'], s: '' },
+  { id: 'claude', t: ['Claude'], s: 'call per ticker' },
+  { id: 'gemini', t: ['Gemini'], s: 'call per ticker' },
+  { id: 'merge', t: ['Merge', 'the calls'], s: '' },
+  { id: 'risk', t: ['Risk', 'rules'], s: '' },
+  { id: 'orders', t: ['Paper', 'orders'], s: 'Alpaca, no real money' },
+];
+const EDGES = [['clock', 'feed'], ['feed', 'claude'], ['feed', 'gemini'], ['claude', 'merge'], ['gemini', 'merge'], ['merge', 'risk'], ['risk', 'orders']];
+const LABEL = 'hermes signal path: on weekdays at 9:45 ET it pulls prices and news, asks Claude and Gemini for a call on each ticker, merges the two calls, runs them through risk rules, and places paper orders through Alpaca.';
+
+function layout(vertical) {
+  const W = vertical ? 340 : 960, H = vertical ? 640 : 300;
+  const bw = vertical ? 132 : 116, bh = 64;
+  const P = vertical
+    ? { clock: [170, 46], feed: [170, 150], claude: [86, 262], gemini: [254, 262], merge: [170, 374], risk: [170, 478], orders: [170, 586] }
+    : { clock: [72, 150], feed: [222, 150], claude: [392, 76], gemini: [392, 224], merge: [562, 150], risk: [712, 150], orders: [878, 150] };
+  const edges = EDGES.map(([a, b]) => {
+    const [ax, ay] = P[a], [bx, by] = P[b];
+    if (vertical) { const y1 = ay + bh / 2, y2 = by - bh / 2, my = (y1 + y2) / 2; return `M${ax} ${y1} V${my} H${bx} V${y2}`; }
+    const x1 = ax + bw / 2, x2 = bx - bw / 2, mx = (x1 + x2) / 2;
+    return `M${x1} ${ay} H${mx} V${by} H${x2}`;
+  });
+  const nodes = NODES.map((n) => {
+    const [cx, cy] = P[n.id];
+    return { ...n, cx, cy, x: cx - bw / 2, y: cy - bh / 2, ai: n.id === 'claude' || n.id === 'gemini' };
+  });
+  return { W, H, bw, bh, edges, nodes, cls: vertical ? 'diagram dg-v' : 'diagram dg-h' };
+}
+const views = [layout(false), layout(true)];
+---
+<figure class="notes-panel">
+  <div class="dg-wrap">
+    {views.map((v) => (
+      <svg class={v.cls} viewBox={`0 0 ${v.W} ${v.H}`} role="img" aria-label={LABEL}>
+        {v.edges.map((d) => <path class="dg-edge" d={d} />)}
+        {v.nodes.map((n) => (
+          <g class={n.ai ? 'dg-node dg-ai' : 'dg-node'} data-node={n.id}>
+            <rect x={n.x} y={n.y} width={v.bw} height={v.bh} rx="3" />
+            {n.t.map((line, i) => <text class="dg-t" x={n.cx} y={n.cy + (n.t.length === 1 ? 5 : i * 17 - 3)} text-anchor="middle">{line}</text>)}
+            {n.s && <text class="dg-s" x={n.cx} y={n.y + v.bh + 17} text-anchor="middle">{n.s}</text>}
+          </g>
+        ))}
+      </svg>
+    ))}
+  </div>
+  <figcaption>Signal path, drawn from the project description.</figcaption>
+</figure>
