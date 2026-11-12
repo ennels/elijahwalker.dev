@@ -3,7 +3,7 @@
 #
 # Images go in public/studio/. For each one:
 #   title:  what a screen reader announces; also shown if the image fails to load
-#   image:  the thumbnail shown in the film strip (about 560 px tall is plenty)
+#   image:  the thumbnail shown in the film strip (about 500 px tall is plenty)
 #   full:   the full-size file the frame links to (optional)
 #   width, height: the full image's pixel size. They set the frame's shape, so nothing gets cropped.
 
@@ -29,8 +29,53 @@ drawings:
     width: 2000
     height: 1125
 
-# Same fields as drawings.
-photos: []
+# Same fields as drawings. Three to a strip, in this order.
+photos:
+  - title: "A skier climbing a snowy slope at dusk under a single floodlight"
+    image: /studio/skier-dusk-thumb.webp
+    full: /studio/skier-dusk.webp
+    width: 2000
+    height: 1125
+  - title: "Aurora overhead in pink and green, a treetop silhouetted below"
+    image: /studio/aurora-thumb.webp
+    full: /studio/aurora.webp
+    width: 1500
+    height: 2000
+  - title: "A young deer in fresh snow, looking straight at the camera"
+    image: /studio/deer-snow-thumb.webp
+    full: /studio/deer-snow.webp
+    width: 2000
+    height: 1125
+  - title: "A bright green gecko on a steel counter, close up"
+    image: /studio/gecko-thumb.webp
+    full: /studio/gecko.webp
+    width: 2000
+    height: 1125
+  - title: "Japanese maple leaves in gold and red, filling the frame"
+    image: /studio/maple-thumb.webp
+    full: /studio/maple.webp
+    width: 1125
+    height: 2000
+  - title: "A dog asleep in the grass, shot at ground level, a green swing behind it"
+    image: /studio/sleeping-dog-thumb.webp
+    full: /studio/sleeping-dog.webp
+    width: 2000
+    height: 1125
+  - title: "Umbrellas up on a rainy street of old stone buildings"
+    image: /studio/rain-umbrellas-thumb.webp
+    full: /studio/rain-umbrellas.webp
+    width: 2000
+    height: 1125
+  - title: "A dark red grand interior with a column of light at its center"
+    image: /studio/red-interior-thumb.webp
+    full: /studio/red-interior.webp
+    width: 1333
+    height: 2000
+  - title: "The Eiffel Tower lit gold at night, seen from directly below"
+    image: /studio/eiffel-below-thumb.webp
+    full: /studio/eiffel-below.webp
+    width: 2000
+    height: 1125
 
 # Each track: title, audio (a file in public/studio/, e.g. /studio/track.mp3), and an optional note.
 music: []
