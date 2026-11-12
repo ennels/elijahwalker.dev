@@ -1,0 +1,166 @@
+/* ==========================================================================
+   SLEEVE — design tokens (locked in Phase 3, Nov 2026)
+   The single source for color, type, spacing, radius, elevation, and motion.
+   Components read these through var(); no component sets a literal color.
+
+   Direction: the site as a record. Cover = hero, Side A = engineering,
+   Side B = studio (contact-sheet film strips on the lake band), liner notes = the rest.
+   Light: tamarack gold (McCall larches in October). Dark: Payette Lake at night.
+   ========================================================================== */
+
+:root {
+  /* ---------- Color · light ---------- */
+  --color-ground:          #D9A441; /* page */
+  --color-ground-raised:   #E6B85C; /* hover fills, figure panels */
+  --color-ink:             #1E1A12; /* text, rules, solid buttons */
+  --color-ink-muted:       #4A3A1A; /* secondary text (4.9:1 on ground) */
+  --color-rule:            rgb(30 26 18 / .28);   /* hairlines, decorative only */
+  --color-on-ink:          #F2EAD6; /* text on solid ink */
+  --color-accent:          #1E4A50; /* project icons (graphics, 4.4:1 on ground) */
+  --color-cover:           #C88E28; /* cover square behind the portrait */
+  --color-cover-ink:       #112F34; /* monogram printed on the cover when there is no photo */
+
+  --color-band:            #1E4A50; /* Side B band */
+  --color-band-ink:        #F2EAD6;
+  --color-band-ink-muted:  #B9CDC8;
+  --color-band-rule:       rgb(242 234 214 / .24);
+
+  --color-film:            #141312; /* film strip base */
+  --color-film-frame:      #2B2A27; /* empty or loading frame */
+  --color-film-ink:        #E9E5DC; /* text inside a frame */
+  --color-film-ink-muted:  #ABA79E;
+  --color-film-edge:       #D9BC6A; /* edge-print numbers (decorative) */
+  --color-film-hole:       var(--color-band); /* sprocket holes show what is behind the strip */
+
+  --color-focus:           var(--color-ink);
+  --color-focus-band:      var(--color-band-ink);
+  color-scheme: light;
+
+  /* ---------- Type ---------- */
+  --font-display: "Besley", ui-serif, Georgia, "Times New Roman", serif;          /* Clarendon revival */
+  --font-text:    "Hanken Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --text-2xs:     .625rem;    /* 10  edge print on phones (decorative only) */
+  --text-xs:      .75rem;     /* 12  tags, edge print */
+  --text-sm:      .875rem;    /* 14  meta, captions, credits */
+  --text-ui:      .9375rem;   /* 15  nav, buttons, labels */
+  --text-base:    1.0625rem;  /* 17  body */
+  --text-prose:   1.1875rem;  /* 19  long-form paragraphs */
+  --text-md:      1.25rem;    /* 20  lede, card titles */
+  --text-lg:      1.625rem;   /* 26  track titles */
+  --text-xl:      2.125rem;   /* 34  featured track titles */
+  --text-2xl:     clamp(2rem, 1.4rem + 2.4vw, 3.25rem);     /* 32–52 section heads */
+  --text-3xl:     clamp(2.25rem, 1.2rem + 5vw, 5.5rem);     /* 36–88 project title */
+  --text-display: clamp(3.4rem, 1.6rem + 7vw, 8.25rem);     /* 54–132 cover name */
+
+  --weight-text:    400;
+  --weight-medium:  600;
+  --weight-strong:  700;
+  --weight-heavy:   800;
+  --weight-display: 900;
+
+  --leading-display: .94;
+  --leading-snug:    1.15;  /* track and section titles */
+  --leading-head:    1.2;   /* small headings */
+  --leading-ui:      1.3;   /* labels, captions in frames */
+  --leading-lede:    1.5;
+  --leading-body:    1.6;
+  --leading-prose:   1.7;
+
+  --tracking-display: -.025em;
+  --tracking-head:    -.015em;
+  --tracking-edge:    .08em;
+
+  --measure: 46rem; /* ~70 characters of body text */
+
+  /* ---------- Space (4 px base) ---------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-7:  28px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-section: clamp(56px, 8vw, 104px);  /* between sections */
+  --space-cover:   clamp(48px, 7vw, 96px);   /* under the cover */
+  --gutter-min:    16px;                     /* side gutter floor, before safe-area insets */
+
+  --page-max:   1160px;
+  --column:     62rem;  /* Side A content column (tracklist, resume, about) */
+  --header-h:   64px;
+  --target-min: 44px; /* smallest tap target */
+
+  /* ---------- Radius ---------- */
+  --radius-frame: 2px;    /* film frames, figure panels */
+  --radius-pill:  999px;  /* buttons, tags */
+  --radius-round: 50%;    /* side badges, icon buttons */
+
+  /* ---------- Elevation ---------- */
+  --shadow-cover: 0 1px 0 var(--color-rule), 0 24px 48px -24px rgb(0 0 0 / .45);
+
+  /* ---------- Motion ---------- */
+  --ease-out:    cubic-bezier(.23, 1, .32, 1);   /* everything that enters or responds */
+  --dur-hover:   150ms;  /* color and fill changes */
+  --dur-press:   160ms;  /* press scale */
+  --dur-theme:   300ms;  /* light/dark swap */
+  --dur-page:    250ms;  /* page-to-page cross-fade */
+  --dur-fade:    600ms;  /* cover copy fade-in */
+  --dur-rise:    700ms;  /* cover name rise */
+  --dur-sleeve:  800ms;  /* portrait slides out of the sleeve */
+  --stagger:     90ms;   /* between cover name lines */
+  --press-scale: .97;
+}
+
+/* ---------- Color · dark (system preference) ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-ground:          #0F2629;
+    --color-ground-raised:   #163235;
+    --color-ink:             #F0E4C6;
+    --color-ink-muted:       #B7C1B1;
+    --color-rule:            rgb(240 228 198 / .2);
+    --color-on-ink:          #0F2629;
+    --color-accent:          #E0AC48;
+    --color-cover:           #E0AC48;
+    --color-cover-ink:       #112F34;
+    --color-band:            #081A1C;
+    --color-band-ink:        #F0E4C6;
+    --color-band-ink-muted:  #A9B8B3;
+    --color-band-rule:       rgb(240 228 198 / .18);
+    --color-film:            #000000;
+    --color-film-frame:      #262522;
+    --color-film-ink:        #E9E5DC;
+    --color-film-ink-muted:  #A8A49B;
+    --color-film-edge:       #E5C266;
+    --color-film-hole:       #24403F;
+    color-scheme: dark;
+  }
+}
+
+/* ---------- Color · dark (explicit toggle; same values) ---------- */
+:root[data-theme="dark"] {
+  --color-ground:          #0F2629;
+  --color-ground-raised:   #163235;
+  --color-ink:             #F0E4C6;
+  --color-ink-muted:       #B7C1B1;
+  --color-rule:            rgb(240 228 198 / .2);
+  --color-on-ink:          #0F2629;
+  --color-accent:          #E0AC48;
+  --color-cover:           #E0AC48;
+  --color-cover-ink:       #112F34;
+  --color-band:            #081A1C;
+  --color-band-ink:        #F0E4C6;
+  --color-band-ink-muted:  #A9B8B3;
+  --color-band-rule:       rgb(240 228 198 / .18);
+  --color-film:            #000000;
+  --color-film-frame:      #262522;
+  --color-film-ink:        #E9E5DC;
+  --color-film-ink-muted:  #A8A49B;
+  --color-film-edge:       #E5C266;
+  --color-film-hole:       #24403F;
+  color-scheme: dark;
+}
