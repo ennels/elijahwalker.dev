@@ -1,0 +1,90 @@
+/* Base and layout shell: reset, type defaults, page column, header, footer.
+   Every color, size, and radius comes from tokens.css. Motion lives in motion.css. */
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--header-h) + var(--space-5)); }
+body {
+  margin: 0;
+  background: var(--color-ground);
+  color: var(--color-ink);
+  font: var(--weight-text) var(--text-base)/var(--leading-body) var(--font-text);
+}
+::selection { background: var(--color-ink); color: var(--color-ground); }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration-thickness: 1.5px; text-underline-offset: .22em; }
+p, ul, ol, dl, figure, h1, h2, h3, h4 { margin: 0; }
+h1, h2, h3, h4 { text-wrap: balance; overflow-wrap: break-word; hyphens: auto; }
+:focus-visible { outline: 2.5px solid var(--color-focus); outline-offset: 3px; }
+main:focus { outline: none; }
+.muted { color: var(--color-ink-muted); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip {
+  position: absolute; left: var(--space-3); top: -60px; z-index: 100;
+  background: var(--color-ink); color: var(--color-on-ink);
+  padding: var(--space-3) var(--space-4); font-weight: var(--weight-strong);
+}
+.skip:focus { top: var(--space-3); }
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60;
+  background: var(--color-ground);
+}
+
+/* Shared page column with safe-area gutters */
+.top-in, .cover, .sec, .crumbs, .single, .notes-panel, .side-b-in, .foot-in {
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-left: max(var(--gutter-min), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gutter-min), env(safe-area-inset-right, 0px));
+}
+
+/* ---------- Header ---------- */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--color-ground); }
+.top-row { height: var(--header-h); display: flex; align-items: center; gap: var(--space-5); border-bottom: 1.5px solid var(--color-ink); }
+.brand {
+  font: var(--weight-heavy) var(--text-md)/1 var(--font-display);
+  text-decoration: none; white-space: nowrap;
+  min-height: var(--target-min); display: inline-flex; align-items: center;
+}
+.nav { display: flex; gap: 2px; margin-left: auto; }
+.nav a {
+  min-height: var(--target-min); display: inline-flex; align-items: center;
+  padding: 0 var(--space-3); border-radius: var(--radius-pill);
+  font-weight: var(--weight-medium); font-size: var(--text-ui); text-decoration: none; white-space: nowrap;
+}
+.nav a:hover { background: var(--color-ground-raised); }
+.mode {
+  flex: 0 0 auto; display: inline-grid; place-items: center;
+  width: var(--target-min); height: var(--target-min);
+  border: 1.5px solid var(--color-ink); border-radius: var(--radius-round);
+  background: transparent; color: inherit; cursor: pointer;
+}
+.mode svg { width: 20px; height: 20px; }
+.mode .moon, .mode[data-state="dark"] .sun { display: none; }
+.mode[data-state="dark"] .moon { display: block; }
+
+/* ---------- Footer ---------- */
+.foot-row {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-6);
+  padding-block: var(--space-5) calc(var(--space-16) + var(--space-8)); border-top: 1.5px solid var(--color-ink);
+  font-size: var(--text-sm); color: var(--color-ink-muted);
+}
+
+/* ---------- Responsive shell ---------- */
+@media (max-width: 720px) {
+  /* The section nav drops to its own row under the header bar. */
+  .nav {
+    position: fixed; left: 0; right: 0; top: calc(var(--header-h) + env(safe-area-inset-top, 0px));
+    background: var(--color-ground); border-bottom: 1.5px solid var(--color-ink);
+    overflow-x: auto; scrollbar-width: none;
+    padding-left: max(6px, env(safe-area-inset-left, 0px)); padding-right: max(6px, env(safe-area-inset-right, 0px));
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .mode { margin-left: auto; }
+  main { padding-top: 46px; }
+  html { scroll-padding-top: calc(var(--header-h) * 2); }
+}
+@media (max-width: 400px) {
+  .nav { justify-content: space-between; gap: 0; }
+  .nav a { padding: 0 var(--space-1); font-size: var(--text-sm); }
+}
