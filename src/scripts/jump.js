@@ -5,7 +5,8 @@
 // - The link of the section in view is marked (aria-current), which the header styles as the current tab.
 const root = document.documentElement;
 const navLinks = [...document.querySelectorAll('.nav a[href*="#"]')];
-const target = (a) => (a.pathname === location.pathname ? document.getElementById(a.hash.slice(1)) : null);
+const page = (path) => path.replace(/index\.html$/, ''); // /index.html and / are the same page
+const target = (a) => (page(a.pathname) === page(location.pathname) ? document.getElementById(a.hash.slice(1)) : null);
 
 const clean = () => {
   if (location.hash && document.getElementById(location.hash.slice(1))) history.replaceState(history.state, '', location.pathname + location.search);
