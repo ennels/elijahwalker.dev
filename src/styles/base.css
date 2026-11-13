@@ -39,10 +39,9 @@ body::before {
 }
 
 /* ---------- Header ---------- */
-/* Only the text column is opaque, so the section borders in the margins stay visible beside the header. */
-.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; }
-.top-in { background: var(--color-ground); }
-.top-row { height: var(--header-h); display: flex; align-items: center; gap: var(--space-5); border-bottom: 1.5px solid var(--color-ink); }
+/* A full-width bar: background and rule span the whole window. */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--color-ground); border-bottom: 1.5px solid var(--color-ink); }
+.top-row { height: var(--header-h); display: flex; align-items: center; gap: var(--space-5); }
 .brand {
   font: var(--weight-heavy) var(--text-md)/1 var(--font-display);
   text-decoration: none; white-space: nowrap;
@@ -51,17 +50,19 @@ body::before {
 .nav { display: flex; gap: 2px; margin-left: auto; }
 .nav a {
   min-height: var(--target-min); display: inline-flex; align-items: center;
-  padding: 0 var(--space-3); border-radius: var(--radius-pill);
+  padding: 0 var(--space-3);
   font-weight: var(--weight-medium); font-size: var(--text-ui); text-decoration: none; white-space: nowrap;
 }
-.nav a:hover { background: var(--color-ground-raised); }
+/* Square highlight, and only on devices that really hover (a tap on a phone shouldn't leave it stuck on). */
+@media (hover: hover) { .nav a:hover { background: var(--color-ground-raised); } }
+/* Theme toggle: a 30 px ring drawn inside a 44 px tap area. */
 .mode {
-  flex: 0 0 auto; display: inline-grid; place-items: center;
-  width: var(--target-min); height: var(--target-min);
-  border: 1.5px solid var(--color-ink); border-radius: var(--radius-round);
+  position: relative; flex: 0 0 auto; display: inline-grid; place-items: center;
+  width: var(--target-min); height: var(--target-min); border: 0; padding: 0;
   background: transparent; color: inherit; cursor: pointer;
 }
-.mode svg { width: 20px; height: 20px; }
+.mode::before { content: ""; position: absolute; inset: 7px; border: 1.5px solid currentColor; border-radius: var(--radius-round); }
+.mode svg { width: 18px; height: 18px; }
 .mode .moon, .mode[data-state="dark"] .sun { display: none; }
 .mode[data-state="dark"] .moon { display: block; }
 

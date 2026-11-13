@@ -20,7 +20,7 @@
   --color-cover:           #C88E28; /* cover square behind the portrait */
   --color-cover-ink:       #112F34; /* monogram printed on the cover when there is no photo */
 
-  --color-band:            #1E4A50; /* Side B band */
+  --color-band:            #1E4A50; /* Studio band */
   --color-band-ink:        #F2EAD6;
   --color-band-ink-muted:  #B9CDC8;
   --color-band-rule:       rgb(242 234 214 / .24);
@@ -108,24 +108,29 @@
   --dur-press:   160ms;  /* press scale */
   --dur-theme:   300ms;  /* light/dark swap */
   --dur-page:    250ms;  /* page-to-page cross-fade */
+  --dur-jump-out: 150ms; /* header link: page fades to its own color... */
+  --dur-jump-in:  200ms; /* ...then fades back in at the section */
+  --dur-viewer:   200ms; /* image viewer opens and closes */
   --dur-fade:    600ms;  /* cover copy fade-in */
   --dur-rise:    700ms;  /* cover name rise */
   --dur-sleeve:  800ms;  /* portrait slides out of the sleeve */
   --stagger:     90ms;   /* between cover name lines */
   --press-scale: .97;
 
-  /* ---------- Section borders (paper, film, stamp in the side margins) ---------- */
-  --edge-overlap: 72px;   /* how far a border reaches past its section, so the next one can lay over it */
+  /* ---------- Section borders (paper, film, stamp in the side margins, wide screens) ---------- */
   --edge-max:     232px;  /* widest a border gets on very wide screens */
-  --edge-drift:   5%;     /* parallax: border travels ±5% of its height, so it scrolls at roughly 85-90% of text speed */
   --paper-dim:    brightness(1);
   --shadow-paper: drop-shadow(0 1px 0 rgb(0 0 0 / .14)) drop-shadow(0 6px 10px rgb(0 0 0 / .16));
-  --grid-ink:     rgb(30 74 80 / .17);
-  --paper-shade:  #D8CBAE;
   --stamp-ink:    rgb(30 74 80 / .55);
-  --reel-metal:   #A9AFAB;
-  --reel-groove:  rgb(0 0 0 / .12);
-  --reel-hub:     #7C8481;
+  --film-rail-max: 190px; /* widest studio side strip; half of each strip sits off-screen */
+
+  /* ---------- Section paper (grid lines mix the ink into the page, so they follow light/dark) ---------- */
+  --grid-minor:   color-mix(in srgb, var(--color-ink) 5%, transparent);
+  --grid-major:   color-mix(in srgb, var(--color-ink) 9%, transparent);
+  --grid-dot:     color-mix(in srgb, var(--color-ink) 17%, transparent);
+  --grid-band:    color-mix(in srgb, var(--color-band-ink) 5%, transparent);
+  --grid-rule:    color-mix(in srgb, var(--color-accent) 22%, transparent);
+  --paper-liner:  color-mix(in srgb, var(--color-ground) 55%, var(--color-ground-raised));
 }
 
 /* ---------- Color · dark (system preference) ---------- */
@@ -140,7 +145,7 @@
     --color-accent:          #E0AC48;
     --color-cover:           #E0AC48;
     --color-cover-ink:       #112F34;
-    --color-band:            #081A1C;
+    --color-band:            #1A4146; /* lifted from #081A1C: band vs page 1.42:1, film vs band 1.89:1 */
     --color-band-ink:        #F0E4C6;
     --color-band-ink-muted:  #A9B8B3;
     --color-band-rule:       rgb(240 228 198 / .18);
@@ -149,7 +154,7 @@
     --color-film-ink:        #E9E5DC;
     --color-film-ink-muted:  #A8A49B;
     --color-film-edge:       #E5C266;
-    --color-film-hole:       #24403F;
+    --color-film-hole:       var(--color-band);
     --paper-dim:    brightness(.56) saturate(.8);
     --shadow-paper: drop-shadow(0 1px 0 rgb(0 0 0 / .3)) drop-shadow(0 8px 14px rgb(0 0 0 / .35));
     color-scheme: dark;
@@ -167,7 +172,7 @@
   --color-accent:          #E0AC48;
   --color-cover:           #E0AC48;
   --color-cover-ink:       #112F34;
-  --color-band:            #081A1C;
+  --color-band:            #1A4146;
   --color-band-ink:        #F0E4C6;
   --color-band-ink-muted:  #A9B8B3;
   --color-band-rule:       rgb(240 228 198 / .18);
@@ -176,7 +181,7 @@
   --color-film-ink:        #E9E5DC;
   --color-film-ink-muted:  #A8A49B;
   --color-film-edge:       #E5C266;
-  --color-film-hole:       #24403F;
+  --color-film-hole:       var(--color-band);
   --paper-dim:    brightness(.56) saturate(.8);
   --shadow-paper: drop-shadow(0 1px 0 rgb(0 0 0 / .3)) drop-shadow(0 8px 14px rgb(0 0 0 / .35));
   color-scheme: dark;

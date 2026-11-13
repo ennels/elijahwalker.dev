@@ -1,41 +1,13 @@
 ---
-// Decorative border for one section: the section's material in both side margins (mirrored), laid over the
-// previous section's border at the seam. On narrow screens it becomes a torn strip across the section's top.
-//   material: 'kraft'  Projects: kraft over cream graph paper
-//             'liner'  About + Resume: deckled liner-notes paper
-//             'film'   Studio: a film reel half off-screen, its strip unspooling down the margin
-//             'stamp'  Contact: perforated stamp paper
+// Decorative border for one section: its material in both side margins (mirrored), cut straight at the
+// section's top and bottom. Wide screens only (1280+); the section's paper background carries the theme elsewhere.
+//   material: 'kraft' (Projects) | 'liner' (About + Resume) | 'film' (Studio) | 'stamp' (Contact)
 const { material } = Astro.props;
-const plies = {
-  kraft: ['graph', 'kraft'],
-  liner: ['liner-under', 'liner'],
-  stamp: ['stamp'],
-  film: [],
-}[material];
-const reel = material === 'film';
 ---
 <div class={`sb sb-${material}`} aria-hidden="true">
   {['l', 'r'].map((side) => (
     <div class={`sb-side sb-${side}`}>
-      {plies.map((p) => <div class={`ply ply-${p}`}><b><i></i></b></div>)}
-      {reel && (
-        <>
-          <div class="spool"></div>
-          <svg class="reel" viewBox="-100 -100 200 200">
-            <circle r="98" class="reel-flange" />
-            {[90, 82, 40].map((r) => <circle r={r} class="reel-groove" />)}
-            {[0, 120, 240].map((a) => <path class="reel-hole" transform={`rotate(${a})`} d="M-28.7 -61.6 A68 68 0 0 1 28.7 -61.6 L10 -30.4 A32 32 0 0 0 -10 -30.4Z" />)}
-            <circle r="22" class="reel-hub" />
-            <rect x="-5" y="-5" width="10" height="10" rx="1.5" class="reel-key" />
-          </svg>
-        </>
-      )}
+      {material === 'film' ? <div class="film-rail"></div> : <div class={`ply ply-${material}`}><i></i></div>}
     </div>
   ))}
-</div>
-<div class={`divider divider-${material}`} aria-hidden="true">
-  {material === 'kraft' && <><b class="dv dv-graph"></b><b class="dv dv-kraft"></b></>}
-  {material === 'liner' && <b class="dv dv-liner"></b>}
-  {material === 'film' && <b class="dv dv-film"></b>}
-  {material === 'stamp' && <b class="dv dv-stamp"></b>}
 </div>

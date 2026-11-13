@@ -10,9 +10,27 @@
    so text and backgrounds change together instead of text snapping over a still-fading background. */
 :root[data-vt="theme"]::view-transition-group(root) { animation-duration: var(--dur-theme); }
 
+/* ---------- Header links within the page: fade to the page color, jump, fade back in ----------
+   jump.js sets data-vt for these. The old view is gone before the new one starts, so the scroll never shows. */
+:root[data-vt="jump"]::view-transition-group(root) { animation-duration: calc(var(--dur-jump-out) + var(--dur-jump-in)); }
+:root[data-vt="jump"]::view-transition-old(root) { animation: vt-out var(--dur-jump-out) var(--ease-out) both; }
+:root[data-vt="jump"]::view-transition-new(root) { animation: vt-in var(--dur-jump-in) var(--ease-out) var(--dur-jump-out) both; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; } }
+
+/* ---------- Image viewer: fades in with the image settling from 97%; closes the same way ---------- */
+.lb { opacity: 0; transition: opacity var(--dur-viewer) var(--ease-out), display var(--dur-viewer) allow-discrete, overlay var(--dur-viewer) allow-discrete; }
+.lb[open] { opacity: 1; }
+.lb-fig { transition: transform var(--dur-viewer) var(--ease-out); }
+.lb:not([open]) .lb-fig { transform: scale(.97); }
+@starting-style {
+  .lb[open] { opacity: 0; }
+  .lb[open] .lb-fig { transform: scale(.97); }
+}
+
 /* ---------- Press and hover feedback ---------- */
-.btn, .mode { transition: transform var(--dur-press) var(--ease-out); }
-.btn:active, .mode:active { transform: scale(var(--press-scale)); }
+.btn, .mode, .lb-x, .lb-nav { transition: transform var(--dur-press) var(--ease-out); }
+.btn:active, .mode:active, .lb-x:active, .lb-nav:active { transform: scale(var(--press-scale)); }
 @media (hover: hover) and (pointer: fine) {
   .btn { transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-hover) var(--ease-out); }
   .nav a { transition: background-color var(--dur-hover) var(--ease-out); }
@@ -33,20 +51,9 @@
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 
-/* ---------- Section borders drift slower than the text ----------
-   Scroll-driven (no script): each border moves from -drift to +drift of its own height while its section
-   crosses the screen, so it lags the text a little and the next section's material slides over it at the seam. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) and (min-width: 1280px) {
-    .sb { animation: edge-drift linear both; }
-    /* Separate rule on purpose: minifiers fold animation-timeline into the shorthand, which browsers then reject. */
-    .sb.sb { animation-timeline: view(); animation-range: cover; }
-  }
-}
-@keyframes edge-drift { from { translate: 0 calc(-1 * var(--edge-drift)); } to { translate: 0 var(--edge-drift); } }
-
 /* ---------- Reduced motion: collapse, don't just shorten ---------- */
 @media (prefers-reduced-motion: reduce) {
   .cover .sleeve, .cover .cover-text { animation: fade var(--dur-page) var(--ease-out) both; }
-  .btn:active, .mode:active { transform: none; }
+  .btn:active, .mode:active, .lb-x:active, .lb-nav:active { transform: none; }
+  .lb-fig, .lb:not([open]) .lb-fig { transform: none; transition: none; }
 }

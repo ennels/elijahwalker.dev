@@ -1,0 +1,22 @@
+---
+// Image viewer for the Studio film strips. viewer.js opens it from any linked frame (a.pic[href]);
+// without JavaScript those frames stay plain links to the full image.
+---
+<dialog class="lb" id="viewer" aria-label="Image viewer">
+  <div class="lb-top">
+    <p class="lb-count" aria-live="polite"></p>
+    <button type="button" class="lb-x" data-lb-close autofocus aria-label="Close viewer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+    </button>
+  </div>
+  <figure class="lb-fig">
+    <img class="lb-img" alt="" />
+    <figcaption class="lb-cap" aria-hidden="true"></figcaption>
+  </figure>
+  <button type="button" class="lb-nav lb-prev" data-lb-step="-1" aria-label="Previous image">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+  </button>
+  <button type="button" class="lb-nav lb-next" data-lb-step="1" aria-label="Next image">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+  </button>
+</dialog>

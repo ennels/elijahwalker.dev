@@ -33,11 +33,10 @@ const { project: p } = Astro.props;
     {p.id === 'hermes' && <HermesDiagram />}
 
     <section class="sec" aria-labelledby="h-side">
-      <h2 class="sh small" id="h-side"><span class="side" aria-hidden="true">A</span>All projects</h2>
+      <h2 class="sh small" id="h-side">All projects</h2>
       <ol class="mini">
-        {projects.map((x, j) => (
+        {projects.map((x) => (
           <li class={x.id === p.id ? 'is-here' : undefined}>
-            <span class="no" aria-hidden="true">A{j + 1}</span>
             <ProjectName project={x} current={x.id === p.id} />
             <span class="muted">{x.label}</span>
           </li>

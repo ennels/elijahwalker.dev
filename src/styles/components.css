@@ -42,26 +42,22 @@
 /* ---------- Sections ---------- */
 .sec { padding-block: var(--space-section) 0; }
 .sh {
-  display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-7);
+  margin-bottom: var(--space-7);
   font: var(--weight-display) var(--text-2xl)/1 var(--font-display); letter-spacing: var(--tracking-head);
 }
 .sh.small { font-size: var(--text-lg); }
-.side {
-  display: inline-grid; place-items: center; flex: 0 0 auto; width: 1.35em; height: 1.35em;
-  border-radius: var(--radius-round); background: var(--color-ink); color: var(--color-ground);
-  font: var(--weight-heavy) .6em/1 var(--font-display);
+/* A heading with one small action on the same line (Resume + Download PDF). */
+.sec-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-2) var(--space-6); margin-bottom: var(--space-7); max-width: var(--column); }
+.sec-head .sh { margin-bottom: 0; }
+.head-link {
+  display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--target-min);
+  font: var(--weight-strong) var(--text-ui)/1 var(--font-text);
 }
+.head-link svg { width: 16px; height: 16px; flex: 0 0 auto; }
 
-/* ---------- Side A: tracklist ---------- */
+/* ---------- Projects: tracklist ---------- */
 .tracks { list-style: none; padding: 0; border-top: 1.5px solid var(--color-ink); max-width: var(--column); }
-.track {
-  display: grid; grid-template-columns: 3.5rem minmax(0, 1fr); gap: var(--space-1) var(--space-5);
-  padding-block: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-rule);
-}
-.no {
-  font: var(--weight-strong) var(--text-base)/var(--target-min) var(--font-display);
-  color: var(--color-ink-muted); font-variant-numeric: tabular-nums;
-}
+.track { padding-block: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-rule); }
 .t-main { --indent: 2.75rem; display: grid; gap: var(--space-2); min-width: 0; max-width: var(--measure); padding-left: var(--indent); }
 .t-title { font: var(--weight-heavy) var(--text-lg)/var(--leading-snug) var(--font-display); letter-spacing: -.01em; }
 .is-feat .t-title { font-size: var(--text-xl); }
@@ -107,16 +103,15 @@
 .credits-list.wide div { border-top: 1px solid var(--color-rule); border-bottom: 0; }
 .cv { list-style: none; padding: 0; border-top: 1.5px solid var(--color-ink); max-width: var(--column); }
 .cv li { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: var(--space-1) var(--space-6); padding-block: var(--space-5); border-bottom: 1px solid var(--color-rule); }
-.when { font: var(--weight-strong) var(--text-base)/var(--leading-lede) var(--font-display); color: var(--color-ink-muted); font-variant-numeric: tabular-nums; }
+.when { font: var(--weight-strong) var(--text-base)/var(--leading-lede) var(--font-display); color: var(--color-ink-muted); }
 .cv h3 { font: var(--weight-heavy) var(--text-md)/var(--leading-head) var(--font-display); }
 .org { font-weight: var(--weight-strong); font-size: var(--text-ui); margin-top: 2px; }
 .cv li p:not(.when):not(.org) { margin-top: var(--space-2); max-width: var(--measure); }
 
 /* ---------- Side B: studio on the lake band ---------- */
-.side-b { margin-top: var(--space-section); background: var(--color-band); color: var(--color-band-ink); }
+.side-b { background: var(--color-band); color: var(--color-band-ink); }
 .side-b-in { padding-block: var(--space-section); }
 .side-b :focus-visible { outline-color: var(--color-focus-band); }
-.side-b .side { background: var(--color-band-ink); color: var(--color-band); }
 .side-b .intro { max-width: var(--measure); margin: calc(-1 * var(--space-3)) 0 var(--space-10); color: var(--color-band-ink-muted); }
 .roll { display: grid; gap: var(--space-4); margin-bottom: var(--space-12); }
 .roll:last-child { margin-bottom: 0; }
@@ -188,7 +183,6 @@ a.pic:hover { box-shadow: 0 0 0 2px var(--color-film-edge); }
 @media (max-width: 720px) {
   .cover { padding-top: var(--space-5); }
   .cover-text { order: -1; }
-  .track { grid-template-columns: 2.5rem minmax(0, 1fr); gap: var(--space-1) var(--space-3); }
   .t-main { --indent: 2.25rem; }
   .pname { gap: var(--space-3); }
   .pico, .pico svg, .pico img { width: 1.5rem; flex-basis: 1.5rem; }
@@ -196,8 +190,6 @@ a.pic:hover { box-shadow: 0 0 0 2px var(--color-film-edge); }
   .cv li { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 480px) {
-  .track { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .track .no { font-size: var(--text-sm); line-height: var(--leading-ui); }
   .is-feat .t-title { font-size: var(--text-lg); }
   .sheet { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
   .shot { grid-template-columns: 8.5rem minmax(0, 1fr); align-items: start; }
@@ -207,10 +199,53 @@ a.pic:hover { box-shadow: 0 0 0 2px var(--color-film-edge); }
   .art { padding: var(--space-1); font-size: var(--text-xs); }
 }
 
+/* ---------- Image viewer (Studio) ----------
+   A full-window dialog on film-black. The image box is sized from the frame's proportions before
+   anything loads, so the thumbnail and the full image occupy the same space. */
+.lb {
+  --lb-h: calc(100dvh - 10rem);
+  position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+  display: grid; grid-template-rows: auto minmax(0, 1fr);
+  background: color-mix(in srgb, var(--color-film) 97%, transparent); color: var(--color-film-ink);
+  overscroll-behavior: contain; touch-action: pan-y pinch-zoom;
+}
+.lb:not([open]) { display: none; }
+.lb::backdrop { background: transparent; }
+html:has(.lb[open]) { overflow: hidden; }
+.lb-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-3) var(--space-3) 0 var(--space-5); padding-top: max(var(--space-3), env(safe-area-inset-top)); }
+.lb-count { font: var(--weight-medium) var(--text-sm)/1.3 var(--font-text); color: var(--color-film-ink-muted); }
+.lb-x, .lb-nav {
+  display: grid; place-items: center; width: var(--target-min); height: var(--target-min); padding: 0;
+  border: 1.5px solid color-mix(in srgb, var(--color-film-ink) 35%, transparent); border-radius: var(--radius-round);
+  background: color-mix(in srgb, var(--color-film) 60%, transparent); color: var(--color-film-ink); cursor: pointer;
+}
+.lb-x svg, .lb-nav svg { width: 20px; height: 20px; }
+.lb :focus-visible { outline-color: var(--color-film-edge); }
+.lb-fig { display: grid; place-content: center; justify-items: center; gap: var(--space-3); padding: var(--space-4) var(--space-5) var(--space-6); min-height: 0; }
+.lb-img {
+  display: block; width: min(calc(100vw - 2 * var(--space-5)), 1400px, calc(var(--lb-h) * var(--ar, 1))); height: auto;
+  aspect-ratio: var(--ar, 1); object-fit: contain; background: var(--color-film-frame); border-radius: var(--radius-frame);
+  box-shadow: 0 20px 60px rgb(0 0 0 / .5);
+}
+.lb-cap { max-width: 60ch; text-align: center; font: var(--text-sm)/1.45 var(--font-text); color: var(--color-film-ink); text-wrap: balance; }
+.lb-nav { position: fixed; top: 50%; margin-top: calc(var(--target-min) / -2); width: 52px; height: 52px; }
+.lb-prev { left: var(--space-4); }
+.lb-next { right: var(--space-4); }
+@media (hover: hover) { .lb-x:hover, .lb-nav:hover { background: color-mix(in srgb, var(--color-film-ink) 14%, var(--color-film)); } }
+@media (min-width: 721px) { .lb-fig { padding-inline: calc(52px + var(--space-6)); } .lb-img { width: min(calc(100vw - 2 * (52px + var(--space-6))), 1400px, calc(var(--lb-h) * var(--ar, 1))); } }
+@media (max-width: 720px) {
+  .lb { --lb-h: calc(100dvh - 14rem); }
+  .lb-fig { padding-bottom: calc(var(--target-min) + var(--space-8)); }
+  .lb-nav { top: auto; bottom: max(var(--space-5), env(safe-area-inset-bottom)); margin-top: 0; width: var(--target-min); height: var(--target-min); }
+  .lb-prev { left: calc(50% - var(--target-min) - var(--space-3)); }
+  .lb-next { right: calc(50% - var(--target-min) - var(--space-3)); }
+}
+
 @media (prefers-reduced-transparency: reduce) {
   .sleeve { box-shadow: none; }
 }
 @media (forced-colors: active) {
   .strip, .pic, .sleeve { border: 1px solid CanvasText; }
-  .side { border: 1px solid CanvasText; }
+  .lb { background: Canvas; color: CanvasText; }
+  .lb-x, .lb-nav { border-color: ButtonText; }
 }

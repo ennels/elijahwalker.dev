@@ -11,7 +11,8 @@ import studioRaw from '../../content/studio.yaml?raw';
 
 export const profile = yaml.load(profileRaw);
 export const projects = yaml.load(projectsRaw) ?? [];
-export const media = yaml.load(mediaRaw) ?? [];
+// Media and design pieces show only once they have an image; text-only entries wait in the YAML.
+export const media = (yaml.load(mediaRaw) ?? []).filter((m) => m.image);
 export const resume = yaml.load(resumeRaw);
 export const notes = yaml.load(notesRaw) ?? { items: [] };
 export const now = yaml.load(nowRaw) ?? { items: [] };
