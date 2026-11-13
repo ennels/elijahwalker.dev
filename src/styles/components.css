@@ -57,7 +57,7 @@
 
 /* ---------- Projects: tracklist ---------- */
 .tracks { list-style: none; padding: 0; border-top: 1.5px solid var(--color-ink); max-width: var(--column); }
-.track { padding-block: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-rule); }
+.track { padding-block: var(--space-6) var(--space-8); } /* no dividers: they fought the grid; space separates projects */
 .t-main { --indent: 2.75rem; display: grid; gap: var(--space-2); min-width: 0; max-width: var(--measure); padding-left: var(--indent); }
 .t-title { font: var(--weight-heavy) var(--text-lg)/var(--leading-snug) var(--font-display); letter-spacing: -.01em; }
 .is-feat .t-title { font-size: var(--text-xl); }
@@ -88,8 +88,8 @@
 
 .aside-list { margin-top: var(--space-12); display: grid; gap: var(--space-2); max-width: var(--measure); }
 .aside-list h3 { font: var(--weight-heavy) var(--text-lg)/var(--leading-snug) var(--font-display); }
-.aside-list ul { list-style: none; padding: 0; margin-top: var(--space-2); border-top: 1px solid var(--color-rule); }
-.aside-list li { display: grid; gap: 2px; padding-block: var(--space-3); border-bottom: 1px solid var(--color-rule); }
+.aside-list ul { list-style: none; padding: 0; margin-top: var(--space-2); }
+.aside-list li { display: grid; gap: 2px; padding-block: var(--space-3); }
 .al-t { font-weight: var(--weight-medium); overflow-wrap: break-word; hyphens: auto; }
 
 /* ---------- About (liner notes), resume ---------- */
@@ -113,7 +113,7 @@
 .side-b-in { padding-block: var(--space-section); }
 .side-b :focus-visible { outline-color: var(--color-focus-band); }
 .side-b .intro { max-width: var(--measure); margin: calc(-1 * var(--space-3)) 0 var(--space-10); color: var(--color-band-ink-muted); }
-.roll { display: grid; gap: var(--space-4); margin-bottom: var(--space-12); }
+.roll { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); margin-bottom: var(--space-12); }
 .roll:last-child { margin-bottom: 0; }
 .roll h3 { font: var(--weight-heavy) var(--text-lg)/var(--leading-snug) var(--font-display); }
 
@@ -136,6 +136,26 @@
 .strip::after { bottom: var(--hole-inset); }
 .strip.is-square { --ar: 1; } /* drawings without dimensions default to square */
 .frame { position: relative; min-width: 0; flex: var(--ar) 1 0; }
+
+/* Studio rows (Reel.astro): one strip per group across the whole window. Frames share --row-h and keep their
+   proportions. Still (no JavaScript, or reduced motion): starts at the text column and scrolls sideways.
+   Running (reel.js): clipped, drifting, and looped; the gap after each frame is a margin so both halves of the
+   looped track are identical. */
+.reel {
+  --row-h: clamp(150px, 18vw, 250px);
+  width: 100vw; margin-left: calc(50% - 50vw);
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scrollbar-width: thin; scrollbar-color: var(--color-film-frame) transparent;
+}
+.reel-track { width: max-content; gap: 0; border-radius: 0; padding-inline: calc(max(0px, (100vw - var(--page-max)) / 2) + var(--gutter-min)) var(--gutter-min); }
+.reel-track .frame { flex: none; width: calc(var(--row-h) * var(--ar)); margin-right: var(--film-gap); }
+.reel.is-running { overflow: clip; touch-action: pan-y; cursor: grab; }
+.reel.is-running .reel-track { padding-inline: 0; }
+.reel.is-dragging { cursor: grabbing; }
+.reel.is-dragging .pic { cursor: grabbing; }
+.reel-toggle { border: 0; padding: 0; background: none; color: inherit; cursor: pointer; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: .22em; }
+.reel-toggle svg { width: 14px; height: 14px; }
+.reel-toggle[data-state="playing"] .i-play, .reel-toggle[data-state="paused"] .i-pause { display: none; }
 .edge {
   position: absolute; top: -17px; left: 2px;
   font: var(--weight-strong) var(--text-xs)/1 var(--font-text); letter-spacing: var(--tracking-edge);

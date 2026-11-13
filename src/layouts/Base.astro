@@ -8,7 +8,8 @@ import '../styles/sections.css';
 import '../styles/motion.css';
 import { profile, navItems, SITE } from '../lib/content.js';
 
-const { title = profile.name, description = profile.headline, path = '/', bodyClass = '', noindex = false } = Astro.props;
+// section: the nav link to mark as current on pages that belong to a homepage section (project pages: 'projects').
+const { title = profile.name, description = profile.headline, path = '/', bodyClass = '', noindex = false, section = '' } = Astro.props;
 const url = SITE + path;
 const FONTS = 'https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..700&family=Hanken+Grotesk:wght@400..800&display=swap';
 ---
@@ -39,7 +40,7 @@ const FONTS = 'https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..
   <header class="top"><div class="top-in"><div class="top-row">
     <a class="brand" href="/">{profile.name}</a>
     <nav class="nav" aria-label="Sections">
-      {navItems().map(([id, label]) => <a href={`/#${id}`}>{label}</a>)}
+      {navItems().map(([id, label]) => <a href={`/#${id}`} aria-current={id === section ? 'true' : undefined}>{label}</a>)}
     </nav>
     <button type="button" class="mode" id="modeBtn" aria-label="Switch to dark mode">
       <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>

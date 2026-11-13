@@ -4,7 +4,6 @@ import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
 import ProjectName from '../../components/ProjectName.astro';
 import HermesDiagram from '../../components/HermesDiagram.astro';
-import SectionEdge from '../../components/SectionEdge.astro';
 import { projects, profile, projectHref } from '../../lib/content.js';
 
 export function getStaticPaths() {
@@ -12,9 +11,8 @@ export function getStaticPaths() {
 }
 const { project: p } = Astro.props;
 ---
-<Base title={`${p.name} · ${profile.name}`} description={p.summary} path={projectHref(p.id)} bodyClass="is-project">
+<Base title={`${p.name} · ${profile.name}`} description={p.summary} path={projectHref(p.id)} bodyClass="is-project" section="projects">
   <main id="main" class="pp" tabindex="-1">
-    <SectionEdge material="kraft" />
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/#projects">Projects</a><span aria-hidden="true">/</span><span aria-current="page">{p.name}</span></nav>
     <section class="single" aria-labelledby="pp-title">
       <h1 class="pp-title" id="pp-title"><span class="pico"><Icon name={p.icon} /></span><span class="pname-t">{p.name}</span></h1>

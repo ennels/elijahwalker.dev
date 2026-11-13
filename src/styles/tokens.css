@@ -117,20 +117,9 @@
   --stagger:     90ms;   /* between cover name lines */
   --press-scale: .97;
 
-  /* ---------- Section borders (paper, film, stamp in the side margins, wide screens) ---------- */
-  --edge-max:     232px;  /* widest a border gets on very wide screens */
-  --paper-dim:    brightness(1);
-  --shadow-paper: drop-shadow(0 1px 0 rgb(0 0 0 / .14)) drop-shadow(0 6px 10px rgb(0 0 0 / .16));
-  --stamp-ink:    rgb(30 74 80 / .55);
-  --film-rail-max: 190px; /* widest studio side strip; half of each strip sits off-screen */
-
-  /* ---------- Section paper (grid lines mix the ink into the page, so they follow light/dark) ---------- */
+  /* ---------- Graph grid behind Projects (lines mix the ink into the page, so they follow light/dark) ---------- */
   --grid-minor:   color-mix(in srgb, var(--color-ink) 5%, transparent);
   --grid-major:   color-mix(in srgb, var(--color-ink) 9%, transparent);
-  --grid-dot:     color-mix(in srgb, var(--color-ink) 17%, transparent);
-  --grid-band:    color-mix(in srgb, var(--color-band-ink) 5%, transparent);
-  --grid-rule:    color-mix(in srgb, var(--color-accent) 22%, transparent);
-  --paper-liner:  color-mix(in srgb, var(--color-ground) 55%, var(--color-ground-raised));
 }
 
 /* ---------- Color · dark (system preference) ---------- */
@@ -155,8 +144,6 @@
     --color-film-ink-muted:  #A8A49B;
     --color-film-edge:       #E5C266;
     --color-film-hole:       var(--color-band);
-    --paper-dim:    brightness(.56) saturate(.8);
-    --shadow-paper: drop-shadow(0 1px 0 rgb(0 0 0 / .3)) drop-shadow(0 8px 14px rgb(0 0 0 / .35));
     color-scheme: dark;
   }
 }
@@ -182,7 +169,5 @@
   --color-film-ink-muted:  #A8A49B;
   --color-film-edge:       #E5C266;
   --color-film-hole:       var(--color-band);
-  --paper-dim:    brightness(.56) saturate(.8);
-  --shadow-paper: drop-shadow(0 1px 0 rgb(0 0 0 / .3)) drop-shadow(0 8px 14px rgb(0 0 0 / .35));
   color-scheme: dark;
 }

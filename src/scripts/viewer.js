@@ -1,19 +1,21 @@
 // Studio image viewer. A linked frame opens its image in a modal instead of leaving the page.
 // Close: the × button, Esc, a click outside the image, or the browser/phone Back button.
-// Move: arrow buttons, arrow keys, or a sideways swipe; it runs through every linked frame and wraps.
+// Move: arrow buttons, arrow keys, or a sideways swipe; it runs through every image and wraps.
 // The thumbnail shows at once and the full image replaces it when decoded. Focus returns to the frame.
+// The studio rows repeat their frames to loop (reel.js); every copy carries its original's data-i.
 const dlg = document.getElementById('viewer');
-const links = [...document.querySelectorAll('a.pic[href]')];
+const links = [...document.querySelectorAll('a.pic[href]')]; // runs before reel.js adds the copies
 
 if (dlg && links.length && typeof dlg.showModal === 'function') {
   const img = dlg.querySelector('.lb-img');
   const cap = dlg.querySelector('.lb-cap');
   const count = dlg.querySelector('.lb-count');
 
-  // Each strip is labeled (Drawings, Photographs); numbering restarts per group.
-  const items = links.map((link) => {
+  // Each group is labeled (Digital art, Photography); numbering restarts per group.
+  const items = links.map((link, i) => {
+    link.dataset.i = String(i);
     const thumb = link.querySelector('img');
-    const group = link.closest('.strips')?.closest('.roll')?.querySelector('h3')?.textContent ?? '';
+    const group = link.closest('.roll')?.querySelector('h3')?.textContent ?? '';
     return { link, thumb, group, full: link.getAttribute('href'), title: thumb?.alt ?? '' };
   });
   items.forEach((it) => {
@@ -23,6 +25,7 @@ if (dlg && links.length && typeof dlg.showModal === 'function') {
   });
 
   let idx = 0;
+  let opener = null, openedAt = -1; // the frame that was clicked (it may be a copy) and which image it was
   let pushed = false; // whether this viewer added the history entry that Back removes
 
   const preload = (it) => { const i = new Image(); i.src = it.full; return i; };
@@ -41,7 +44,8 @@ if (dlg && links.length && typeof dlg.showModal === 'function') {
     preload(items[(idx + 1) % items.length]);
   };
 
-  const open = (i) => {
+  const open = (i, from) => {
+    opener = from; openedAt = i;
     show(i);
     dlg.showModal();
     history.pushState({ viewer: true }, '');
@@ -55,18 +59,19 @@ if (dlg && links.length && typeof dlg.showModal === 'function') {
     if (dlg.open) dlg.close();
   };
   dlg.addEventListener('close', () => {
-    const link = items[idx].link;
+    const link = idx === openedAt && opener?.isConnected ? opener : items[idx].link;
     link.focus({ preventScroll: true });
     const r = link.getBoundingClientRect();
     if (r.bottom < 0 || r.top > innerHeight) link.scrollIntoView({ block: 'center' });
   });
   addEventListener('popstate', () => { if (dlg.open) finish(); else pushed = false; });
 
-  links.forEach((link, i) => link.addEventListener('click', (e) => {
-    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // new tab still works
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest?.('a.pic[data-i]');
+    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // new tab still works
     e.preventDefault();
-    open(i);
-  }));
+    open(Number(a.dataset.i), a);
+  });
 
   dlg.addEventListener('cancel', (e) => { e.preventDefault(); requestClose(); }); // Esc
   dlg.addEventListener('click', (e) => {

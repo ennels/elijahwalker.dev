@@ -1,19 +1,11 @@
-/* Sections. Each themed section is a full-width sheet of its own paper with a straight, clean edge.
-   On wide screens (1280+) it also carries a border of its material in both side margins, cut straight
-   at the section's top and bottom, so nothing crosses into a neighboring section.
-     Cover: plain
-     Projects (and project pages): graph grid, kraft border
-     About + Resume: dot grid on lighter paper, deckled paper border
-     Studio: faint grid on the band, film strips half off-screen
-     Contact: ruled lines, perforated stamp border
-   Borders are decorative: aria-hidden, no pointer events, never inside the text column. */
+/* Sections. The page is plain gold (or dark teal) except for two surfaces: Projects, and each project page,
+   sit on a graph-grid sheet that spans the window, and Studio is the solid band. Straight cuts between them. */
 
-html { overflow-x: clip; } /* the 100vw sheets and borders may not create sideways scroll */
-main > section, .liner-notes, main.pp { position: relative; z-index: 0; } /* each section stacks in page order */
+html { overflow-x: clip; } /* the 100vw sheet and the studio rows may not create sideways scroll */
+main > section, .liner-notes, main.pp { position: relative; z-index: 0; } /* the grid stays behind its own section */
 
-/* ---------- Section paper ---------- */
-#projects, #resume { padding-bottom: var(--space-section); } /* every sheet ends with its own breathing room */
-#projects::before, #contact::before {
+#projects, #resume { padding-bottom: var(--space-section); }
+#projects::before {
   content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; width: 100vw; margin-left: -50vw;
   border-top: 1.5px solid var(--color-rule);
 }
@@ -24,61 +16,4 @@ main > section, .liner-notes, main.pp { position: relative; z-index: 0; } /* eac
     linear-gradient(var(--grid-minor) 1px, transparent 1px) 0 0 / 16px 16px,
     linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px) 0 0 / 16px 16px;
 }
-.liner-notes {
-  border-top: 1.5px solid var(--color-rule);
-  background: radial-gradient(circle, var(--grid-dot) 1.1px, transparent 1.6px) 0 0 / 18px 18px, var(--paper-liner);
-}
-.side-b {
-  background:
-    linear-gradient(var(--grid-band) 1px, transparent 1px) 0 0 / 24px 24px,
-    linear-gradient(90deg, var(--grid-band) 1px, transparent 1px) 0 0 / 24px 24px,
-    var(--color-band);
-}
-#contact::before { background: repeating-linear-gradient(180deg, transparent 0 31px, var(--grid-rule) 31px 32px); }
-
-/* ---------- Side borders (wide screens) ---------- */
-.sb { display: none; }
-@media (min-width: 1280px) {
-  .sb {
-    --edge-w: min(calc((100vw - var(--page-max)) / 2 - var(--space-5)), var(--edge-max));
-    display: block; position: absolute; z-index: 0; pointer-events: none;
-    top: 0; bottom: 0; left: 50%; width: 100vw; margin-left: -50vw;
-    overflow: clip; /* straight cuts at the section edges; the film strips' outer halves stay off-screen */
-    filter: var(--paper-dim);
-  }
-  .sb-side { position: absolute; top: 0; bottom: 0; width: var(--edge-w); }
-  .sb-l { left: 0; }
-  .sb-r { right: 0; transform: scaleX(-1); } /* mirrored */
-}
-
-/* One sheet per border: a shadowed wrapper and the paper, masked to a torn or deckled inner edge. */
-.ply { position: absolute; inset: 0; filter: var(--shadow-paper); }
-.ply > i {
-  position: absolute; inset: 0; display: block; background: var(--paper);
-  -webkit-mask: linear-gradient(#000 0 0) 0 0 / calc(100% - 26px) 100% no-repeat, var(--edge-side) 100% 0 / 28px 640px repeat-y;
-          mask: linear-gradient(#000 0 0) 0 0 / calc(100% - 26px) 100% no-repeat, var(--edge-side) 100% 0 / 28px 640px repeat-y;
-}
-.ply-kraft { --paper: url("/edges/kraft.webp") 0 0 / 256px; --edge-side: url("/edges/torn-side.svg"); }
-.ply-liner { --paper: url("/edges/cream.webp") 0 0 / 256px; --edge-side: url("/edges/deckle-side.svg"); }
-
-/* Contact: perforated stamp paper with a printed rule inside the perforations. */
-.ply-stamp { width: 70%; }
-.ply-stamp > i {
-  background:
-    linear-gradient(90deg, transparent calc(100% - 22px), var(--stamp-ink) calc(100% - 22px) calc(100% - 20.5px), transparent calc(100% - 20.5px)),
-    url("/edges/cream.webp") 0 0 / 256px;
-  -webkit-mask: linear-gradient(#000 0 0) 0 0 / calc(100% - 10px) 100% no-repeat, radial-gradient(circle at 100% 50%, transparent 4.6px, #000 5.1px) 100% 0 / 10px 14px repeat-y;
-          mask: linear-gradient(#000 0 0) 0 0 / calc(100% - 10px) 100% no-repeat, radial-gradient(circle at 100% 50%, transparent 4.6px, #000 5.1px) 100% 0 / 10px 14px repeat-y;
-}
-
-/* Studio: the same film as the strips in the section, enlarged and centered on the window edge (half off-screen). Blank frames. */
-.film-rail {
-  --w: clamp(110px, calc(var(--edge-w) * 1.15), var(--film-rail-max));
-  position: absolute; top: 0; bottom: 0; left: calc(var(--w) / -2); width: var(--w);
-  filter: var(--shadow-paper);
-  background:
-    repeating-linear-gradient(180deg, transparent 0 8px, var(--color-film-hole) 8px 17px, transparent 17px 24px) 6px 0 / 9px 100% no-repeat,
-    repeating-linear-gradient(180deg, transparent 0 8px, var(--color-film-hole) 8px 17px, transparent 17px 24px) calc(100% - 6px) 0 / 9px 100% no-repeat,
-    repeating-linear-gradient(180deg, var(--color-film-frame) 0 calc(var(--w) * 1.4), transparent calc(var(--w) * 1.4) calc(var(--w) * 1.4 + 10px)) 50% 0 / calc(100% - 40px) 100% no-repeat,
-    var(--color-film);
-}
+.liner-notes { border-top: 1.5px solid var(--color-rule); }

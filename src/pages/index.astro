@@ -1,11 +1,11 @@
 ---
-// Homepage, laid out as a record: the cover, Side A (engineering), liner notes, and Side B (studio).
+// Homepage: the cover, Projects, About + Resume, Studio, Contact.
 // Every old #anchor still lands: #top, #projects, #p-<id>, #notes, #about, #now, #resume, #media (Studio while media is hidden), #contact, #footer.
 import Base from '../layouts/Base.astro';
 import ProjectName from '../components/ProjectName.astro';
 import FilmStrip from '../components/FilmStrip.astro';
-import SectionEdge from '../components/SectionEdge.astro';
 import Viewer from '../components/Viewer.astro';
+import Reel from '../components/Reel.astro';
 import { profile, projects, media, resume, notes, now, studio, hasStudio } from '../lib/content.js';
 
 const initials = (name) => {
@@ -16,7 +16,7 @@ const initials = (name) => {
 };
 
 // Studio intro names only what's there.
-const kinds = [studio.drawings.length && 'drawings', studio.photos.length && 'photographs', studio.music.length && 'music', media.length && 'design work'].filter(Boolean);
+const kinds = [studio.drawings.length && 'digital art', studio.photos.length && 'photography', studio.music.length && 'music', media.length && 'design work'].filter(Boolean);
 const list = kinds.length > 1 ? `${kinds.slice(0, -1).join(', ')}${kinds.length > 2 ? ',' : ''} and ${kinds.at(-1)}` : kinds[0] ?? '';
 const studioIntro = list ? list[0].toUpperCase() + list.slice(1) + '.' : '';
 
@@ -45,7 +45,6 @@ const [user, domain] = profile.email.split('@');
 
     {projects.length > 0 && (
       <section class="sec" id="projects" aria-labelledby="h-projects">
-        <SectionEdge material="kraft" />
         <h2 class="sh" id="h-projects">Projects</h2>
         <ol class="tracks">
           {projects.map((p) => (
@@ -75,7 +74,6 @@ const [user, domain] = profile.email.split('@');
     )}
 
     <div class="liner-notes">
-    <SectionEdge material="liner" />
     <section class="sec" id="about" aria-labelledby="h-about">
       <h2 class="sh" id="h-about">About</h2>
       <div class="liner">
@@ -116,16 +114,22 @@ const [user, domain] = profile.email.split('@');
 
     {hasStudio() && (
       <section class="side-b" id="studio" aria-labelledby="h-studio">
-        <SectionEdge material="film" />
         <div class="side-b-in">
-          <h2 class="sh" id="h-studio">Studio</h2>
+          <div class="sec-head">
+            <h2 class="sh" id="h-studio">Studio</h2>
+            <button type="button" class="head-link reel-toggle" data-reel-toggle data-state="playing" hidden>
+              <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
+              <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z" /></svg>
+              <span data-label>Pause motion</span>
+            </button>
+          </div>
           {media.length === 0 && <span id="media"></span>}
           <p class="intro">{studioIntro}</p>
           {studio.drawings.length > 0 && (
-            <div class="roll"><h3>Drawings</h3><FilmStrip items={studio.drawings} label="Drawings" format="square" start={1} /></div>
+            <div class="roll"><h3>Digital art</h3><Reel items={studio.drawings} label="Digital art" dir="left" square start={1} /></div>
           )}
           {studio.photos.length > 0 && (
-            <div class="roll"><h3>Photographs</h3><FilmStrip items={studio.photos} label="Photographs" start={photoStart} /></div>
+            <div class="roll"><h3>Photography</h3><Reel items={studio.photos} label="Photography" dir="right" start={photoStart} /></div>
           )}
           {studio.music.length > 0 && (
             <div class="roll"><h3>Music</h3>
@@ -156,7 +160,6 @@ const [user, domain] = profile.email.split('@');
     )}
 
     <section class="sec contact" id="contact" aria-labelledby="h-contact">
-      <SectionEdge material="stamp" />
       <h2 class="sh" id="h-contact">{profile.contact_heading}</h2>
       <p class="muted">{profile.contact_text}</p>
       <p class="mail"><span id="email">{user}<wbr />@{domain}</span><button type="button" class="btn" data-copy={profile.email} aria-controls="email">Copy email</button></p>
@@ -168,5 +171,6 @@ const [user, domain] = profile.email.split('@');
   <script>
     import '../scripts/home.js';
     import '../scripts/viewer.js';
+    import '../scripts/reel.js';
   </script>
 </Base>

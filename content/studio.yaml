@@ -1,4 +1,4 @@
-# Studio: drawings, photographs, and music, shown in the Studio section after Media and design.
+# Studio: digital art (the drawings list), photography (the photos list), and music.
 # Any list left empty hides its part of the section (and the whole section hides if everything is empty).
 #
 # Images go in public/studio/. For each one:
@@ -29,7 +29,7 @@ drawings:
     width: 2000
     height: 1125
 
-# Same fields as drawings. Three to a strip, in this order.
+# Same fields as drawings. Shown in this order.
 photos:
   - title: "A skier climbing a snowy slope at dusk under a single floodlight"
     image: /studio/skier-dusk-thumb.webp

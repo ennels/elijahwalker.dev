@@ -1,0 +1,26 @@
+---
+// One Studio group as a single film row across the whole window. Frames share one height and keep their
+// proportions (width/height from the YAML), so nothing is cropped. reel.js makes the row drift slowly and loop;
+// without JavaScript, or with reduced motion, it stays still and scrolls sideways.
+//   items: { title, image, full?, width?, height? }
+//   dir:   'left' | 'right' (drift direction)   start: first edge-print number   square: default frames to 1:1
+const { items, label, dir = 'left', start = 1, square = false } = Astro.props;
+const ar = (it) => `--ar:${it.width && it.height ? (it.width / it.height).toFixed(4) : square ? 1 : 1.5}`;
+---
+<div class="reel" data-dir={dir}>
+  <ul class="strip reel-track" aria-label={label}>
+    {items.map((it, j) => {
+      const Tag = it.full ? 'a' : 'span';
+      return (
+        <li class="frame" style={ar(it)}>
+          <span class="edge" aria-hidden="true">{start + j}</span>
+          <Tag class="pic" href={it.full} draggable="false">
+            <span class="art" aria-hidden="true">{it.title}</span>
+            <img src={it.image} alt={it.title} loading="lazy" draggable="false" data-fallback />
+            {it.full && <span class="vh"> (full size)</span>}
+          </Tag>
+        </li>
+      );
+    })}
+  </ul>
+</div>
