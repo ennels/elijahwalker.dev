@@ -50,3 +50,32 @@
   .mini li { grid-template-columns: minmax(0, 1fr); }
   .mini .muted { display: none; }
 }
+
+/* ---------- hermes: steps link to their code ---------- */
+.dg-link { cursor: pointer; }
+.dg-link:hover .dg-node rect { fill: var(--color-ground-raised); stroke-width: 2.5; }
+.dg-link:hover .dg-ai rect { fill: var(--color-ink); stroke: var(--color-ink); }
+.dg-link:hover .dg-t { text-decoration: underline; }
+.steps .sh { margin-bottom: 0; }
+.steps-list { margin: var(--space-4) 0 0; max-width: 44rem; border-top: 1.5px solid var(--color-ink); }
+.steps-list div { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: var(--space-2) var(--space-5); padding-block: var(--space-3); align-items: baseline; }
+.steps-list dt { font-weight: var(--weight-strong); }
+.steps-list dd { margin: 0; min-width: 0; }
+.steps-list a { display: inline-flex; align-items: center; min-height: var(--target-min); overflow-wrap: anywhere; }
+.steps-list code { font: 500 .9375rem/1.3 ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+
+/* ---------- Screens (projects with screenshots) ---------- */
+.screens-head { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--space-1) var(--space-4); }
+.screens-head .app-icon { grid-row: span 2; width: 48px; height: 48px; }
+.screens-head .sh { margin: 0; }
+.screens-head .muted { font-size: var(--text-sm); }
+.shots { list-style: none; padding: 0; margin: var(--space-7) 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-10) var(--space-7); }
+.shots .lead { grid-column: 1 / -1; }
+.shots figure { margin: 0; }
+.shots a { display: block; border-radius: 10px; }
+.shots img { display: block; width: 100%; height: auto; filter: drop-shadow(0 10px 18px rgb(30 26 18 / .28)); transition: transform var(--dur-hover) var(--ease-out); }
+.shots a:hover img { transform: translateY(-2px); }
+.shots figcaption { margin-top: var(--space-3); font-size: var(--text-sm); color: var(--color-ink-muted); max-width: 40rem; }
+@media (max-width: 900px) { .shots { grid-template-columns: minmax(0, 1fr); gap: var(--space-7); } }
+@media (max-width: 720px) { .steps-list div { grid-template-columns: minmax(0, 1fr); gap: 0; } }
+@media (prefers-reduced-motion: reduce) { .shots img { transition: none; } .shots a:hover img { transform: none; } }

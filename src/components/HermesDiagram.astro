@@ -1,14 +1,26 @@
 ---
 // hermes signal path, drawn from its description in content/projects.yaml.
 // Two layouts of the same graph: horizontal for wide screens, vertical for phones (CSS picks one).
+// Each step links to the file in github.com/ennels/hermes that does it. The boxes are a mouse shortcut
+// (out of the tab order); the list under the figure carries the same links for keyboards and screen readers.
+const REPO = 'https://github.com/ennels/hermes/blob/main/';
 const NODES = [
-  { id: 'clock', t: ['Weekdays', '9:45 ET'], s: 'APScheduler' },
-  { id: 'feed', t: ['Prices', 'and news'], s: '' },
-  { id: 'claude', t: ['Claude'], s: 'call per ticker' },
-  { id: 'gemini', t: ['Gemini'], s: 'call per ticker' },
-  { id: 'merge', t: ['Merge', 'the calls'], s: '' },
-  { id: 'risk', t: ['Risk', 'rules'], s: '' },
-  { id: 'orders', t: ['Paper', 'orders'], s: 'Alpaca, no real money' },
+  { id: 'clock', t: ['Weekdays', '9:45 ET'], s: 'APScheduler', file: 'main.py' },
+  { id: 'feed', t: ['Prices', 'and news'], s: '', file: 'modules/data_fetcher.py' },
+  { id: 'claude', t: ['Claude'], s: 'call per ticker', file: 'modules/signal_engine.py' },
+  { id: 'gemini', t: ['Gemini'], s: 'call per ticker', file: 'modules/signal_engine.py' },
+  { id: 'merge', t: ['Merge', 'the calls'], s: '', file: 'modules/arbitration.py' },
+  { id: 'risk', t: ['Risk', 'rules'], s: '', file: 'modules/risk_filter.py' },
+  { id: 'orders', t: ['Paper', 'orders'], s: 'Alpaca, no real money', file: 'modules/executor.py' },
+];
+// One row per file: Claude and Gemini share signal_engine.py.
+const STEPS = [
+  ['Weekdays at 9:45 ET', 'main.py'],
+  ['Prices and news', 'modules/data_fetcher.py'],
+  ['Claude and Gemini calls', 'modules/signal_engine.py'],
+  ['Merge the calls', 'modules/arbitration.py'],
+  ['Risk rules', 'modules/risk_filter.py'],
+  ['Paper orders', 'modules/executor.py'],
 ];
 const EDGES = [['clock', 'feed'], ['feed', 'claude'], ['feed', 'gemini'], ['claude', 'merge'], ['gemini', 'merge'], ['merge', 'risk'], ['risk', 'orders']];
 const LABEL = 'hermes signal path: on weekdays at 9:45 ET it pulls prices and news, asks Claude and Gemini for a call on each ticker, merges the two calls, runs them through risk rules, and places paper orders through Alpaca.';
@@ -39,14 +51,24 @@ const views = [layout(false), layout(true)];
       <svg class={v.cls} viewBox={`0 0 ${v.W} ${v.H}`} role="img" aria-label={LABEL}>
         {v.edges.map((d) => <path class="dg-edge" d={d} />)}
         {v.nodes.map((n) => (
-          <g class={n.ai ? 'dg-node dg-ai' : 'dg-node'} data-node={n.id}>
-            <rect x={n.x} y={n.y} width={v.bw} height={v.bh} rx="3" />
-            {n.t.map((line, i) => <text class="dg-t" x={n.cx} y={n.cy + (n.t.length === 1 ? 5 : i * 17 - 3)} text-anchor="middle">{line}</text>)}
-            {n.s && <text class="dg-s" x={n.cx} y={n.y + v.bh + 17} text-anchor="middle">{n.s}</text>}
-          </g>
+          <a href={REPO + n.file} tabindex="-1" class="dg-link">
+            <g class={n.ai ? 'dg-node dg-ai' : 'dg-node'} data-node={n.id}>
+              <rect x={n.x} y={n.y} width={v.bw} height={v.bh} rx="3" />
+              {n.t.map((line, i) => <text class="dg-t" x={n.cx} y={n.cy + (n.t.length === 1 ? 5 : i * 17 - 3)} text-anchor="middle">{line}</text>)}
+              {n.s && <text class="dg-s" x={n.cx} y={n.y + v.bh + 17} text-anchor="middle">{n.s}</text>}
+            </g>
+          </a>
         ))}
       </svg>
     ))}
   </div>
-  <figcaption>Signal path, drawn from the project description.</figcaption>
+  <figcaption>Signal path, drawn from the project description. Click a step to open its code.</figcaption>
 </figure>
+<section class="sec steps" aria-labelledby="h-steps">
+  <h2 class="sh small" id="h-steps">Where each step lives</h2>
+  <dl class="steps-list">
+    {STEPS.map(([step, file]) => (
+      <div><dt>{step}</dt><dd><a href={REPO + file}><code>{file}</code></a></dd></div>
+    ))}
+  </dl>
+</section>

@@ -4,6 +4,9 @@
 #   icon            -> a built-in icon (chart, calendar, database, chat, scatter, tag)
 #                      or your own image path, e.g. /icons/hermes.png (put the file in public/icons/).
 #   links           -> leave empty ([]) to show no link. Add {label, url} items when you have them.
+#   screens         -> optional screenshots for the project page: {file, alt, caption}. file is the stem
+#                      under public/projects/<id>/ with -800.webp and -1600.webp sizes (1600 x 1005).
+#   screens_icon    -> optional app icon shown beside the Screens heading, a path under public/.
 
 - id: hermes
   name: hermes
@@ -28,6 +31,23 @@
   description: A desktop scheduling app for the conference center I worked at. It pulls staff from QuickBooks Payroll, form data from Cognito Forms, and reads PDF activity sheets with Claude Vision so nobody has to retype them.
   stack: [Tauri, React, FastAPI, SQLAlchemy, Claude Vision]
   links: []
+  screens_icon: /projects/quorum/icon-192.webp
+  screens:
+    - file: grid
+      alt: "Quorum's week grid for July 13 to 19: rows of staff grouped as management, full-time, and part-time, each day holding colored shift codes, with meal counts across the top and group lodging along the bottom."
+      caption: Week grid. Every person's shifts for a camp week, with meal counts on top and group lodging below.
+    - file: coverage
+      alt: "Quorum's coverage view: shifts down the side grouped by department, days across the top, each cell listing who is on the shift and a count such as 0/2, with short shifts tinted red."
+      caption: Coverage. Each shift's crew against what it needs; red cells are short.
+    - file: staff
+      alt: "Quorum's active employees list: 30 staff cards, each with initials, name, role and department tags, email, phone, weekly hours, and an availability note such as 'Cannot work weekdays'."
+      caption: Staff, with roles, weekly hours, and availability notes.
+    - file: shifts
+      alt: "Quorum's admin panel: health checks for employees, activity sheets, AI keys, and the database, above a table of shift codes with label, department, typical hours, crew size, and plain-language rules."
+      caption: Admin. Shift codes with hours, crew size, and the plain-language rules the AI scheduler follows.
+    - file: settings
+      alt: "Quorum's settings page: dark mode options and an AI section to choose Anthropic Claude, Google Gemini, or OpenAI for schedule generation and the chat assistant."
+      caption: Settings. Pick Claude, Gemini, or OpenAI for schedule generation.
 
 - id: rag
   name: RAG + MCP server
@@ -55,8 +75,10 @@
   summary: RBF SVM at 96.5% with 0.95 malignant recall; KNN just over 97% on full MNIST.
   stack: [scikit-learn, NumPy]
   links:
-    - label: GitHub
-      url: https://github.com/ennels/project-demos
+    - label: SVM lab
+      url: https://github.com/ennels/project-demos/tree/main/machine-learning/SVM
+    - label: MNIST lab
+      url: https://github.com/ennels/project-demos/tree/main/machine-learning/MNIST
 
 - id: blackfriday
   name: Black Friday trends

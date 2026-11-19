@@ -21,14 +21,36 @@ const { project: p } = Astro.props;
         <div class="prose"><p class="lede">{p.summary}</p>{p.description && <p>{p.description}</p>}</div>
         <div class="pp-side">
           {p.stack?.length > 0 && <dl class="credits-list"><div><dt>Built with</dt><dd>{p.stack.join(', ')}</dd></div></dl>}
-          {p.links?.length > 0
-            ? <p class="cta">{p.links.map((l, j) => <a class={j === 0 ? 'btn btn-solid' : 'btn'} href={l.url}>{l.label}</a>)}</p>
-            : <p class="muted">No public link yet.</p>}
+          {p.links?.length > 0 && <p class="cta">{p.links.map((l, j) => <a class={j === 0 ? 'btn btn-solid' : 'btn'} href={l.url}>{l.label}</a>)}</p>}
         </div>
       </div>
     </section>
 
     {p.id === 'hermes' && <HermesDiagram />}
+
+    {p.screens?.length > 0 && (
+      <section class="sec screens" aria-labelledby="h-screens">
+        <div class="screens-head">
+          {p.screens_icon && <img class="app-icon" src={p.screens_icon} alt="" width="48" height="48" />}
+          <h2 class="sh small" id="h-screens">Screens</h2>
+          <p class="muted">Sample data: every name, email, and phone number is made up.</p>
+        </div>
+        <ul class="shots">
+          {p.screens.map((s, i) => (
+            <li class={i === 0 ? 'lead' : undefined}>
+              <figure>
+                <a href={`/projects/${p.id}/${s.file}-1600.webp`}>
+                  <img src={`/projects/${p.id}/${s.file}-800.webp`} srcset={`/projects/${p.id}/${s.file}-800.webp 800w, /projects/${p.id}/${s.file}-1600.webp 1600w`}
+                    sizes={i === 0 ? '(min-width: 1240px) 1160px, 94vw' : '(min-width: 900px) 46vw, 94vw'}
+                    width="1600" height="1005" alt={s.alt} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+                </a>
+                <figcaption>{s.caption}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
 
     <section class="sec" aria-labelledby="h-side">
       <h2 class="sh small" id="h-side">All projects</h2>
