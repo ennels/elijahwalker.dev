@@ -6,15 +6,11 @@ main > section, .liner-notes, main.pp { position: relative; z-index: 0; } /* the
 
 #projects, #resume { padding-bottom: var(--space-section); }
 /* The Projects sheet. ::before is the grid; it hangs --grid-drift past the section's top and bottom so it can
-   drift with scroll (motion.css), and the section clips it there (not at the sides: it spans the window).
-   Behind the text column the grid shows at 25%, so muted text keeps 4.6:1 even where lines cross. */
+   drift with scroll (motion.css), and the section clips it there (not at the sides: it spans the window). */
 #projects { --grid-drift: 0px; overflow: visible clip; }
 #projects::before, #projects::after { content: ""; position: absolute; z-index: -1; left: 50%; width: 100vw; margin-left: -50vw; }
 #projects::before {
   top: calc(-1 * var(--grid-drift)); bottom: calc(-1 * var(--grid-drift));
-  --col-l: calc(max(0px, (100vw - var(--page-max)) / 2) + var(--gutter-min));
-  --col-r: calc(var(--col-l) + min(var(--column), min(var(--page-max), 100vw) - 2 * var(--gutter-min)));
-  mask-image: linear-gradient(90deg, #000 calc(var(--col-l) - var(--space-12)), rgb(0 0 0 / .25) var(--col-l), rgb(0 0 0 / .25) var(--col-r), #000 calc(var(--col-r) + var(--space-12)));
 }
 #projects::after { top: 0; border-top: 1.5px solid var(--color-rule); } /* the sheet's top edge stays put */
 #projects::before, main.pp {
@@ -25,3 +21,10 @@ main > section, .liner-notes, main.pp { position: relative; z-index: 0; } /* the
     linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px) 0 0 / 16px 16px;
 }
 .liner-notes { border-top: 1.5px solid var(--color-rule); }
+
+/* Text on the grid gets a thin halo in the page color (--grid-halo), as map labels do over grid lines: the grid
+   runs right up to the words but clears around each letter. Measured next to the thinnest muted text, the worst
+   pixel is 4.47:1 (where two lines cross inside a letter's soft edge); everywhere else 4.6:1 or better (it was
+   3.85:1). text-shadow inherits; things with their own background (buttons, the hermes diagram) opt out. */
+#projects, main.pp { text-shadow: var(--grid-halo); }
+#projects .btn, main.pp .btn, main.pp .dg-wrap { text-shadow: none; }
