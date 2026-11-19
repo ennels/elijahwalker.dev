@@ -190,7 +190,7 @@ a.pic:hover { box-shadow: 0 0 0 2px var(--color-film-edge); }
 /* ---------- Contact ---------- */
 .contact { padding-bottom: var(--space-section); }
 .mail { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-5); margin-top: var(--space-6); }
-.mail span { min-width: 0; font: var(--weight-heavy) clamp(1.6rem, .9rem + 3vw, 3.2rem)/1.1 var(--font-display); overflow-wrap: anywhere; }
+.mail a { min-width: 0; font: var(--weight-heavy) clamp(1.6rem, .9rem + 3vw, 3.2rem)/1.1 var(--font-display); overflow-wrap: anywhere; text-decoration-thickness: .06em; text-underline-offset: .14em; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
