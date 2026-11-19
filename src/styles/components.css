@@ -147,7 +147,7 @@
   overflow-x: auto; overscroll-behavior-x: contain;
   scrollbar-width: thin; scrollbar-color: var(--color-film-frame) transparent;
 }
-.reel-track { width: max-content; gap: 0; border-radius: 0; padding-inline: calc(max(0px, (100vw - var(--page-max)) / 2) + var(--gutter-min)) var(--gutter-min); }
+.reel-track { width: max-content; min-width: 100%; gap: 0; border-radius: 0; padding-inline: calc(max(0px, (100vw - var(--page-max)) / 2) + var(--gutter-min)) var(--gutter-min); }
 .reel-track .frame { flex: none; width: calc(var(--row-h) * var(--ar)); margin-right: var(--film-gap); }
 .reel.is-running { overflow: clip; touch-action: pan-y; cursor: grab; }
 .reel.is-running .reel-track { padding-inline: 0; }

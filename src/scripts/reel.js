@@ -1,7 +1,9 @@
 // Studio rows: each film row drifts slowly across the window and loops (Digital art left, Photography right).
 // A row holds still while the mouse is over it, while keyboard focus is inside it, while it is being dragged,
 // while it is off-screen, and while the image viewer is open. The Pause button stops both rows. Dragging or
-// swiping sideways scrubs a row. With reduced motion nothing drifts; the row stays a sideways-scrolling strip.
+// swiping sideways scrubs a row. A row whose frames already fit in the window stays still (no copies, no
+// drift), and starts drifting once it has enough frames to overflow. With reduced motion nothing drifts;
+// the row stays a sideways-scrolling strip.
 const reels = [...document.querySelectorAll('.reel')];
 const toggle = document.querySelector('[data-reel-toggle]');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
@@ -25,9 +27,10 @@ if (reels.length && typeof Element.prototype.animate === 'function') {
   };
   toggle?.addEventListener('click', () => setStopped(!stopped));
 
+  // The Pause button shows only while at least one row can move.
   const buildAll = () => {
-    rows.forEach((r) => r.build());
-    if (toggle) toggle.hidden = reduce.matches;
+    const moving = rows.map((r) => r.build()).some(Boolean);
+    if (toggle) toggle.hidden = !moving;
     setStopped(stopped);
   };
   buildAll();
@@ -35,7 +38,7 @@ if (reels.length && typeof Element.prototype.animate === 'function') {
   let lastW = innerWidth, t;
   addEventListener('resize', () => {
     clearTimeout(t);
-    t = setTimeout(() => { if (Math.abs(innerWidth - lastW) > 1) { lastW = innerWidth; rows.forEach((r) => r.build()); } }, 150);
+    t = setTimeout(() => { if (Math.abs(innerWidth - lastW) > 1) { lastW = innerWidth; buildAll(); } }, 150);
   });
 
   // Hold every row while the image viewer is open.
@@ -64,13 +67,15 @@ if (reels.length && typeof Element.prototype.animate === 'function') {
         anim?.cancel(); anim = null;
         track.querySelectorAll('[data-clone]').forEach((n) => n.remove());
         originals.forEach((li) => li.style.removeProperty('margin-right'));
-        el.classList.toggle('is-running', !reduce.matches);
-        if (reduce.matches) return;
+        el.classList.remove('is-running');
+        if (reduce.matches) return false;
+        if (el.scrollWidth <= el.clientWidth + 1) return false; // every frame already fits: nothing to bring into view
+        el.classList.add('is-running');
 
         // One set of frames, then enough copies that half the track is wider than the window. The track is
         // two identical halves; sliding it by one half and starting over is seamless.
         const setW = track.getBoundingClientRect().width;
-        if (!setW) return;
+        if (!setW) return false;
         const per = originals.length;
         const copies = Math.max(1, Math.ceil((innerWidth + 1) / setW));
         const frag = document.createDocumentFragment();
@@ -93,6 +98,7 @@ if (reels.length && typeof Element.prototype.animate === 'function') {
         anim = track.animate(dir < 0 ? [{ transform: a }, { transform: b }] : [{ transform: b }, { transform: a }], { duration: dur, iterations: Infinity });
         setFrac(keep);
         row.sync();
+        return true;
       },
     };
 

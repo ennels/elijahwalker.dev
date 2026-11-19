@@ -1,7 +1,8 @@
 ---
 // One Studio group as a single film row across the whole window. Frames share one height and keep their
-// proportions (width/height from the YAML), so nothing is cropped. reel.js makes the row drift slowly and loop;
-// without JavaScript, or with reduced motion, it stays still and scrolls sideways.
+// proportions (width/height from the YAML), so nothing is cropped. When the frames are wider than the window,
+// reel.js makes the row drift slowly and loop. When they fit, or without JavaScript, or with reduced motion, the
+// row stays still (and scrolls sideways if it overflows). The film always runs to both edges of the window.
 //   items: { title, image, full?, width?, height? }
 //   dir:   'left' | 'right' (drift direction)   start: first edge-print number   square: default frames to 1:1
 const { items, label, dir = 'left', start = 1, square = false } = Astro.props;
