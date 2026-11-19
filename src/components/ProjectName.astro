@@ -2,6 +2,8 @@
 // A project's icon + name as one link. The icon hangs left of the text column, centered on the first line.
 import Icon from './Icon.astro';
 import { projectHref } from '../lib/content.js';
-const { project, current = false } = Astro.props;
+// vt: give the icon and name view-transition names so they grow into the project page title (motion.css).
+const { project, current = false, vt = false } = Astro.props;
+const named = (kind) => (vt ? { class: kind + ' vt-name', style: `--vtn: ${kind === 'pico' ? 'pi' : 'pt'}-${project.id}` } : { class: kind });
 ---
-<a class="pname" href={projectHref(project.id)} aria-current={current ? 'page' : undefined}><span class="pico"><Icon name={project.icon} /></span><span class="pname-t">{project.name}</span></a>
+<a class="pname" href={projectHref(project.id)} aria-current={current ? 'page' : undefined}><span {...named('pico')}><Icon name={project.icon} /></span><span {...named('pname-t')}>{project.name}</span></a>

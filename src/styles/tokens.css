@@ -111,6 +111,8 @@
   --dur-jump-out: 150ms; /* header link: page fades to its own color... */
   --dur-jump-in:  200ms; /* ...then fades back in at the section */
   --dur-viewer:   200ms; /* image viewer opens and closes */
+  --dur-draw:    160ms;  /* one diagram connector draws */
+  --step-gap:    120ms;  /* between diagram steps as they appear */
   --dur-fade:    600ms;  /* cover copy fade-in */
   --dur-rise:    700ms;  /* cover name rise */
   --dur-sleeve:  800ms;  /* portrait slides out of the sleeve */

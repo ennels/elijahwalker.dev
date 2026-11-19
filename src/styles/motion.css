@@ -1,5 +1,6 @@
-/* Motion. One orchestrated moment (the cover), cross-fades between pages and themes, and small
-   press/hover feedback. Everything else is still on purpose. Durations and easing come from tokens.css.
+/* Motion. One orchestrated moment (the cover), cross-fades between pages and themes, a project name that
+   grows into its page title, the hermes diagram drawing once in signal order, and small press/hover feedback.
+   Everything else is still on purpose. Durations and easing come from tokens.css.
    Reduced motion keeps the opacity cross-fades and drops every slide, rise, and scale. */
 
 /* ---------- Page-to-page cross-fade ----------
@@ -10,6 +11,13 @@
    so text and backgrounds change together instead of text snapping over a still-fading background. */
 :root[data-vt="theme"]::view-transition-group(root) { animation-duration: var(--dur-theme); }
 
+/* ---------- A project's icon and name grow from the homepage track into the project page title ----------
+   Shared names only on those two places (ProjectName vt, [id].astro). Off during in-page transitions
+   (header jumps, theme swap: jump.js and theme.js set data-vt first) and under reduced motion. */
+.vt-name { view-transition-name: var(--vtn); }
+:root[data-vt] .vt-name { view-transition-name: none; }
+::view-transition-group(*) { animation-duration: var(--dur-page); animation-timing-function: var(--ease-out); }
+
 /* ---------- Header links within the page: fade to the page color, jump, fade back in ----------
    jump.js sets data-vt for these. The old view is gone before the new one starts, so the scroll never shows. */
 :root[data-vt="jump"]::view-transition-group(root) { animation-duration: calc(var(--dur-jump-out) + var(--dur-jump-in)); }
@@ -17,6 +25,14 @@
 :root[data-vt="jump"]::view-transition-new(root) { animation: vt-in var(--dur-jump-in) var(--ease-out) var(--dur-jump-out) both; }
 @keyframes vt-out { to { opacity: 0; } }
 @keyframes vt-in { from { opacity: 0; } }
+
+/* ---------- hermes diagram: connectors draw and steps appear in signal order, once (HermesDiagram.astro) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .dg-armed .dg-edge { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .dg-armed .dg-node { opacity: 0; }
+  .dg-armed.dg-play .dg-edge { stroke-dashoffset: 0; transition: stroke-dashoffset var(--dur-draw) var(--ease-out) calc(var(--k) * var(--step-gap) - 100ms); }
+  .dg-armed.dg-play .dg-node { opacity: 1; transition: opacity var(--dur-hover) var(--ease-out) calc(var(--k) * var(--step-gap)); }
+}
 
 /* ---------- Image viewer: fades in with the image settling from 97%; closes the same way ---------- */
 .lb { opacity: 0; transition: opacity var(--dur-viewer) var(--ease-out), display var(--dur-viewer) allow-discrete, overlay var(--dur-viewer) allow-discrete; }
@@ -53,6 +69,7 @@
 
 /* ---------- Reduced motion: collapse, don't just shorten ---------- */
 @media (prefers-reduced-motion: reduce) {
+  .vt-name { view-transition-name: none; }
   .cover .sleeve, .cover .cover-text { animation: fade var(--dur-page) var(--ease-out) both; }
   .btn:active, .mode:active, .lb-x:active, .lb-nav:active { transform: none; }
   .lb-fig, .lb:not([open]) .lb-fig { transform: none; transition: none; }

@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
 import ProjectName from '../../components/ProjectName.astro';
 import HermesDiagram from '../../components/HermesDiagram.astro';
+import Viewer from '../../components/Viewer.astro';
 import { projects, profile, projectHref } from '../../lib/content.js';
 
 export function getStaticPaths() {
@@ -15,7 +16,7 @@ const { project: p } = Astro.props;
   <main id="main" class="pp" tabindex="-1">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/#projects">Projects</a><span aria-hidden="true">/</span><span aria-current="page">{p.name}</span></nav>
     <section class="single" aria-labelledby="pp-title">
-      <h1 class="pp-title" id="pp-title"><span class="pico"><Icon name={p.icon} /></span><span class="pname-t">{p.name}</span></h1>
+      <h1 class="pp-title" id="pp-title"><span class="pico vt-name" style={`--vtn: pi-${p.id}`}><Icon name={p.icon} /></span><span class="pname-t vt-name" style={`--vtn: pt-${p.id}`}>{p.name}</span></h1>
       <p class="t-label">{p.label}{p.status && <> <span class="t-status">{p.status}</span></>}</p>
       <div class="liner">
         <div class="prose"><p class="lede">{p.summary}</p>{p.description && <p>{p.description}</p>}</div>
@@ -35,11 +36,11 @@ const { project: p } = Astro.props;
           <h2 class="sh small" id="h-screens">Screens</h2>
           <p class="muted">Sample data: every name, email, and phone number is made up.</p>
         </div>
-        <ul class="shots">
+        <ul class="shots" data-group="Screens">
           {p.screens.map((s, i) => (
             <li class={i === 0 ? 'lead' : undefined}>
               <figure>
-                <a href={`/projects/${p.id}/${s.file}-1600.webp`}>
+                <a href={`/projects/${p.id}/${s.file}-1600.webp`} data-viewer data-ar="1.592" data-caption={s.caption}>
                   <img src={`/projects/${p.id}/${s.file}-800.webp`} srcset={`/projects/${p.id}/${s.file}-800.webp 800w, /projects/${p.id}/${s.file}-1600.webp 1600w`}
                     sizes={i === 0 ? '(min-width: 1240px) 1160px, 94vw' : '(min-width: 900px) 46vw, 94vw'}
                     width="1600" height="1005" alt={s.alt} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
@@ -51,6 +52,7 @@ const { project: p } = Astro.props;
         </ul>
       </section>
     )}
+    {p.screens?.length > 0 && <Viewer />}
 
     <section class="sec" aria-labelledby="h-side">
       <h2 class="sh small" id="h-side">All projects</h2>
@@ -64,4 +66,5 @@ const { project: p } = Astro.props;
       </ol>
     </section>
   </main>
+  {p.screens?.length > 0 && <script>import '../../scripts/viewer.js';</script>}
 </Base>

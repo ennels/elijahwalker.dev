@@ -1,10 +1,10 @@
-// Studio image viewer. A linked frame opens its image in a modal instead of leaving the page.
+// Image viewer for Studio frames (a.pic) and project screenshots (a[data-viewer]). A linked image opens in a modal instead of leaving the page.
 // Close: the × button, Esc, a click outside the image, or the browser/phone Back button.
 // Move: arrow buttons, arrow keys, or a sideways swipe; it runs through every image and wraps.
 // The thumbnail shows at once and the full image replaces it when decoded. Focus returns to the frame.
 // The studio rows repeat their frames to loop (reel.js); every copy carries its original's data-i.
 const dlg = document.getElementById('viewer');
-const links = [...document.querySelectorAll('a.pic[href]')]; // runs before reel.js adds the copies
+const links = [...document.querySelectorAll('a.pic[href], a[data-viewer][href]')]; // runs before reel.js adds the copies
 
 if (dlg && links.length && typeof dlg.showModal === 'function') {
   const img = dlg.querySelector('.lb-img');
@@ -15,8 +15,8 @@ if (dlg && links.length && typeof dlg.showModal === 'function') {
   const items = links.map((link, i) => {
     link.dataset.i = String(i);
     const thumb = link.querySelector('img');
-    const group = link.closest('.roll')?.querySelector('h3')?.textContent ?? '';
-    return { link, thumb, group, full: link.getAttribute('href'), title: thumb?.alt ?? '' };
+    const group = link.closest('.roll')?.querySelector('h3')?.textContent ?? link.closest('[data-group]')?.dataset.group ?? '';
+    return { link, thumb, group, full: link.getAttribute('href'), title: thumb?.alt ?? '', caption: link.dataset.caption };
   });
   items.forEach((it) => {
     const same = items.filter((x) => x.group === it.group);
@@ -33,11 +33,12 @@ if (dlg && links.length && typeof dlg.showModal === 'function') {
   const show = (i) => {
     idx = (i + items.length) % items.length;
     const it = items[idx];
-    const ar = getComputedStyle(it.link.closest('.frame')).getPropertyValue('--ar').trim() || '1';
+    const frame = it.link.closest('.frame');
+    const ar = (frame && getComputedStyle(frame).getPropertyValue('--ar').trim()) || it.link.dataset.ar || '1';
     dlg.style.setProperty('--ar', ar); // sizes the box before any image arrives, so nothing jumps
     img.alt = it.title;
     img.src = it.thumb?.currentSrc || it.thumb?.src || it.full;
-    cap.textContent = it.title;
+    cap.textContent = it.caption || it.title;
     count.textContent = it.group ? `${it.group} · ${it.n} of ${it.of}` : `${it.n} of ${it.of}`;
     const full = preload(it);
     full.decode().then(() => { if (items[idx] === it) img.src = it.full; }, () => {});
@@ -67,7 +68,7 @@ if (dlg && links.length && typeof dlg.showModal === 'function') {
   addEventListener('popstate', () => { if (dlg.open) finish(); else pushed = false; });
 
   document.addEventListener('click', (e) => {
-    const a = e.target.closest?.('a.pic[data-i]');
+    const a = e.target.closest?.('a.pic[data-i], a[data-viewer][data-i]');
     if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // new tab still works
     e.preventDefault();
     open(Number(a.dataset.i), a);

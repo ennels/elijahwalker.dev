@@ -44,15 +44,18 @@ function layout(vertical) {
   return { W, H, bw, bh, edges, nodes, cls: vertical ? 'diagram dg-v' : 'diagram dg-h' };
 }
 const views = [layout(false), layout(true)];
+// Draw order for the entrance (motion.css): each node's step, and each edge takes the step of the node it feeds.
+const STEP = { clock: 0, feed: 1, claude: 2, gemini: 2, merge: 3, risk: 4, orders: 5 };
+const edgeStep = EDGES.map(([, b]) => STEP[b]);
 ---
 <figure class="notes-panel">
   <div class="dg-wrap">
     {views.map((v) => (
       <svg class={v.cls} viewBox={`0 0 ${v.W} ${v.H}`} role="img" aria-label={LABEL}>
-        {v.edges.map((d) => <path class="dg-edge" d={d} />)}
+        {v.edges.map((d, i) => <path class="dg-edge" d={d} pathLength="1" style={`--k: ${edgeStep[i]}`} />)}
         {v.nodes.map((n) => (
           <a href={REPO + n.file} tabindex="-1" class="dg-link">
-            <g class={n.ai ? 'dg-node dg-ai' : 'dg-node'} data-node={n.id}>
+            <g class={n.ai ? 'dg-node dg-ai' : 'dg-node'} data-node={n.id} style={`--k: ${STEP[n.id]}`}>
               <rect x={n.x} y={n.y} width={v.bw} height={v.bh} rx="3" />
               {n.t.map((line, i) => <text class="dg-t" x={n.cx} y={n.cy + (n.t.length === 1 ? 5 : i * 17 - 3)} text-anchor="middle">{line}</text>)}
               {n.s && <text class="dg-s" x={n.cx} y={n.y + v.bh + 17} text-anchor="middle">{n.s}</text>}
@@ -72,3 +75,20 @@ const views = [layout(false), layout(true)];
     ))}
   </dl>
 </section>
+
+<script>
+  // Draw the signal path once, in order, when a third of it is in view. Without JS or with reduced motion it is simply there.
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!still && 'IntersectionObserver' in window) {
+    document.querySelectorAll('.notes-panel .dg-wrap').forEach((wrap) => {
+      wrap.classList.add('dg-armed');
+      void wrap.offsetWidth; // commit the hidden state so the first frame can transition from it
+      const io = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return;
+        wrap.classList.add('dg-play');
+        io.disconnect();
+      }, { threshold: 0.33 });
+      io.observe(wrap);
+    });
+  }
+</script>

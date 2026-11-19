@@ -50,7 +50,7 @@ const [user, domain] = profile.email.split('@');
           {projects.map((p) => (
             <li class={p.featured ? 'track is-feat' : 'track'} id={`p-${p.id}`}>
               <div class="t-main">
-                <h3 class="t-title"><ProjectName project={p} /></h3>
+                <h3 class="t-title"><ProjectName project={p} vt /></h3>
                 <p class="t-label">{p.label}{p.status && <> <span class="t-status">{p.status}</span></>}</p>
                 <p class="t-desc">{p.featured && p.description ? p.description : p.summary}</p>
                 {p.stack?.length > 0 && <p class="credits"><span>Built with</span> {p.stack.join(', ')}</p>}
