@@ -1,6 +1,6 @@
 /* Motion. One orchestrated moment (the cover), cross-fades between pages and themes, a project name that
    grows into its page title, the hermes diagram drawing once in signal order, the header tab sliding to the
-   section in view, and small feedback (press, the theme icon, Copy email, the download arrow).
+   section in view, the Studio preview following the list, and small feedback (press, the theme icon, Copy email, the download arrow).
    Everything else is still on purpose. Durations and easing come from tokens.css.
    Reduced motion keeps the opacity cross-fades and drops every slide, rise, and scale. */
 
@@ -48,6 +48,11 @@
 .copy > span { transition: opacity var(--dur-press) var(--ease-out), transform var(--dur-press) var(--ease-out); }
 .copy-b path { stroke-dasharray: 1; stroke-dashoffset: 1; }
 .copy.is-done .copy-b path { stroke-dashoffset: 0; transition: stroke-dashoffset var(--dur-viewer) var(--ease-out) 60ms; }
+
+/* ---------- Studio (Side B): the large preview cross-fades; the row marker slides to the active row ---------- */
+.pv-img { transition: opacity var(--dur-viewer) var(--ease-out); }
+.sideb-mark { transition: transform var(--dur-viewer) var(--ease-out), opacity var(--dur-hover) var(--ease-out); }
+.sideb-mark.no-slide { transition: opacity var(--dur-hover) var(--ease-out); }
 
 /* ---------- hermes diagram: connectors draw and steps appear in signal order, once (HermesDiagram.astro) ---------- */
 @media (prefers-reduced-motion: no-preference) {
@@ -97,7 +102,7 @@
 /* ---------- Reduced motion: collapse, don't just shorten ---------- */
 @media (prefers-reduced-motion: reduce) {
   .vt-name { view-transition-name: none; }
-  .nav-mark { transition: opacity var(--dur-hover) var(--ease-out); }
+  .nav-mark, .sideb-mark { transition: opacity var(--dur-hover) var(--ease-out); }
   .copy-b, .copy.is-done .copy-a { transform: none; }
   .copy-b path { stroke-dashoffset: 0; }
   a.head-link:hover svg, a.head-link:active svg { transform: none; }

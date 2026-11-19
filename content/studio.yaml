@@ -1,78 +1,107 @@
 # Studio: digital art (the drawings list), photography (the photos list), and music.
 # Any list left empty hides its part of the section (and the whole section hides if everything is empty).
 #
+# Studio is the record's Side B: one numbered list (B1, B2, ...) across both groups, in the order below.
 # Images go in public/studio/. For each one:
-#   title:  what a screen reader announces; also shown if the image fails to load
-#   image:  the thumbnail shown in the film strip (about 500 px tall is plenty)
-#   full:   the full-size file the frame links to (optional)
-#   width, height: the full image's pixel size. They set the frame's shape, so nothing gets cropped.
+#   name:    short title shown in the list and as the viewer caption (working titles; edit freely)
+#   title:   the full description: what a screen reader announces, shown under the large preview
+#   image:   small thumbnail (phone rows; about 500 px tall is plenty)
+#   preview: the large preview beside the list (fits 1320 x 1000; optional, falls back to image)
+#   full:    the full-size file the viewer opens (optional)
+#   width, height: the full image's pixel size. They set the shape, so nothing gets cropped.
 
 drawings:
-  - title: "Portrait study in blue pencil: a young man looking back over his shoulder"
+  - name: "Blue portrait"
+    title: "Portrait study in blue pencil: a young man looking back over his shoulder"
     image: /studio/portrait-blue-thumb.webp
+    preview: /studio/portrait-blue-preview.webp
     full: /studio/portrait-blue.webp
     width: 1412
     height: 1412
-  - title: "Sketch in blue: a wide-eyed figure with a backpack"
+  - name: "Backpack"
+    title: "Sketch in blue: a wide-eyed figure with a backpack"
     image: /studio/backpack-blue-thumb.webp
+    preview: /studio/backpack-blue-preview.webp
     full: /studio/backpack-blue.webp
     width: 1546
     height: 1545
-  - title: "Grayscale study: a winged figure under a spiked halo"
+  - name: "Halo"
+    title: "Grayscale study: a winged figure under a spiked halo"
     image: /studio/winged-halo-thumb.webp
+    preview: /studio/winged-halo-preview.webp
     full: /studio/winged-halo.webp
     width: 1880
     height: 2000
-  - title: "Color key art: three armed figures backlit by fire and smoke"
+  - name: "Firelight"
+    title: "Color key art: three armed figures backlit by fire and smoke"
     image: /studio/key-art-fire-thumb.webp
+    preview: /studio/key-art-fire-preview.webp
     full: /studio/key-art-fire.webp
     width: 2000
     height: 1125
 
 # Same fields as drawings. Shown in this order.
 photos:
-  - title: "A skier climbing a snowy slope at dusk under a single floodlight"
+  - name: "Floodlight"
+    title: "A skier climbing a snowy slope at dusk under a single floodlight"
     image: /studio/skier-dusk-thumb.webp
+    preview: /studio/skier-dusk-preview.webp
     full: /studio/skier-dusk.webp
     width: 2000
     height: 1125
-  - title: "Aurora overhead in pink and green, a treetop silhouetted below"
+  - name: "Aurora"
+    title: "Aurora overhead in pink and green, a treetop silhouetted below"
     image: /studio/aurora-thumb.webp
+    preview: /studio/aurora-preview.webp
     full: /studio/aurora.webp
     width: 1500
     height: 2000
-  - title: "A young deer in fresh snow, looking straight at the camera"
+  - name: "First snow"
+    title: "A young deer in fresh snow, looking straight at the camera"
     image: /studio/deer-snow-thumb.webp
+    preview: /studio/deer-snow-preview.webp
     full: /studio/deer-snow.webp
     width: 2000
     height: 1125
-  - title: "A bright green gecko on a steel counter, close up"
+  - name: "Gecko"
+    title: "A bright green gecko on a steel counter, close up"
     image: /studio/gecko-thumb.webp
+    preview: /studio/gecko-preview.webp
     full: /studio/gecko.webp
     width: 2000
     height: 1125
-  - title: "Japanese maple leaves in gold and red, filling the frame"
+  - name: "Maple"
+    title: "Japanese maple leaves in gold and red, filling the frame"
     image: /studio/maple-thumb.webp
+    preview: /studio/maple-preview.webp
     full: /studio/maple.webp
     width: 1125
     height: 2000
-  - title: "A dog asleep in the grass, shot at ground level, a green swing behind it"
+  - name: "Afternoon nap"
+    title: "A dog asleep in the grass, shot at ground level, a green swing behind it"
     image: /studio/sleeping-dog-thumb.webp
+    preview: /studio/sleeping-dog-preview.webp
     full: /studio/sleeping-dog.webp
     width: 2000
     height: 1125
-  - title: "Umbrellas up on a rainy street of old stone buildings"
+  - name: "Rain"
+    title: "Umbrellas up on a rainy street of old stone buildings"
     image: /studio/rain-umbrellas-thumb.webp
+    preview: /studio/rain-umbrellas-preview.webp
     full: /studio/rain-umbrellas.webp
     width: 2000
     height: 1125
-  - title: "A dark red grand interior with a column of light at its center"
+  - name: "Red hall"
+    title: "A dark red grand interior with a column of light at its center"
     image: /studio/red-interior-thumb.webp
+    preview: /studio/red-interior-preview.webp
     full: /studio/red-interior.webp
     width: 1333
     height: 2000
-  - title: "The Eiffel Tower lit gold at night, seen from directly below"
+  - name: "From below"
+    title: "The Eiffel Tower lit gold at night, seen from directly below"
     image: /studio/eiffel-below-thumb.webp
+    preview: /studio/eiffel-below-preview.webp
     full: /studio/eiffel-below.webp
     width: 2000
     height: 1125

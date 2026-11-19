@@ -1,10 +1,10 @@
-// Image viewer for Studio frames (a.pic) and project screenshots (a[data-viewer]). A linked image opens in a modal instead of leaving the page.
+// Image viewer for Studio (Side B rows, media frames a.pic) and project screenshots (a[data-viewer]). A linked image opens in a modal instead of leaving the page.
 // Close: the × button, Esc, a click outside the image, or the browser/phone Back button.
 // Move: arrow buttons, arrow keys, or a sideways swipe; it runs through every image and wraps.
 // The thumbnail shows at once and the full image replaces it when decoded. Focus returns to the frame.
-// The studio rows repeat their frames to loop (reel.js); every copy carries its original's data-i.
+// A link can carry its own description (data-alt) and shape (data-ar) when it holds no full-size thumbnail.
 const dlg = document.getElementById('viewer');
-const links = [...document.querySelectorAll('a.pic[href], a[data-viewer][href]')]; // runs before reel.js adds the copies
+const links = [...document.querySelectorAll('a.pic[href], a[data-viewer][href]')];
 
 if (dlg && links.length && typeof dlg.showModal === 'function') {
   const img = dlg.querySelector('.lb-img');
@@ -16,7 +16,7 @@ if (dlg && links.length && typeof dlg.showModal === 'function') {
     link.dataset.i = String(i);
     const thumb = link.querySelector('img');
     const group = link.closest('.roll')?.querySelector('h3')?.textContent ?? link.closest('[data-group]')?.dataset.group ?? '';
-    return { link, thumb, group, full: link.getAttribute('href'), title: thumb?.alt ?? '', caption: link.dataset.caption };
+    return { link, thumb, group, full: link.getAttribute('href'), title: link.dataset.alt ?? thumb?.alt ?? '', caption: link.dataset.caption };
   });
   items.forEach((it) => {
     const same = items.filter((x) => x.group === it.group);

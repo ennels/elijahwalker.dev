@@ -2,7 +2,7 @@
 // Contact-sheet film strip. Frames in a strip share one height; each frame's width follows its image's
 // proportions (width/height from the YAML), so nothing is cropped. A short row is finished with
 // unexposed film. Edge-print numbers run across the whole studio via `start`.
-//   format: 'square' (4 per strip) | 'film' (3 per strip) | 'single' (one media frame). Studio groups use Reel instead.
+//   format: 'square' (4 per strip) | 'film' (3 per strip) | 'single' (one media frame). Studio's art and photos use SideB instead.
 //   items:  { title, image?, full?, width?, height?, note? }. With no image, the frame prints `note` as text.
 const { items, label, format = 'film', start = 1 } = Astro.props;
 const FORMATS = {

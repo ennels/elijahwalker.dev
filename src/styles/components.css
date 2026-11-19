@@ -116,6 +116,56 @@
 .roll { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); margin-bottom: var(--space-12); }
 .roll:last-child { margin-bottom: 0; }
 .roll h3 { font: var(--weight-heavy) var(--text-lg)/var(--leading-snug) var(--font-display); }
+.side-tag {
+  margin-bottom: var(--space-3);
+  font: var(--weight-strong) var(--text-xs)/1 var(--font-text); letter-spacing: var(--tracking-edge); text-transform: uppercase;
+  color: var(--color-film-edge);
+}
+
+/* Studio as Side B (SideB.astro): a numbered tracklist of short titles, and the active piece large beside it.
+   One marker (side-b.js) draws the active row: a faint fill with an edge-gold bar, scaled from 1px tall. */
+.sideb { display: grid; grid-template-columns: minmax(16rem, 24rem) minmax(0, 1fr); gap: var(--space-12) var(--space-16); align-items: start; }
+.sideb-list { position: relative; }
+.sideb-group + .sideb-group { margin-top: var(--space-10); }
+.sideb-group h3 { margin-bottom: var(--space-3); font: var(--weight-heavy) var(--text-lg)/var(--leading-snug) var(--font-display); }
+.sideb-group ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--color-band-rule); }
+.sideb-group li { border-bottom: 1px solid var(--color-band-rule); }
+.trk {
+  position: relative; display: flex; align-items: center; gap: var(--space-4);
+  min-height: var(--target-min); padding: var(--space-3) var(--space-4);
+  color: inherit; text-decoration: none;
+}
+a.trk { cursor: zoom-in; }
+.trk-n { flex: 0 0 2.25rem; font: var(--weight-strong) var(--text-sm)/1 var(--font-text); letter-spacing: var(--tracking-edge); font-variant-numeric: tabular-nums; color: var(--color-film-edge); }
+.trk-t { min-width: 0; font: var(--weight-heavy) var(--text-md)/var(--leading-head) var(--font-display); }
+.trk-pic { display: none; }
+.sideb-mark {
+  position: absolute; left: 0; right: 0; top: 0; height: 1px; transform-origin: 0 0;
+  background: color-mix(in srgb, var(--color-band-ink) 9%, transparent); box-shadow: inset 3px 0 0 var(--color-film-edge);
+  opacity: 0; pointer-events: none;
+}
+.sideb-mark.is-on { opacity: 1; }
+/* The preview: a film-black mat, at most 640 x 480 (SideB.astro picks image files for that size). Sticks below
+   the header while the list scrolls past. Mouse only (aria-hidden); keyboard users open pieces from the list. */
+.sideb-pv { position: sticky; top: calc(var(--header-h) + var(--space-8)); margin: 0; }
+.pv-box { position: relative; aspect-ratio: 4 / 3; max-width: 40rem; background: var(--color-film); border-radius: var(--radius-frame); cursor: zoom-in; }
+.pv-img {
+  position: absolute; inset: var(--space-5); width: calc(100% - 2 * var(--space-5)); height: calc(100% - 2 * var(--space-5));
+  object-fit: contain; opacity: 0;
+}
+.pv-img.is-on { opacity: 1; }
+.pv-cap { display: grid; gap: var(--space-2); max-width: 40rem; margin-top: var(--space-4); font-size: var(--text-sm); line-height: var(--leading-ui); color: var(--color-band-ink-muted); }
+.pv-n { font: var(--weight-strong) var(--text-xs)/1 var(--font-text); letter-spacing: var(--tracking-edge); text-transform: uppercase; color: var(--color-film-edge); }
+@media (forced-colors: active) { .sideb-mark { display: none; } .trk.is-active .trk-t { text-decoration: underline; } }
+/* Narrow screens: no room for the preview. Each row carries a small picture instead; a tap opens the viewer. */
+@media (max-width: 860px) {
+  .sideb { grid-template-columns: minmax(0, 1fr); }
+  .sideb-pv, .sideb-mark { display: none; }
+  .trk { padding-inline: 0; }
+  .trk-pic { position: relative; display: block; flex: 0 0 4.5rem; aspect-ratio: 4 / 3; background: var(--color-film); border-radius: var(--radius-frame); }
+  .trk-pic img { position: absolute; inset: 3px; width: calc(100% - 6px); height: calc(100% - 6px); object-fit: contain; }
+  .trk-n { flex-basis: 2rem; }
+}
 
 /* Film strip: one row of frames at a shared height. Each frame grows in proportion to its aspect ratio (--ar),
    so every image shows whole. A short row is finished with unexposed film, as on a real roll. */
@@ -137,25 +187,6 @@
 .strip.is-square { --ar: 1; } /* drawings without dimensions default to square */
 .frame { position: relative; min-width: 0; flex: var(--ar) 1 0; }
 
-/* Studio rows (Reel.astro): one strip per group across the whole window. Frames share --row-h and keep their
-   proportions. Still (no JavaScript, or reduced motion): starts at the text column and scrolls sideways.
-   Running (reel.js): clipped, drifting, and looped; the gap after each frame is a margin so both halves of the
-   looped track are identical. */
-.reel {
-  --row-h: clamp(150px, 18vw, 250px);
-  width: 100vw; margin-left: calc(50% - 50vw);
-  overflow-x: auto; overscroll-behavior-x: contain;
-  scrollbar-width: thin; scrollbar-color: var(--color-film-frame) transparent;
-}
-.reel-track { width: max-content; min-width: 100%; gap: 0; border-radius: 0; padding-inline: calc(max(0px, (100vw - var(--page-max)) / 2) + var(--gutter-min)) var(--gutter-min); }
-.reel-track .frame { flex: none; width: calc(var(--row-h) * var(--ar)); margin-right: var(--film-gap); }
-.reel.is-running { overflow: clip; touch-action: pan-y; cursor: grab; }
-.reel.is-running .reel-track { padding-inline: 0; }
-.reel.is-dragging { cursor: grabbing; }
-.reel.is-dragging .pic { cursor: grabbing; }
-.reel-toggle { border: 0; padding: 0; background: none; color: inherit; cursor: pointer; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: .22em; }
-.reel-toggle svg { width: 14px; height: 14px; }
-.reel-toggle[data-state="playing"] .i-play, .reel-toggle[data-state="paused"] .i-pause { display: none; }
 .edge {
   position: absolute; top: -17px; left: 2px;
   font: var(--weight-strong) var(--text-xs)/1 var(--font-text); letter-spacing: var(--tracking-edge);

@@ -1,0 +1,55 @@
+---
+// Studio as the record's Side B: a numbered list of short titles (B1, B2, ...) across the groups, with the
+// piece under the pointer or keyboard focus shown large beside it (side-b.js). Each row links to the full image
+// and opens the viewer. Phones (and no-JS) get the list with a small picture in each row; the large preview
+// needs room and a pointer or keyboard to follow.
+//   groups: [{ label, items: { name, title, image, preview?, full?, width?, height? }[] }]
+import { webpSize } from '../lib/webp-size.js';
+const { groups } = Astro.props;
+const rows = groups.flatMap((g) => g.items.map((it) => ({ ...it, group: g.label })));
+const ar = (it) => (it.width && it.height ? it.width / it.height : 1);
+// The preview mat is at most 640 x 480 CSS px with a 20 px margin, so an image shows within 600 x 440. Its shown
+// width there decides which file the browser picks (the thumbnail on most 1x screens, the preview file on 2x).
+const BOX_W = 600, BOX_H = 440;
+const sizes = (it) => `${Math.round(Math.min(BOX_W, BOX_H * ar(it)))}px`;
+const srcset = (it) => {
+  const files = [it.image, it.preview].filter(Boolean).map((f) => [f, webpSize(f)?.w]);
+  return files.every(([, w]) => w) && files.length > 1 ? files.map(([f, w]) => `${f} ${w}w`).join(', ') : undefined;
+};
+let k = 0;
+---
+<div class="sideb" data-sideb>
+  <div class="sideb-list">
+    <span class="sideb-mark" aria-hidden="true"></span>
+    {groups.map((g) => g.items.length > 0 && (
+      <div class="sideb-group" data-group={g.label}>
+        <h3>{g.label}</h3>
+        <ol>
+          {g.items.map((it) => {
+            const i = k++;
+            const Tag = it.full ? 'a' : 'span';
+            return (
+              <li>
+                <Tag class={i === 0 ? 'trk is-active' : 'trk'} href={it.full} data-viewer={it.full ? '' : undefined} data-k={i}
+                  data-ar={ar(it).toFixed(4)} data-caption={it.name} data-alt={it.title}>
+                  <span class="trk-pic" aria-hidden="true"><img loading="lazy" src={it.image} alt="" width={it.width} height={it.height} /></span>
+                  <span class="trk-n" aria-hidden="true">B{i + 1}</span>
+                  <span class="trk-t">{it.name}<span class="vh">. {it.title}</span></span>
+                </Tag>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    ))}
+  </div>
+  <figure class="sideb-pv" aria-hidden="true" data-sideb-pv>
+    <div class="pv-box">
+      {rows.map((it, i) => (
+        <img class={i === 0 ? 'pv-img is-on' : 'pv-img'} data-k={i} loading="lazy" decoding="async"
+          src={it.preview ?? it.image} srcset={srcset(it)} sizes={sizes(it)} width={it.width} height={it.height} alt="" />
+      ))}
+    </div>
+    <figcaption class="pv-cap"><span class="pv-n" data-pv-n>B1 · {rows[0]?.group}</span><span data-pv-t>{rows[0]?.title}</span></figcaption>
+  </figure>
+</div>
