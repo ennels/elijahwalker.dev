@@ -108,6 +108,7 @@
       the header, so the name is never shown twice. Keyboard focus always shows it.
    C. Side B: the Studio band opens from an inset, rounded "sleeve" to the full window as it scrolls in.
    D. The portrait drifts a little inside its square as the cover scrolls away (scaled 5% so no edge shows).
+   E. The resume timeline draws down, entry by entry (below).
    Each animation-timeline sits in its own, more specific rule: the animation shorthand resets it, and the
    minifier folds a longhand in the same rule into the shorthand, which browsers reject. */
 html { timeline-scope: --cover-name; }
@@ -125,6 +126,18 @@ html { timeline-scope: --cover-name; }
     .side-b { view-timeline: --side-b block; animation: side-b-open auto linear both; }
     html .side-b { animation-timeline: --side-b; animation-range: entry 0% entry 45vh; }
 
+    /* E. Resume timeline: the rule draws down as a line 70% of the way down the window passes each entry
+       (end inset 30%); the dot fills as the rule reaches it, and the entry comes up from faint. */
+    .cv li { view-timeline: --cv-entry block; view-timeline-inset: 0 30%; }
+    .cv li::after { animation: tl-draw linear both; }
+    .cv li::before { animation: tl-dot linear both; }
+    .cv li > * { animation: tl-entry linear both; }
+    html .cv li::after { animation-timeline: --cv-entry; animation-range: entry 0% entry 100%; }
+    html .cv li:first-child::after { animation-range: entry var(--dot-y) entry 100%; }
+    html .cv li:last-child::after { animation-range: entry 0% entry var(--dot-y); }
+    html .cv li::before { animation-timeline: --cv-entry; animation-range: entry var(--dot-y) entry calc(var(--dot-y) + 12px); }
+    html .cv li > * { animation-timeline: --cv-entry; animation-range: entry var(--dot-y) entry calc(var(--dot-y) + 6rem); }
+
     .sleeve { view-timeline: --sleeve block; }
     .sleeve img { animation: sleeve-drift auto linear both; }
     html .sleeve img { animation-timeline: --sleeve; animation-range: exit 0% exit 100%; }
@@ -137,6 +150,9 @@ html { timeline-scope: --cover-name; }
 @keyframes grid-drift { from { transform: translateY(calc(-1 * var(--grid-drift))); } to { transform: translateY(var(--grid-drift)); } }
 @keyframes brand-dock { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes side-b-open { from { clip-path: inset(0 max(var(--gutter-min), 4vw) round 1.25rem); } to { clip-path: inset(0 0 round 0); } }
+@keyframes tl-draw { from { transform: scaleY(0); } to { transform: none; } }
+@keyframes tl-dot { from { background-color: var(--color-ground); transform: scale(.7); } to { background-color: var(--color-ink); transform: none; } }
+@keyframes tl-entry { from { opacity: .2; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @keyframes sleeve-drift { from { transform: scale(1.05); } to { transform: translateY(2.4%) scale(1.05); } }
 
 /* ---------- Reduced motion: collapse, don't just shorten ---------- */

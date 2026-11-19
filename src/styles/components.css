@@ -101,8 +101,25 @@
 .credits-list dd { margin: 0; color: var(--color-ink-muted); }
 .credits-list.wide { max-width: var(--column); grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-10); margin-top: var(--space-10); border-top: 0; }
 .credits-list.wide div { border-top: 1px solid var(--color-rule); border-bottom: 0; }
-.cv { list-style: none; padding: 0; border-top: 1.5px solid var(--color-ink); max-width: var(--column); }
-.cv li { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: var(--space-1) var(--space-6); padding-block: var(--space-5); border-bottom: 1px solid var(--color-rule); }
+/* Resume as a timeline: a rule runs through one dot per entry, in the gap between the dates and the details.
+   Each entry draws its own piece of the rule (::after) and its dot (::before), so the pieces meet across rows;
+   the first piece starts at its dot and the last ends at its dot. motion.css draws them in as you scroll. */
+.cv {
+  --tl-gap: 4.5rem;                                                       /* dates | dot | details */
+  --tl-x: calc(11rem + var(--tl-gap) / 2);                                /* the rule's center line */
+  --dot-y: calc(var(--space-5) + var(--text-md) * var(--leading-head) / 2); /* first line of the title */
+  list-style: none; padding: 0; border-top: 1.5px solid var(--color-ink); max-width: var(--column);
+}
+.cv li { position: relative; display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: var(--space-1) var(--tl-gap); padding-block: var(--space-5); border-bottom: 1px solid var(--color-rule); }
+.cv li::before, .cv li::after { content: ""; position: absolute; pointer-events: none; }
+.cv li::before {
+  z-index: 1; left: calc(var(--tl-x) - 6px); top: calc(var(--dot-y) - 6px); width: 12px; height: 12px;
+  border: 1.5px solid var(--color-ink); border-radius: var(--radius-round); background: var(--color-ink);
+}
+.cv li::after { left: calc(var(--tl-x) - .75px); width: 1.5px; top: 0; bottom: -1px; background: var(--color-ink); transform-origin: top; }
+.cv li:first-child::after { top: var(--dot-y); }
+.cv li:last-child::after { bottom: auto; height: var(--dot-y); }
+.cv li:only-child::after { display: none; }
 .when { font: var(--weight-strong) var(--text-base)/var(--leading-lede) var(--font-display); color: var(--color-ink-muted); }
 .cv h3 { font: var(--weight-heavy) var(--text-md)/var(--leading-head) var(--font-display); }
 .org { font-weight: var(--weight-strong); font-size: var(--text-ui); margin-top: 2px; }
@@ -245,7 +262,9 @@ a.pic:hover { box-shadow: 0 0 0 2px var(--color-film-edge); }
   .pname { gap: var(--space-3); }
   .pico, .pico svg, .pico img { width: 1.5rem; flex-basis: 1.5rem; }
   .pico svg, .pico img { height: 1.5rem; }
-  .cv li { grid-template-columns: minmax(0, 1fr); }
+  /* Dates sit above the details here, so the timeline moves to the left edge, level with the date. */
+  .cv { --tl-x: .75rem; --dot-y: calc(var(--space-5) + var(--text-base) * var(--leading-lede) / 2); }
+  .cv li { grid-template-columns: minmax(0, 1fr); padding-left: 2.5rem; }
 }
 @media (max-width: 480px) {
   .is-feat .t-title { font-size: var(--text-lg); }
