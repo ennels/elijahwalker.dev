@@ -37,8 +37,8 @@
   color-scheme: light;
 
   /* ---------- Type ---------- */
-  --font-display: "Besley", ui-serif, Georgia, "Times New Roman", serif;          /* Clarendon revival */
-  --font-text:    "Hanken Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Besley", "Besley Fallback: Georgia", "Besley Fallback: Times New Roman", ui-serif, Georgia, "Times New Roman", serif;          /* Clarendon revival */
+  --font-text:    "Hanken Grotesk", "Hanken Grotesk Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --text-2xs:     .625rem;    /* 10  edge print on phones (decorative only) */
   --text-xs:      .75rem;     /* 12  tags, edge print */
