@@ -1,5 +1,6 @@
 /* Motion. One orchestrated moment (the cover), cross-fades between pages and themes, a project name that
-   grows into its page title, the hermes diagram drawing once in signal order, the header tab sliding to the
+   grows into its page title, four scroll-linked effects (grid drift, the name docking into the header, Side B
+   opening, the portrait drifting), the hermes diagram drawing once in signal order, the header tab sliding to the
    section in view, the Studio preview following the list, and small feedback (press, the theme icon, Copy email, the download arrow).
    Everything else is still on purpose. Durations and easing come from tokens.css.
    Reduced motion keeps the opacity cross-fades and drops every slide, rise, and scale. */
@@ -98,6 +99,45 @@
 @keyframes sleeve-out { from { clip-path: inset(0 0 0 100%); transform: translateX(-28px); } to { clip-path: inset(0); transform: none; } }
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Scroll-linked: four effects tied to scroll position, not time ----------
+   CSS scroll-driven animations (Chrome/Edge 115+, Safari 26+). Other browsers and reduced motion keep the page
+   still, in the end state of each effect.
+   A. The Projects grid drifts at about 0.9x scroll speed (sections.css lets it hang past the section).
+   B. The header name stays out while the big cover name is on screen and fades in as that name passes under
+      the header, so the name is never shown twice. Keyboard focus always shows it.
+   C. Side B: the Studio band opens from an inset, rounded "sleeve" to the full window as it scrolls in.
+   D. The portrait drifts a little inside its square as the cover scrolls away (scaled 5% so no edge shows).
+   Each animation-timeline sits in its own, more specific rule: the animation shorthand resets it, and the
+   minifier folds a longhand in the same rule into the shorthand, which browsers reject. */
+html { timeline-scope: --cover-name; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    #projects { --grid-drift: 10rem; view-timeline: --projects block; }
+    #projects::before { animation: grid-drift auto linear both; }
+    html #projects::before { animation-timeline: --projects; animation-range: cover; }
+
+    #name { view-timeline: --cover-name block; view-timeline-inset: var(--header-h) 0; }
+    .brand { animation: brand-dock auto linear both; }
+    html .brand { animation-timeline: --cover-name; animation-range: exit 40% exit 100%; }
+    html .brand:focus-visible { animation: none; }
+
+    .side-b { view-timeline: --side-b block; animation: side-b-open auto linear both; }
+    html .side-b { animation-timeline: --side-b; animation-range: entry 0% entry 45vh; }
+
+    .sleeve { view-timeline: --sleeve block; }
+    .sleeve img { animation: sleeve-drift auto linear both; }
+    html .sleeve img { animation-timeline: --sleeve; animation-range: exit 0% exit 100%; }
+  }
+  /* Narrow screens: the section nav adds a second header row over the cover name. */
+  @media (prefers-reduced-motion: no-preference) and (max-width: 720px) {
+    #name { view-timeline-inset: calc(var(--header-h) * 2) 0; }
+  }
+}
+@keyframes grid-drift { from { transform: translateY(calc(-1 * var(--grid-drift))); } to { transform: translateY(var(--grid-drift)); } }
+@keyframes brand-dock { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes side-b-open { from { clip-path: inset(0 max(var(--gutter-min), 4vw) round 1.25rem); } to { clip-path: inset(0 0 round 0); } }
+@keyframes sleeve-drift { from { transform: scale(1.05); } to { transform: translateY(2.4%) scale(1.05); } }
 
 /* ---------- Reduced motion: collapse, don't just shorten ---------- */
 @media (prefers-reduced-motion: reduce) {
