@@ -14,6 +14,8 @@ body {
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration-thickness: 1.5px; text-underline-offset: .22em; }
 p, ul, ol, dl, figure, h1, h2, h3, h4 { margin: 0; }
+/* The hidden attribute always wins over a component's display (e.g. .head-link on the Studio pause button). */
+[hidden] { display: none !important; }
 h1, h2, h3, h4 { text-wrap: balance; overflow-wrap: break-word; hyphens: auto; }
 :focus-visible { outline: 2.5px solid var(--color-focus); outline-offset: 3px; }
 main:focus, section[tabindex="-1"]:focus { outline: none; } /* focus moved there by the skip link or a header link */
