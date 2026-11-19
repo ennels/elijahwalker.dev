@@ -190,6 +190,13 @@ a.pic:hover { box-shadow: 0 0 0 2px var(--color-film-edge); }
 /* ---------- Contact ---------- */
 .contact { padding-bottom: var(--space-section); }
 .mail { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-5); margin-top: var(--space-6); }
+/* Copy email: both labels share one cell, so the button keeps its width when "Copied" shows. */
+.copy { display: inline-grid; place-items: center; }
+.copy > span { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: var(--space-2); }
+.copy-b svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.copy-b { opacity: 0; transform: translateY(6px); }
+.copy.is-done .copy-a { opacity: 0; transform: translateY(-6px); }
+.copy.is-done .copy-b { opacity: 1; transform: none; }
 .mail a { min-width: 0; font: var(--weight-heavy) clamp(1.6rem, .9rem + 3vw, 3.2rem)/1.1 var(--font-display); overflow-wrap: anywhere; text-decoration-thickness: .06em; text-underline-offset: .14em; }
 
 /* ---------- Responsive ---------- */

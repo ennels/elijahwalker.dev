@@ -1,5 +1,6 @@
 /* Motion. One orchestrated moment (the cover), cross-fades between pages and themes, a project name that
-   grows into its page title, the hermes diagram drawing once in signal order, and small press/hover feedback.
+   grows into its page title, the hermes diagram drawing once in signal order, the header tab sliding to the
+   section in view, and small feedback (press, the theme icon, Copy email, the download arrow).
    Everything else is still on purpose. Durations and easing come from tokens.css.
    Reduced motion keeps the opacity cross-fades and drops every slide, rise, and scale. */
 
@@ -26,6 +27,28 @@
 @keyframes vt-out { to { opacity: 0; } }
 @keyframes vt-in { from { opacity: 0; } }
 
+/* ---------- Header: the current-section tab slides from link to link (jump.js places it) ---------- */
+.nav-mark { transition: transform var(--dur-page) var(--ease-out), opacity var(--dur-hover) var(--ease-out); }
+.nav-mark.no-slide { transition: opacity var(--dur-hover) var(--ease-out); }
+
+/* ---------- Theme toggle: the old icon turns away, the new one turns in (both clockwise) ----------
+   The new icon is live (CSS transition, fades in as the page darkens or lightens); the old one is its
+   picture from before the swap, turned away by the view transition. The outgoing live icon just hides. */
+@media (prefers-reduced-motion: no-preference) {
+  .mode.is-ready svg { transition: transform var(--dur-theme) var(--ease-out), opacity var(--dur-theme) var(--ease-out); }
+  .mode.is-ready[data-state="dark"] .sun, .mode.is-ready:not([data-state="dark"]) .moon { transition: none; }
+  :root[data-vt="theme"] .mode .sun { view-transition-name: mode-sun; }
+  :root[data-vt="theme"] .mode .moon { view-transition-name: mode-moon; }
+}
+::view-transition-old(mode-sun), ::view-transition-old(mode-moon) { animation: icon-out var(--dur-theme) var(--ease-out) both; }
+::view-transition-new(mode-sun), ::view-transition-new(mode-moon) { animation: none; }
+@keyframes icon-out { to { opacity: 0; transform: rotate(90deg) scale(.5); } }
+
+/* ---------- Copy email: the label slides up and out, "Copied" rises in and its tick draws ---------- */
+.copy > span { transition: opacity var(--dur-press) var(--ease-out), transform var(--dur-press) var(--ease-out); }
+.copy-b path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.copy.is-done .copy-b path { stroke-dashoffset: 0; transition: stroke-dashoffset var(--dur-viewer) var(--ease-out) 60ms; }
+
 /* ---------- hermes diagram: connectors draw and steps appear in signal order, once (HermesDiagram.astro) ---------- */
 @media (prefers-reduced-motion: no-preference) {
   .dg-armed .dg-edge { stroke-dasharray: 1; stroke-dashoffset: 1; }
@@ -50,6 +73,10 @@
 @media (hover: hover) and (pointer: fine) {
   .btn { transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-hover) var(--ease-out); }
   .nav a { transition: background-color var(--dur-hover) var(--ease-out); }
+  /* Download PDF: the arrow drops a little toward the download. */
+  a.head-link svg { transition: transform var(--dur-press) var(--ease-out); }
+  a.head-link:hover svg { transform: translateY(2px); }
+  a.head-link:active svg { transform: translateY(3px); }
 }
 
 /* ---------- The cover: the portrait leaves the sleeve, the name rises beside it ----------
@@ -70,6 +97,10 @@
 /* ---------- Reduced motion: collapse, don't just shorten ---------- */
 @media (prefers-reduced-motion: reduce) {
   .vt-name { view-transition-name: none; }
+  .nav-mark { transition: opacity var(--dur-hover) var(--ease-out); }
+  .copy-b, .copy.is-done .copy-a { transform: none; }
+  .copy-b path { stroke-dashoffset: 0; }
+  a.head-link:hover svg, a.head-link:active svg { transform: none; }
   .cover .sleeve, .cover .cover-text { animation: fade var(--dur-page) var(--ease-out) both; }
   .btn:active, .mode:active, .lb-x:active, .lb-nav:active { transform: none; }
   .lb-fig, .lb:not([open]) .lb-fig { transform: none; transition: none; }

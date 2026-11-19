@@ -49,8 +49,9 @@ body::before {
   text-decoration: none; white-space: nowrap;
   min-height: var(--target-min); display: inline-flex; align-items: center;
 }
-.nav { display: flex; gap: 2px; margin-left: auto; }
+.nav { position: relative; display: flex; gap: 2px; margin-left: auto; }
 .nav a {
+  position: relative; /* above the marker */
   min-height: var(--target-min); display: inline-flex; align-items: center;
   padding: 0 var(--space-3);
   font-weight: var(--weight-medium); font-size: var(--text-ui); text-decoration: none; white-space: nowrap;
@@ -59,7 +60,16 @@ body::before {
 @media (hover: hover) { .nav a:hover { background: var(--color-ground-raised); } }
 /* The section in view (jump.js), or Projects on a project page: a raised tab with an ink bar under it. */
 .nav a[aria-current] { background: var(--color-ground-raised); box-shadow: inset 0 -3px 0 var(--color-ink); }
-@media (forced-colors: active) { .nav a[aria-current] { text-decoration: underline 3px; text-underline-offset: .35em; } }
+/* With JS, one marker draws that tab and slides between links (jump.js places it; motion.css moves it).
+   It is 1px wide and scaled to the link's width, so only transform changes. */
+.nav-mark {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 1px; transform-origin: 0 0;
+  background: var(--color-ground-raised); box-shadow: inset 0 -3px 0 var(--color-ink);
+  opacity: 0; pointer-events: none;
+}
+.nav-mark.is-on { opacity: 1; }
+.nav.has-mark a[aria-current] { background: transparent; box-shadow: none; }
+@media (forced-colors: active) { .nav a[aria-current] { text-decoration: underline 3px; text-underline-offset: .35em; } .nav-mark { display: none; } }
 /* Theme toggle: a 30 px ring drawn inside a 44 px tap area. */
 .mode {
   position: relative; flex: 0 0 auto; display: inline-grid; place-items: center;
@@ -67,9 +77,10 @@ body::before {
   background: transparent; color: inherit; cursor: pointer;
 }
 .mode::before { content: ""; position: absolute; inset: 7px; border: 1.5px solid currentColor; border-radius: var(--radius-round); }
-.mode svg { width: 18px; height: 18px; }
-.mode .moon, .mode[data-state="dark"] .sun { display: none; }
-.mode[data-state="dark"] .moon { display: block; }
+/* Sun and moon share one cell; the hidden one waits turned back a quarter and shrunk (motion.css turns it in). */
+.mode svg { grid-area: 1 / 1; width: 18px; height: 18px; }
+.mode .moon, .mode[data-state="dark"] .sun { opacity: 0; transform: rotate(-90deg) scale(.5); }
+.mode[data-state="dark"] .moon { opacity: 1; transform: none; }
 
 /* ---------- Footer ---------- */
 .foot-row {

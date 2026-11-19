@@ -39,6 +39,7 @@ const url = SITE + path;
   <header class="top"><div class="top-in"><div class="top-row">
     <a class="brand" href="/">{profile.name}</a>
     <nav class="nav" aria-label="Sections">
+      <span class="nav-mark" aria-hidden="true"></span>
       {navItems().map(([id, label]) => <a href={`/#${id}`} aria-current={id === section ? 'true' : undefined}>{label}</a>)}
     </nav>
     <button type="button" class="mode" id="modeBtn" aria-label="Switch to dark mode">

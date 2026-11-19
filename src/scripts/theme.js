@@ -30,3 +30,5 @@ btn?.addEventListener('click', () => {
 });
 darkMQ.addEventListener('change', sync);
 sync();
+// Turn on the icon motion only after the first frame, so a dark-mode visitor doesn't see the moon spin in on load.
+requestAnimationFrame(() => requestAnimationFrame(() => btn?.classList.add('is-ready')));
