@@ -95,13 +95,16 @@
 /* ---------- About (liner notes), resume ---------- */
 .liner { max-width: var(--column); display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(var(--space-7), 5vw, var(--space-16)); align-items: start; }
 .prose { display: grid; gap: 1em; max-width: var(--measure); font-size: var(--text-prose); line-height: var(--leading-prose); }
-/* About: highlighted key phrases (==phrase== in profile.yaml). A marker band over the lower half of the line;
-   motion.css swipes it in on scroll. */
+/* About: key phrases (==phrase== in profile.yaml) marked with a gold paint pen: a hand-drawn stroke with uneven
+   edges and paint pooled at both ends, centered on the letters. Three stroke shapes take turns. Cream text keeps
+   5:1 on the stroke. motion.css draws the stroke in on scroll. */
 mark.hl {
-  color: inherit; padding-inline: .12em; margin-inline: -.12em;
-  background: linear-gradient(transparent 44%, var(--color-mark) 44%, var(--color-mark) 96%, transparent 96%) no-repeat 0 0 / 100% 100%;
+  color: inherit; padding: 0 .2em; margin: 0 -.12em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M3 12 C30 8 60 11 95 9 C130 7 165 10 197 8 L198 14 C199 22 197 28 198 33 C165 36 130 32 95 35 C60 37 30 33 4 35 C2 28 3 20 3 12 Z' fill='%2374571A'/%3E%3Cpath d='M3 12 C2 20 3 28 4 35 L11 35 C9 27 10 19 11 11 Z M189 9 L197 8 C199 18 197 26 198 33 L190 34 C191 26 190 17 189 9 Z' fill='%238E6C22'/%3E%3Cpath d='M8 22 C60 20 120 23 192 20' stroke='%238E6C22' stroke-width='3' fill='none' opacity='.35'/%3E%3C/svg%3E") no-repeat 0 60% / 100% 76%;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
 }
+mark.hl:nth-of-type(3n + 2) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M2 10 C40 12 80 8 120 10 C150 11 175 9 198 12 C197 19 199 27 197 34 C160 32 120 36 80 33 C50 31 25 35 3 32 C4 25 2 17 2 10 Z' fill='%2374571A'/%3E%3Cpath d='M2 10 C2 17 4 25 3 32 L10 33 C11 25 9 17 10 10 Z M190 11 L198 12 C199 20 197 27 197 34 L189 33 C190 26 191 18 190 11 Z' fill='%238E6C22'/%3E%3Cpath d='M10 24 C70 22 130 25 190 23' stroke='%238E6C22' stroke-width='3' fill='none' opacity='.35'/%3E%3C/svg%3E"); }
+mark.hl:nth-of-type(3n) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M4 13 C35 10 75 12 110 9 C145 7 170 11 196 10 C198 17 197 25 199 31 C170 34 140 33 100 35 C65 37 30 33 2 34 C3 26 2 19 4 13 Z' fill='%2374571A'/%3E%3Cpath d='M4 13 C2 19 3 26 2 34 L10 34 C11 26 10 19 12 12 Z M188 10 L196 10 C197 17 197 25 199 31 L190 32 C189 25 190 17 188 10 Z' fill='%238E6C22'/%3E%3Cpath d='M9 21 C70 23 130 19 191 22' stroke='%238E6C22' stroke-width='3' fill='none' opacity='.35'/%3E%3C/svg%3E"); }
 .credits-list { display: grid; align-content: start; border-top: 1.5px solid var(--color-ink); }
 .credits-list div { display: grid; gap: 2px; padding-block: var(--space-3); border-bottom: 1px solid var(--color-rule); }
 .credits-list dt { font: italic var(--weight-medium) var(--text-base)/var(--leading-ui) var(--font-display); }
@@ -134,7 +137,7 @@ mark.hl {
 
 /* ---------- Side B: studio on the lake band ---------- */
 .side-b { background: var(--color-band); color: var(--color-band-ink); }
-.side-b-in { padding-block: var(--space-section); }
+.side-b-in { padding-block: calc(var(--space-section) * .75); }
 .side-b :focus-visible { outline-color: var(--color-focus-band); }
 .side-b .intro { max-width: var(--measure); margin: calc(-1 * var(--space-3)) 0 var(--space-10); color: var(--color-band-ink-muted); }
 .roll { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); margin-bottom: var(--space-12); }
@@ -149,14 +152,14 @@ mark.hl {
 /* Studio as Side B (SideB.astro): a numbered tracklist of short titles, and the active piece large beside it.
    One marker (side-b.js) draws the active row: a faint fill with an edge-gold bar, scaled from 1px tall. */
 .sideb { display: grid; grid-template-columns: minmax(16rem, 24rem) minmax(0, 1fr); gap: var(--space-12) var(--space-16); align-items: start; }
-.sideb-list { position: relative; padding-bottom: var(--tail, 0px); } /* --tail: side-b.js, so the last row can reach the preview's middle */
-.sideb-group + .sideb-group { margin-top: var(--space-10); }
-.sideb-group h3 { margin-bottom: var(--space-3); font: var(--weight-heavy) var(--text-lg)/var(--leading-snug) var(--font-display); }
+.sideb-list { position: relative; }
+.sideb-group + .sideb-group { margin-top: var(--space-6); }
+.sideb-group h3 { margin-bottom: var(--space-2); font: var(--weight-strong) var(--text-xs)/1.4 var(--font-text); letter-spacing: var(--tracking-edge); text-transform: uppercase; color: var(--color-film-edge); }
 .sideb-group ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--color-band-rule); }
 .sideb-group li { border-bottom: 1px solid var(--color-band-rule); }
 .trk {
   position: relative; display: flex; align-items: center; gap: var(--space-4);
-  min-height: var(--target-min); padding: var(--space-3) var(--space-4);
+  min-height: var(--target-min); padding: var(--space-2) var(--space-4);
   color: inherit; text-decoration: none;
 }
 a.trk { cursor: zoom-in; }
@@ -170,16 +173,16 @@ a.trk { cursor: zoom-in; }
   opacity: 0; pointer-events: none;
 }
 .sideb-mark.is-on { opacity: 1; }
-/* The preview: a film-black mat, at most 640 x 480 (SideB.astro picks image files for that size). Sticks below
+/* The preview: a film-black mat, at most 520 x 390 (SideB.astro picks image files for that size). Sticks below
    the header while the list scrolls past. Mouse only (aria-hidden); keyboard users open pieces from the list. */
 .sideb-pv { position: sticky; top: calc(var(--header-h) + var(--space-8)); margin: 0; }
-.pv-box { position: relative; aspect-ratio: 4 / 3; max-width: 40rem; background: var(--color-film); border-radius: var(--radius-frame); cursor: zoom-in; }
+.pv-box { position: relative; aspect-ratio: 4 / 3; max-width: 32.5rem; background: var(--color-film); border-radius: var(--radius-frame); cursor: zoom-in; }
 .pv-img {
   position: absolute; inset: var(--space-5); width: calc(100% - 2 * var(--space-5)); height: calc(100% - 2 * var(--space-5));
   object-fit: contain; opacity: 0;
 }
 .pv-img.is-on { opacity: 1; }
-.pv-cap { display: grid; gap: var(--space-2); max-width: 40rem; margin-top: var(--space-4); font-size: var(--text-sm); line-height: var(--leading-ui); color: var(--color-band-ink-muted); }
+.pv-cap { display: grid; gap: var(--space-2); max-width: 32.5rem; margin-top: var(--space-4); font-size: var(--text-sm); line-height: var(--leading-ui); color: var(--color-band-ink-muted); }
 .pv-n { font: var(--weight-strong) var(--text-xs)/1 var(--font-text); letter-spacing: var(--tracking-edge); text-transform: uppercase; color: var(--color-film-edge); }
 @media (forced-colors: active) { .sideb-mark { display: none; } .trk.is-active .trk-t { text-decoration: underline; } }
 /* Narrow screens: no room for the preview. Each row carries a small picture instead; a tap opens the viewer. */

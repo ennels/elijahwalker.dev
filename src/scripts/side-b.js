@@ -1,5 +1,5 @@
 // Studio (Side B, SideB.astro): "now playing". Scrolling plays the row at a line in the large preview: on wide
-// screens the line runs level with the middle of the preview beside the list; on phones, where the preview
+// screens the line is where the middle of the stuck preview sits beside the list; on phones, where the preview
 // sticks above the list, it sits 30% of the way down the space below it. Moving the mouse over a row shows that
 // row until the next scroll; a row with keyboard focus holds the preview. A marker slides to the active row and
 // the other titles dim (motion.css). A click on a row or on the preview opens the viewer (viewer.js handles the
@@ -63,7 +63,9 @@ if (root) {
     ticking = false;
     if (document.activeElement?.matches?.('.trk:focus-visible')) return;
     let line;
-    if (wide.matches) { const b = box.getBoundingClientRect(); line = b.top + b.height / 2; }
+    // Wide: a fixed line where the middle of the preview sits while it is stuck, so the last rows still play
+    // after the preview has scrolled on.
+    if (wide.matches) line = parseFloat(getComputedStyle(pv).top) + box.offsetHeight / 2;
     else { const below = pv.getBoundingClientRect().bottom; line = below + (innerHeight - below) * 0.3; }
     let best = cur, gap = Infinity;
     rows.forEach((r, k) => {
@@ -73,17 +75,6 @@ if (root) {
     });
     show(best);
   };
-  // Wide screens: the preview only sticks while the list is longer than it, so leave room under the list for
-  // the last row to reach the middle of the stuck preview (half the mat plus the caption).
-  const tail = () => {
-    const f = pv.getBoundingClientRect(), b = box.getBoundingClientRect();
-    root.style.setProperty('--tail', wide.matches ? `${Math.round(f.bottom - (b.top + b.height / 2))}px` : '0px');
-  };
-  tail();
-  addEventListener('resize', tail);
-  wide.addEventListener('change', tail);
-  document.fonts?.ready.then(tail);
-
   const onScroll = () => { lastScroll = performance.now(); if (!ticking) { ticking = true; requestAnimationFrame(follow); } };
   new IntersectionObserver(([e]) => {
     if (e.isIntersecting) { addEventListener('scroll', onScroll, { passive: true }); follow(); }

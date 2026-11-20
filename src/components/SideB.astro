@@ -8,9 +8,9 @@ import { webpSize } from '../lib/webp-size.js';
 const { groups } = Astro.props;
 const rows = groups.flatMap((g) => g.items.map((it) => ({ ...it, group: g.label })));
 const ar = (it) => (it.width && it.height ? it.width / it.height : 1);
-// The preview mat is at most 640 x 480 CSS px with a 20 px margin, so an image shows within 600 x 440. Its shown
+// The preview mat is at most 520 x 390 CSS px with a 20 px margin, so an image shows within 480 x 350. Its shown
 // width there decides which file the browser picks (the thumbnail on most 1x screens, the preview file on 2x).
-const BOX_W = 600, BOX_H = 440;
+const BOX_W = 480, BOX_H = 350;
 // Phones (now playing, components.css): the mat spans the band at 3:2, so the image fits within
 // (100vw - 72px) x (66.67vw - 61px).
 const sizes = (it) => `(max-width: 860px) min(calc(100vw - 72px), calc((66.67vw - 61px) * ${ar(it).toFixed(3)})), ${Math.round(Math.min(BOX_W, BOX_H * ar(it)))}px`;

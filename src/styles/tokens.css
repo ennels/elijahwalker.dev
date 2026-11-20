@@ -18,7 +18,10 @@
   --color-on-ink:          #F2EAD6; /* text on solid ink */
   --color-accent:          #1E4A50; /* project icons (graphics, 4.4:1 on ground) */
   --color-cover:           #C88E28; /* cover square behind the portrait */
-  --color-mark:            #FAE6A0; /* highlighter on About's key phrases */
+  --color-about:           #1E1A12; /* About band (ink) */
+  --color-about-ink:       #F2EAD6; /* text on it (14:1) */
+  --color-about-muted:     #CDBF9E; /* secondary text on it (9:1) */
+  --color-about-rule:      rgb(242 234 214 / .22);
   --color-cover-ink:       #112F34; /* monogram printed on the cover when there is no photo */
 
   --color-band:            #1E4A50; /* Studio band */
@@ -139,7 +142,7 @@
     --color-on-ink:          #0F2629;
     --color-accent:          #E0AC48;
     --color-cover:           #E0AC48;
-    --color-mark:            #5E4C22;
+    --color-about:           #070E10;
     --color-cover-ink:       #112F34;
     --color-band:            #1A4146; /* lifted from #081A1C: band vs page 1.42:1, film vs band 1.89:1 */
     --color-band-ink:        #F0E4C6;
@@ -165,7 +168,7 @@
   --color-on-ink:          #0F2629;
   --color-accent:          #E0AC48;
   --color-cover:           #E0AC48;
-  --color-mark:            #5E4C22;
+  --color-about:           #070E10;
   --color-cover-ink:       #112F34;
   --color-band:            #1A4146;
   --color-band-ink:        #F0E4C6;

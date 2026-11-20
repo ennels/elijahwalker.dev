@@ -8,7 +8,7 @@ import Viewer from '../components/Viewer.astro';
 import SideB from '../components/SideB.astro';
 import SeasonGear from '../components/SeasonGear.astro';
 import '../styles/seasons.css';
-import { profile, projects, media, resume, notes, now, studio, hasStudio } from '../lib/content.js';
+import { profile, projects, media, resume, now, studio, hasStudio } from '../lib/content.js';
 
 const initials = (name) => {
   const words = name.trim().split(/\s+/);
@@ -17,10 +17,6 @@ const initials = (name) => {
   return (first(words[0]) + (words.length > 1 ? first(words.at(-1)) : '')).toUpperCase();
 };
 
-// Studio intro names only what's there.
-const kinds = [studio.drawings.length && 'digital art', studio.photos.length && 'photography', studio.music.length && 'music', media.length && 'design work'].filter(Boolean);
-const list = kinds.length > 1 ? `${kinds.slice(0, -1).join(', ')}${kinds.length > 2 ? ',' : ''} and ${kinds.at(-1)}` : kinds[0] ?? '';
-const studioIntro = list ? list[0].toUpperCase() + list.slice(1) + '.' : '';
 
 // About: ==phrase== in profile.yaml becomes a highlighted <mark> (odd parts of the split are the marked ones).
 const marks = (t) => t.split(/==(.+?)==/g);
@@ -70,17 +66,7 @@ const [user, domain] = profile.email.split('@');
             </li>
           ))}
         </ol>
-        {notes.items?.length > 0 && (
-          <div class="aside-list" id="notes">
-            <h3>Lab notes</h3>
-            {notes.intro && <p class="muted">{notes.intro}</p>}
-            <ul>
-              {notes.items.map((n) => (
-                <li><span class="al-t">{n.url ? <a href={n.url}>{n.title}</a> : n.title}</span><span class="muted">{n.tag}, {n.date || 'in progress'}</span></li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <span id="notes"></span>{/* Lab notes are off the page (Elijah, Nov 20); content/notes.yaml is kept and old #notes links land here. */}
       </section>
     )}
 
@@ -129,7 +115,6 @@ const [user, domain] = profile.email.split('@');
           <p class="side-tag" aria-hidden="true">Side B</p>
           <h2 class="sh" id="h-studio">Studio</h2>
           {media.length === 0 && <span id="media"></span>}
-          <p class="intro">{studioIntro}</p>
           {studio.drawings.length + studio.photos.length > 0 && (
             <SideB groups={[{ label: 'Digital art', items: studio.drawings }, { label: 'Photography', items: studio.photos }]} />
           )}

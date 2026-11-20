@@ -1,6 +1,6 @@
 /* Motion. One orchestrated moment (the cover), cross-fades between pages and themes, a project name that
-   grows into its page title, four scroll-linked effects (grid drift, the name docking into the header, Side B
-   opening, the portrait drifting), the hermes diagram drawing once in signal order, the header tab sliding to the
+   grows into its page title, four scroll-linked effects (grid drift, the name docking into the header, the
+   portrait in depth), the hermes diagram drawing once in signal order, the header tab sliding to the
    section in view, the Studio preview following the list, and small feedback (press, the theme icon, Copy email, the download arrow).
    Everything else is still on purpose. Durations and easing come from tokens.css.
    Reduced motion keeps the opacity cross-fades and drops every slide, rise, and scale. */
@@ -106,7 +106,6 @@
    A. The Projects grid drifts at about 0.9x scroll speed (sections.css lets it hang past the section).
    B. The header name stays out while the big cover name is on screen and fades in as that name passes under
       the header, so the name is never shown twice. Keyboard focus always shows it.
-   C. Side B: the Studio band opens from an inset, rounded "sleeve" to the full window as it scrolls in.
    D. The cover portrait moves in depth as the cover scrolls away: back scene 4%, person 12%, front 18%.
    E. The resume timeline draws down, entry by entry (below).
    F. About's key phrases get a highlighter swipe (below).
@@ -124,10 +123,8 @@ html { timeline-scope: --cover-name; }
     html .brand { animation-timeline: --cover-name; animation-range: exit 40% exit 100%; }
     html .brand:focus-visible { animation: none; }
 
-    .side-b { view-timeline: --side-b block; animation: side-b-open auto linear both; }
-    html .side-b { animation-timeline: --side-b; animation-range: entry 0% entry 45vh; }
 
-    /* F. About: the highlighter swipes across each key phrase over 160px of scroll, starting as the phrase
+    /* F. About: the paint pen draws across each key phrase over 160px of scroll, starting as the phrase
        rises past 75% of the window. */
     mark.hl { animation: hl-swipe linear both; }
     html mark.hl { animation-timeline: view(block 0% 25%); animation-range: cover 0% cover 160px; }
@@ -160,8 +157,7 @@ html { timeline-scope: --cover-name; }
 }
 @keyframes grid-drift { from { transform: translateY(calc(-1 * var(--grid-drift))); } to { transform: translateY(var(--grid-drift)); } }
 @keyframes brand-dock { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-@keyframes side-b-open { from { clip-path: inset(0 max(var(--gutter-min), 4vw) round 1.25rem); } to { clip-path: inset(0 0 round 0); } }
-@keyframes hl-swipe { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
+@keyframes hl-swipe { from { background-size: 0% 76%; } to { background-size: 100% 76%; } }
 @keyframes tl-draw { from { transform: scaleY(0); } to { transform: none; } }
 @keyframes tl-dot { from { background-color: var(--color-ground); transform: scale(.7); } to { background-color: var(--color-ink); transform: none; } }
 @keyframes tl-entry { from { opacity: .2; transform: translateY(8px); } to { opacity: 1; transform: none; } }
