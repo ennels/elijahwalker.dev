@@ -18,7 +18,7 @@ photo: /headshot.jpg
 photo_mask: /headshot-mask.webp
 # The photo again with the backdrop's white taken out of its edge pixels (pymatting estimate_foreground_ml with
 # the mask above), so no light fringe shows around the hair. Used only under the mask.
-photo_cutout: /headshot-cutout.jpg
+photo_cutout: /headshot-cutout.webp
 # Two hand-cut paper shapes behind the cut-out (the silhouette grown ~8 px, traced as straight scissor cuts,
 # each cut a little differently); motion.css switches between them 4 times a second. Remake with the mask.
 photo_paper: [/headshot-paper-a.webp, /headshot-paper-b.webp]

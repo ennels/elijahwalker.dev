@@ -16,15 +16,15 @@
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
   filter: grayscale(1) contrast(1.18) brightness(1.04); mix-blend-mode: multiply;
 }
-/* A sheet of paper behind the square: cut with scissors, tilted 2.5deg and dropped a little, so it shows as thin
-   strips at the sides and a wider one along the bottom, with the collage's small hard shadow. Outside the
-   square, which clips its own contents. Still. Phones center it sideways to stay inside the 16px gutters. */
+/* A sheet of paper behind the square: cut with scissors, a slight tilt, an even border of ~3% that frames the
+   whole square (every corner clears it), with the collage's small hard shadow. Outside the square, which clips
+   its own contents. Still. At a 358px phone square it sticks out ~10px, inside the 16px gutters. */
 .sleeve-wrap { position: relative; }
 .sleeve-paper {
-  position: absolute; inset: -1.5%; z-index: -1; pointer-events: none;
-  transform: translate(1%, 3%) rotate(-2.5deg); filter: drop-shadow(1.5px 2px 0 rgb(0 0 0 / .28));
+  position: absolute; inset: -3%; z-index: -1; pointer-events: none;
+  transform: rotate(-1.2deg); filter: drop-shadow(1.5px 2px 0 rgb(0 0 0 / .28));
 }
-@media (max-width: 720px) { .sleeve-paper { transform: translateY(3%) rotate(-2.5deg); } }
+@media (max-width: 1240px) { .sleeve-paper { inset: -2.1%; } } /* where the square meets the 16px gutter */
 .sleeve-paper i {
   position: absolute; inset: 0; background: var(--sleeve-paper, var(--portrait-paper));
   /* Sharp corners at the box's corners; the scissor wobble lives along the edges only (a trimmed corner read as

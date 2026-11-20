@@ -3,7 +3,7 @@
     python3 tools/portrait-paper.py public/headshot.jpg public/headshot-mask.webp
 
 Writes, next to the photo:
-  headshot-cutout.jpg     the photo with the backdrop's color taken out of its edge pixels (pymatting
+  headshot-cutout.webp    the photo with the backdrop's color taken out of its edge pixels (pymatting
                           estimate_foreground_ml), so no light fringe shows around the hair under the mask
   headshot-paper-a.webp   two hand-cut paper shapes: the silhouette grown ~8 px, traced as straight
   headshot-paper-b.webp   "scissor" cuts with a little jitter, each cut differently (alpha only, 2x size)
@@ -26,7 +26,7 @@ alpha = np.asarray(Image.open(mask_path).convert('RGBA'))[..., 3].astype(float) 
 
 # 1. Clean edge: solve for the person's own colors where the mask is partly clear.
 fg = estimate_foreground_ml(photo, alpha)
-Image.fromarray((np.clip(fg, 0, 1) * 255).astype(np.uint8)).save(out / 'headshot-cutout.jpg', quality=92)
+Image.fromarray((np.clip(fg, 0, 1) * 255).astype(np.uint8)).save(out / 'headshot-cutout.webp', 'WEBP', quality=86, method=6)
 
 # 2. Paper: grow the silhouette, trace it, cut it with straight segments, jitter the corners.
 H, W = alpha.shape
@@ -49,4 +49,4 @@ def paper(seed, grow=8, tol=3.2, jitter=1.6, shift=(0, 0)):
 
 paper(7).save(out / 'headshot-paper-a.webp', lossless=True)
 paper(19, shift=(-1, 1)).save(out / 'headshot-paper-b.webp', lossless=True)
-print('wrote', out / 'headshot-cutout.jpg', out / 'headshot-paper-a.webp', out / 'headshot-paper-b.webp')
+print('wrote', out / 'headshot-cutout.webp', out / 'headshot-paper-a.webp', out / 'headshot-paper-b.webp')
