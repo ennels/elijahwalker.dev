@@ -31,7 +31,7 @@
   --color-band-rule:       rgb(242 234 214 / .24);
 
   --color-film:            #141312; /* film strip base */
-  --color-film-strip:      var(--color-film); /* Studio's film edges; cream in dark mode */
+  --color-film-strip:      var(--color-film); /* Studio's film edges; the accent gold in dark mode */
   --color-film-frame:      #2B2A27; /* empty or loading frame */
   --color-film-ink:        #E9E5DC; /* text inside a frame */
   --color-film-ink-muted:  #ABA79E;
@@ -155,7 +155,7 @@
     --color-band-ink-muted:  #A9B8B3;
     --color-band-rule:       rgb(240 228 198 / .18);
     --color-film:            #000000;
-    --color-film-strip:      #F0E4C6;
+    --color-film-strip:      #E0AC48;
     --color-film-frame:      #262522;
     --color-film-ink:        #E9E5DC;
     --color-film-ink-muted:  #A8A49B;
@@ -186,7 +186,7 @@
   --color-band-ink-muted:  #A9B8B3;
   --color-band-rule:       rgb(240 228 198 / .18);
   --color-film:            #000000;
-  --color-film-strip:      #F0E4C6;
+  --color-film-strip:      #E0AC48;
   --color-film-frame:      #262522;
   --color-film-ink:        #E9E5DC;
   --color-film-ink-muted:  #A8A49B;
