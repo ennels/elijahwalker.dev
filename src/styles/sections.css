@@ -70,6 +70,8 @@ main > section, .liner-notes, main.pp { position: relative; z-index: 0; } /* the
 }
 /* Below ~1300px the chart sits behind the text: start it under the heading row and drop the labels. */
 @media (max-width: 1300px) { .spc { top: calc(var(--space-section) + 5rem); } .spc-l { display: none; } }
+/* Phones: no chart. Behind the text on a narrow screen it pulled the eye from the entries. */
+@media (max-width: 720px) { .spc { display: none; } }
 
 /* Contact: signal rings spreading from the email address (motion.css sends one ring out at a time). */
 .mail { position: relative; }
