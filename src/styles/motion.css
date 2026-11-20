@@ -107,8 +107,9 @@
   .mode:hover::before { transform: translate(-1.5px, -1.5px); box-shadow: 1.5px 1.5px 0 currentColor; }
   .mode:active::before { transform: none; box-shadow: 0 0 0 currentColor; }
   @media (prefers-reduced-motion: no-preference) {
-    .mode.is-ready svg { transition: transform var(--dur-theme) var(--ease-out), opacity var(--dur-theme) var(--ease-out), rotate var(--dur-page) var(--ease-out); }
-    .mode:hover svg { rotate: 25deg; } /* the sun's rays turn; the moon tips */
+    .mode.is-ready svg { transition: transform var(--dur-theme) var(--ease-out), opacity var(--dur-theme) var(--ease-out), rotate var(--dur-page) var(--ease-out), translate var(--dur-press) var(--ease-out); }
+    .mode:hover svg { translate: -1.5px -1.5px; rotate: 25deg; } /* rides up with the ring; the sun's rays turn, the moon tips */
+    .mode:active svg { translate: none; }
   }
   /* Download PDF: the arrow drops a little toward the download. */
   a.head-link svg { transition: transform var(--dur-press) var(--ease-out); }
