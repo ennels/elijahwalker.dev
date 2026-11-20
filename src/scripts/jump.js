@@ -58,12 +58,15 @@ if (bar) {
 const spy = navLinks.map((a) => [a, target(a)]).filter(([, t]) => t);
 if (spy.length) {
   let raf = 0;
+  let marked; // touch the DOM only when the section changes, not on every scroll frame
   const mark = () => {
     raf = 0;
     const line = innerHeight * 0.4;
     let cur = null;
     for (const [a, t] of spy) if (t.getBoundingClientRect().top <= line) cur = a;
     if (scrollY > 0 && innerHeight + scrollY >= root.scrollHeight - 2) cur = spy.at(-1)[0];
+    if (cur === marked) return;
+    marked = cur;
     for (const [a] of spy) a === cur ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current');
     place();
   };

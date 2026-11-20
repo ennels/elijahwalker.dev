@@ -138,11 +138,11 @@ html { timeline-scope: --cover-name; }
     .contact { --drift: 5rem; view-timeline: --contact block; }
     .side-b { view-timeline: --side-b block; }
     #about::before, .spc, .mail::before { animation: drift auto linear both; }
-    .side-b::before, .side-b::after { animation: film-run auto linear both; }
+    .film-edge::before { animation: film-run auto linear both; }
     html #about::before { animation-timeline: --about; animation-range: cover; }
     html .spc { animation-timeline: --resume; animation-range: cover; }
     html .mail::before { animation-timeline: --contact; animation-range: cover; }
-    html .side-b::before, html .side-b::after { animation-timeline: --side-b; animation-range: cover; }
+    html .film-edge::before { animation-timeline: --side-b; animation-range: cover; }
 
     #name { view-timeline: --cover-name block; view-timeline-inset: var(--header-h) 0; }
     .brand { animation: brand-dock auto linear both; }
