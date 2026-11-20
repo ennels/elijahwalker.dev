@@ -50,8 +50,8 @@
 .copy-b path { stroke-dasharray: 1; stroke-dashoffset: 1; }
 .copy.is-done .copy-b path { stroke-dashoffset: 0; transition: stroke-dashoffset var(--dur-viewer) var(--ease-out) 60ms; }
 
-/* ---------- Studio (Side B): the large preview cross-fades; the row marker slides to the active row ---------- */
-.pv-img { transition: opacity var(--dur-viewer) var(--ease-out); }
+/* ---------- Studio (Side B, now playing): the preview cross-fades, the row marker slides, other titles dim ---------- */
+.pv-img, .trk-t { transition: opacity var(--dur-viewer) var(--ease-out); }
 .sideb-mark { transition: transform var(--dur-viewer) var(--ease-out), opacity var(--dur-hover) var(--ease-out); }
 .sideb-mark.no-slide { transition: opacity var(--dur-hover) var(--ease-out); }
 

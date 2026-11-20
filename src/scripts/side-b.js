@@ -1,7 +1,9 @@
-// Studio (Side B, SideB.astro). Wide screens: the piece under the mouse or keyboard focus shows large beside
-// the list. Phones ("now playing"): the preview sticks at the top and shows the row crossing a line 30% of the
-// way down the space below it. Either way a marker slides to the active row (motion.css), and a click on a row
-// or on the preview opens the viewer (viewer.js handles the rows). No dependencies.
+// Studio (Side B, SideB.astro): "now playing". Scrolling plays the row at a line in the large preview: on wide
+// screens the line runs level with the middle of the preview beside the list; on phones, where the preview
+// sticks above the list, it sits 30% of the way down the space below it. Moving the mouse over a row shows that
+// row until the next scroll; a row with keyboard focus holds the preview. A marker slides to the active row and
+// the other titles dim (motion.css). A click on a row or on the preview opens the viewer (viewer.js handles the
+// rows). No dependencies.
 const root = document.querySelector('[data-sideb]');
 if (root) {
   const rows = [...root.querySelectorAll('.trk')];
@@ -40,20 +42,29 @@ if (root) {
     place();
   };
 
+  // Mouse: only real movement counts. Rows sliding under a still pointer while the page scrolls must not
+  // take the preview from the scroll, so pointer events right after a scroll are ignored.
+  let lastScroll = 0;
   rows.forEach((r, k) => {
-    r.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') show(k); });
+    r.addEventListener('pointermove', (e) => {
+      if (e.pointerType === 'touch' || performance.now() - lastScroll < 200 || (!e.movementX && !e.movementY)) return;
+      show(k);
+    });
     r.addEventListener('focus', () => show(k));
   });
+  root.classList.add('is-live'); // turns on the dimming of the other rows (components.css)
   pv?.addEventListener('click', () => rows[cur].click());
 
-  // Now playing (phones): pick the row nearest a line 30% of the way down the space under the stuck preview.
-  // Runs on scroll only while Studio is on screen.
+  // Now playing: pick the row nearest the line. Runs on scroll only while Studio is on screen, and not while a
+  // row has keyboard focus (tabbing scrolls the page too).
   let ticking = false;
+  const box = root.querySelector('.pv-box');
   const follow = () => {
     ticking = false;
-    if (wide.matches) return;
-    const below = pv.getBoundingClientRect().bottom;
-    const line = below + (innerHeight - below) * 0.3;
+    if (document.activeElement?.matches?.('.trk:focus-visible')) return;
+    let line;
+    if (wide.matches) { const b = box.getBoundingClientRect(); line = b.top + b.height / 2; }
+    else { const below = pv.getBoundingClientRect().bottom; line = below + (innerHeight - below) * 0.3; }
     let best = cur, gap = Infinity;
     rows.forEach((r, k) => {
       const b = r.getBoundingClientRect();
@@ -62,7 +73,18 @@ if (root) {
     });
     show(best);
   };
-  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(follow); } };
+  // Wide screens: the preview only sticks while the list is longer than it, so leave room under the list for
+  // the last row to reach the middle of the stuck preview (half the mat plus the caption).
+  const tail = () => {
+    const f = pv.getBoundingClientRect(), b = box.getBoundingClientRect();
+    root.style.setProperty('--tail', wide.matches ? `${Math.round(f.bottom - (b.top + b.height / 2))}px` : '0px');
+  };
+  tail();
+  addEventListener('resize', tail);
+  wide.addEventListener('change', tail);
+  document.fonts?.ready.then(tail);
+
+  const onScroll = () => { lastScroll = performance.now(); if (!ticking) { ticking = true; requestAnimationFrame(follow); } };
   new IntersectionObserver(([e]) => {
     if (e.isIntersecting) { addEventListener('scroll', onScroll, { passive: true }); follow(); }
     else removeEventListener('scroll', onScroll);

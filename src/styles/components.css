@@ -149,7 +149,7 @@ mark.hl {
 /* Studio as Side B (SideB.astro): a numbered tracklist of short titles, and the active piece large beside it.
    One marker (side-b.js) draws the active row: a faint fill with an edge-gold bar, scaled from 1px tall. */
 .sideb { display: grid; grid-template-columns: minmax(16rem, 24rem) minmax(0, 1fr); gap: var(--space-12) var(--space-16); align-items: start; }
-.sideb-list { position: relative; }
+.sideb-list { position: relative; padding-bottom: var(--tail, 0px); } /* --tail: side-b.js, so the last row can reach the preview's middle */
 .sideb-group + .sideb-group { margin-top: var(--space-10); }
 .sideb-group h3 { margin-bottom: var(--space-3); font: var(--weight-heavy) var(--text-lg)/var(--leading-snug) var(--font-display); }
 .sideb-group ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--color-band-rule); }
@@ -163,6 +163,7 @@ a.trk { cursor: zoom-in; }
 .trk-n { flex: 0 0 2.25rem; font: var(--weight-strong) var(--text-sm)/1 var(--font-text); letter-spacing: var(--tracking-edge); font-variant-numeric: tabular-nums; color: var(--color-film-edge); }
 .trk-t { min-width: 0; font: var(--weight-heavy) var(--text-md)/var(--leading-head) var(--font-display); }
 .trk-pic { display: none; }
+.sideb.is-live .trk:not(.is-active) .trk-t { opacity: .6; } /* dimmed titles keep 4:1 on the band (large text) */
 .sideb-mark {
   position: absolute; left: 0; right: 0; top: 0; height: 1px; transform-origin: 0 0;
   background: color-mix(in srgb, var(--color-band-ink) 9%, transparent); box-shadow: inset 3px 0 0 var(--color-film-edge);
