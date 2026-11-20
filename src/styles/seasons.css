@@ -33,68 +33,106 @@
 .sleeve[data-season="winter"] .g-scarf,
 .sleeve[data-hat] .g-hat,
 .sleeve[data-season="summer"] .g-shades { display: inline; }
+/* Cut-paper pieces (flat fills, no strokes), each with its own small shadow (#paper in SeasonGear.astro). */
+.gear polygon { filter: url(#paper); }
 .sc-wrap, .sc-tail { fill: #1E4A50; }
 .sc-shade { fill: #153A3F; }
 .sc-roll { fill: #24565C; }
-.sc-band { fill: none; stroke: #F2EAD6; stroke-width: 7; stroke-linecap: round; }
-.sc-fringe { fill: none; stroke: #1E4A50; stroke-width: 4; stroke-linecap: round; }
+.sc-band { fill: #F2EAD6; }
 .ht-crown { fill: #B3261E; }
 .ht-fold { fill: #8A1C15; }
 .ht-brim, .ht-pom { fill: #F4EEE0; }
-.ht-brim-shade { fill: none; stroke: #D8CDB4; stroke-width: 5; stroke-linecap: round; }
-.sh-lens { fill: #141312; stroke: #141312; stroke-width: 3; stroke-linejoin: round; }
-.sh-arm, .sh-bridge { fill: none; stroke: #141312; stroke-width: 5; stroke-linecap: round; }
-.sh-glint { fill: none; stroke: rgb(255 255 255 / .22); stroke-width: 4; stroke-linecap: round; }
+.ht-brim-shade { fill: #D8CDB4; }
+.sh-lens, .sh-arm, .sh-bridge { fill: #141312; }
+.sh-glint { fill: rgb(255 255 255 / .3); }
 
-/* ---------- Particles: an outer box travels, an inner box sways or turns ---------- */
-.sky .p { position: absolute; left: var(--x); top: var(--y); animation: var(--move) var(--d) linear var(--t) infinite; }
-.sky .p > i { display: block; animation: var(--sway) var(--d2) ease-in-out var(--t) infinite alternate; }
+/* ---------- Particles: scraps of cut paper, in stop-motion ----------
+   Like the paper behind him: each scrap is cut with scissors (two cuts, --cut-a and --cut-b, switched 4 times a
+   second), casts a small hard shadow, and moves in steps at 8 frames a second. seasons.js snaps every duration
+   and start time to that 1/8 s grid and starts all of them on one clock, so the whole scene jumps together, a
+   frame at a time. An outer box travels; an inner box sways or turns and carries the cut. */
+.sky { filter: drop-shadow(1.5px 2px 0 rgb(0 0 0 / .28)); }
+.sky .p { position: absolute; left: var(--x); top: var(--y); animation: var(--move) var(--d) steps(var(--n)) var(--t) infinite; }
+.sky .p > i {
+  display: block; clip-path: var(--cut-a);
+  animation: var(--sway) var(--d2) steps(var(--n2)) var(--t) infinite alternate, cut-boil .5s steps(1, end) infinite;
+}
+@keyframes cut-boil { 0%, 100% { clip-path: var(--cut-a); } 50% { clip-path: var(--cut-b); } }
 
-/* Fall: leaves blown across on the wind, tumbling. */
+/* Fall: leaves blown across on the wind, tumbling; a few paper slivers for the gusts. */
 .leaf { --move: leaf-blow; --sway: leaf-tumble; }
-.leaf > i { width: calc(var(--s) * 1cqi); height: calc(var(--s) * .6cqi); background: var(--c); border-radius: 0 100% 0 100%; }
-@keyframes leaf-blow { from { transform: translate(0, 0); } 45% { transform: translate(60cqi, 10cqi); } to { transform: translate(130cqi, 3cqi); } }
+.leaf > i {
+  width: calc(var(--s) * 1cqi); height: calc(var(--s) * .6cqi); background: var(--c);
+  --cut-a: polygon(0% 52%, 10% 30%, 28% 12%, 50% 3%, 72% 8%, 90% 24%, 100% 48%, 92% 70%, 74% 90%, 50% 98%, 28% 90%, 10% 74%);
+  --cut-b: polygon(2% 46%, 13% 25%, 31% 9%, 53% 5%, 75% 12%, 92% 30%, 99% 54%, 88% 75%, 70% 93%, 46% 97%, 24% 86%, 8% 68%);
+}
+@keyframes leaf-blow { from { transform: translate(0, 0); } 50% { transform: translate(66cqi, 10cqi); } to { transform: translate(130cqi, 3cqi); } }
 @keyframes leaf-tumble { from { transform: translateY(-5cqi) rotate(var(--r)); } to { transform: translateY(5cqi) rotate(calc(var(--r) + 240deg)); } }
-
-/* Fall also gets a few gusts: faint streaks that sweep across and fade. */
 .gust { --move: gust-sweep; --sway: gust-fade; }
-.gust > i { width: calc(var(--s) * 1cqi); height: 2px; border-radius: 1px; background: linear-gradient(90deg, transparent, rgb(250 244 230 / .7), transparent); opacity: 0; }
+.gust > i {
+  width: calc(var(--s) * 1cqi); height: .7cqi; background: #F6EEDC; opacity: 0;
+  --cut-a: polygon(0% 60%, 30% 20%, 100% 0%, 97% 45%, 62% 80%, 4% 100%);
+  --cut-b: polygon(2% 50%, 34% 10%, 99% 8%, 100% 52%, 58% 90%, 0% 92%);
+}
 @keyframes gust-sweep { from { transform: translateX(0); } to { transform: translateX(150cqi); } }
-@keyframes gust-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes gust-fade { from { opacity: 0; } to { opacity: .8; } }
 
-/* Winter: snow, drifting side to side as it falls. */
+/* Winter: snow, cut as small rough dots, drifting side to side as it falls. */
 .flake { --move: snow-fall; --sway: snow-sway; }
-.flake > i { width: calc(var(--s) * 1cqi); aspect-ratio: 1; border-radius: 50%; background: #FBF6EA; opacity: var(--o); }
+.flake > i {
+  width: calc(var(--s) * 1cqi); aspect-ratio: 1; background: #FBF6EA; opacity: var(--o);
+  --cut-a: polygon(50% 0%, 88% 16%, 100% 56%, 76% 96%, 30% 100%, 0% 66%, 8% 20%);
+  --cut-b: polygon(44% 2%, 86% 10%, 100% 48%, 84% 90%, 40% 100%, 4% 80%, 2% 30%);
+}
 @keyframes snow-fall { to { transform: translateY(118cqi); } }
 @keyframes snow-sway { from { transform: translateX(-3cqi); } to { transform: translateX(3cqi); } }
 
-/* Spring: light rain behind him, and blossom petals turning as they fall. */
+/* Spring: rain as thin paper strips behind him, and blossom petals turning as they fall. */
 .drop { --move: rain-fall; --sway: none; }
-.drop > i { width: 2px; height: calc(var(--s) * 1cqi); border-radius: 1px; background: linear-gradient(transparent, rgb(250 244 230 / .9)); transform: rotate(14deg); }
+.drop > i {
+  width: .8cqi; height: calc(var(--s) * 1cqi); background: #F3EEDF; opacity: .8; transform: rotate(14deg);
+  --cut-a: polygon(20% 0%, 100% 6%, 80% 100%, 0% 94%);
+  --cut-b: polygon(0% 4%, 82% 0%, 100% 92%, 16% 100%);
+}
 @keyframes rain-fall { to { transform: translate(-30cqi, 136cqi); } }
 .petal { --move: petal-fall; --sway: petal-turn; }
-.petal > i { width: calc(var(--s) * 1cqi); height: calc(var(--s) * .7cqi); background: var(--c); border-radius: 80% 0 80% 0; }
+.petal > i {
+  width: calc(var(--s) * 1cqi); height: calc(var(--s) * .7cqi); background: var(--c);
+  --cut-a: polygon(0% 38%, 18% 8%, 50% 0%, 84% 10%, 100% 46%, 86% 78%, 56% 100%, 24% 92%, 4% 70%);
+  --cut-b: polygon(2% 30%, 24% 4%, 56% 2%, 88% 16%, 98% 52%, 80% 84%, 48% 98%, 18% 86%, 0% 62%);
+}
 @keyframes petal-fall { to { transform: translate(34cqi, 120cqi); } }
 @keyframes petal-turn { from { transform: translateX(-5cqi) rotate(var(--r)); } to { transform: translateX(5cqi) rotate(calc(var(--r) + 260deg)); } }
 
-/* Summer: clouds crossing behind him, and fireflies wandering and blinking. */
-.cloud { --move: cloud-drift; --sway: none; opacity: .88; }
-.cloud > i { position: relative; width: calc(var(--s) * 1cqi); height: calc(var(--s) * .3cqi); border-radius: 999px; background: #F7EFDC; }
-.cloud > i::before, .cloud > i::after { content: ""; position: absolute; aspect-ratio: 1; border-radius: 50%; background: inherit; }
-.cloud > i::before { width: 44%; left: 14%; bottom: 30%; }
-.cloud > i::after { width: 30%; left: 50%; bottom: 42%; }
+/* Summer: paper clouds crossing behind him, and fireflies as bright scraps that wander and blink. */
+.cloud { --move: cloud-drift; --sway: none; opacity: .9; }
+.cloud > i {
+  width: calc(var(--s) * 1cqi); height: calc(var(--s) * .44cqi); background: #F7EFDC;
+  --cut-a: polygon(0% 100%, 3% 66%, 12% 50%, 24% 50%, 28% 28%, 40% 12%, 54% 10%, 62% 26%, 70% 16%, 82% 20%, 87% 40%, 96% 52%, 100% 78%, 100% 100%);
+  --cut-b: polygon(1% 100%, 2% 70%, 10% 54%, 22% 46%, 30% 26%, 42% 10%, 56% 14%, 63% 30%, 72% 14%, 84% 22%, 88% 44%, 97% 56%, 99% 82%, 99% 100%);
+}
 @keyframes cloud-drift { to { transform: translateX(calc(-130cqi - var(--s) * 1cqi)); } }
 .fly { --move: fly-wander; --sway: fly-blink; }
-.sky .fly { animation-timing-function: ease-in-out; animation-direction: alternate; }
-.fly > i { width: calc(var(--s) * 1cqi); aspect-ratio: 1; border-radius: 50%; background: #FFFBE0; box-shadow: 0 0 2cqi 1cqi rgb(255 246 190 / .85); }
-.sky .fly > i { animation-timing-function: ease-in-out; animation-direction: normal; }
-@keyframes fly-wander { 33% { transform: translate(var(--ax), var(--ay)); } 66% { transform: translate(var(--bx), var(--by)); } to { transform: translate(var(--cx), var(--cy)); } }
-@keyframes fly-blink { 0%, 100% { opacity: .15; } 45%, 60% { opacity: 1; } }
+.sky .fly { animation-direction: alternate; }
+.fly > i {
+  width: calc(var(--s) * 1cqi); aspect-ratio: 1; background: #FFF1A8;
+  --cut-a: polygon(50% 0%, 92% 22%, 100% 64%, 66% 100%, 18% 92%, 0% 50%, 18% 10%);
+  --cut-b: polygon(40% 0%, 86% 12%, 100% 54%, 78% 94%, 30% 100%, 2% 64%, 8% 18%);
+}
+.sky .fly > i { animation-direction: normal; }
+@keyframes fly-wander { 33.333% { transform: translate(var(--ax), var(--ay)); } 66.667% { transform: translate(var(--bx), var(--by)); } to { transform: translate(var(--cx), var(--cy)); } }
+@keyframes fly-blink { 0%, 100% { opacity: .2; } 50% { opacity: 1; } }
+
+/* The accessories' paper pieces are set down again a hair off, 4 times a second, each a little differently. */
+.gear polygon { transform-box: fill-box; transform-origin: center; animation: gear-boil .5s steps(1, end) infinite; }
+.gear polygon:nth-child(even) { animation-name: gear-boil-b; }
+@keyframes gear-boil { 0%, 100% { transform: none; } 50% { transform: rotate(.8deg) translate(.6px, -.5px); } }
+@keyframes gear-boil-b { 0%, 100% { transform: rotate(-.6deg); } 50% { transform: translate(-.5px, .6px); } }
 
 /* Off screen, the scene holds still; for reduced motion it is a still picture. Negative start times (--t)
    leave every particle at a different point on its path, so a held scene still looks scattered. */
-.sleeve.is-still .sky .p, .sleeve.is-still .sky .p > i { animation-play-state: paused; }
+.sleeve.is-still .sky .p, .sleeve.is-still .sky .p > i, .sleeve.is-still .gear polygon { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) {
-  .sky .p, .sky .p > i { animation-play-state: paused; }
+  .sky .p, .sky .p > i, .gear polygon { animation-play-state: paused; }
 }
 @media (forced-colors: active) { .sky, .gear { display: none; } }

@@ -1,37 +1,48 @@
 ---
-// Seasonal accessories drawn over the cover portrait, in the photo's own pixel space (headshot.jpg, 460 x 460):
-// eyes at about (213, 155) and (270, 158), top of the hair at y 42, neck at y 260-290, head tilted ~3 degrees.
+// Seasonal accessories laid over the cover portrait as cut paper, in the photo's own pixel space (headshot.jpg,
+// 460 x 460): eyes at about (213, 155) and (270, 158), top of the hair at y 42, neck at y 260-290, head tilted
+// ~3 degrees. Every piece is a flat paper shape with straight scissor cuts and its own small shadow (#paper);
+// seasons.css sets each piece down again a hair off, 4 times a second, in time with the paper behind him.
 // seasons.js sets data-season / data-hat on the sleeve and seasons.css shows the matching group.
 // Refit these coordinates whenever the photo changes.
 ---
 <svg class="gear" viewBox="0 0 460 460" aria-hidden="true" focusable="false">
-  <!-- Winter: a knit scarf, teal with cream bands: a roll hugging the neck, a wider wrap over the collar, and the
-       tail hanging down his right side (viewer's left). -->
+  <defs>
+    <filter id="paper" x="-10%" y="-10%" width="130%" height="140%">
+      <feDropShadow dx="1.2" dy="1.6" stdDeviation="0" flood-color="#000" flood-opacity=".28" />
+    </filter>
+  </defs>
+  <!-- Winter: a knit scarf in teal paper with cream bands: the tail hanging down his right side (viewer's left)
+       with a cut fringe, a wider wrap over the collar with a darker underside, and a roll hugging the neck. -->
   <g class="g-scarf">
-    <path class="sc-tail" d="M182 306 C186 340 190 380 192 426 L232 424 C230 380 226 342 220 308 Z" />
-    <path class="sc-band" d="M188 352 L224 350 M190 380 L228 378 M191 406 L230 404" />
-    <path class="sc-fringe" d="M196 426 v14 M204 426 v15 M212 426 v15 M220 426 v14 M228 425 v13" />
-    <path class="sc-wrap" d="M146 286 C196 306 268 304 316 282 C322 294 323 308 318 320 C270 344 192 344 140 322 C136 310 138 296 146 286 Z" />
-    <path class="sc-band" d="M142 304 C192 326 268 326 320 302" />
-    <path class="sc-shade" d="M140 322 C192 344 270 344 318 320 C314 328 308 334 300 337 C258 352 196 352 152 336 C146 332 142 328 140 322 Z" />
-    <path class="sc-roll" d="M170 262 C204 278 258 278 292 260 C298 270 300 282 296 292 C256 308 206 308 166 290 C162 280 164 270 170 262 Z" />
-    <path class="sc-band" d="M167 277 C206 293 256 293 296 275" />
+    <polygon class="sc-tail" points="182,306 220,308 226,342 231,388 234,424 229,437 224,426 219,438 214,426 209,438 204,426 199,437 192,426 190,380 186,340" />
+    <polygon class="sc-band" points="187,347 225,344 226,352 188,356" />
+    <polygon class="sc-band" points="189,374 228,372 229,380 190,383" />
+    <polygon class="sc-band" points="190,400 230,398 231,406 191,409" />
+    <polygon class="sc-shade" points="140,322 180,337 226,342 272,338 318,320 312,333 272,348 226,353 180,348 150,337" />
+    <polygon class="sc-wrap" points="146,286 190,301 244,304 290,296 316,282 322,300 318,320 272,338 226,342 180,337 140,322 138,302" />
+    <polygon class="sc-band" points="142,299 190,317 244,321 292,314 320,297 321,306 293,323 244,330 190,326 141,308" />
+    <polygon class="sc-roll" points="170,262 204,276 232,279 262,275 292,260 298,276 296,292 258,304 230,307 200,303 166,290 164,274" />
+    <polygon class="sc-band" points="166,272 206,287 232,290 262,286 296,270 297,279 262,295 232,299 205,296 166,281" />
   </g>
-  <!-- December: a Santa hat. Brim on the hairline following the head's tilt, crown leaning to his left (viewer's
-       right), pompom hanging by his ear. -->
+  <!-- December: a Santa hat in red paper. Cream brim on the hairline following the head's tilt, crown leaning to
+       his left (viewer's right) with a darker fold, a cut-paper pompom by his ear. -->
   <g class="g-hat">
-    <path class="ht-crown" d="M160 96 C158 58 198 28 248 26 C292 24 326 46 340 80 C346 94 348 104 346 114 C336 102 326 94 318 90 C266 76 206 80 160 96 Z" />
-    <path class="ht-fold" d="M296 36 C320 50 336 72 344 106 C334 98 326 92 318 88 C314 66 306 50 296 36 Z" />
-    <path class="ht-brim" d="M150 98 C206 76 284 70 330 84 C336 86 338 92 337 98 L335 110 C334 116 329 118 324 116 C280 102 210 106 160 124 C154 126 149 123 148 117 L147 104 C146 100 147 99 150 98 Z" />
-    <path class="ht-brim-shade" d="M160 122 C210 104 280 100 324 114" />
-    <circle class="ht-pom" cx="348" cy="120" r="14" />
+    <polygon class="ht-crown" points="160,96 166,70 188,44 222,30 254,26 290,30 318,44 336,66 346,96 346,114 330,98 300,86 250,80 204,84" />
+    <polygon class="ht-fold" points="296,36 322,52 338,76 344,106 330,96 318,88 310,62" />
+    <polygon class="ht-brim" points="150,98 206,80 260,72 304,74 332,84 338,96 336,112 326,117 282,104 230,104 186,112 160,124 149,120 147,104" />
+    <polygon class="ht-brim-shade" points="160,117 208,103 262,97 324,108 325,114 262,104 209,110 161,124" />
+    <polygon class="ht-pom" points="348,105 359,109 363,121 357,132 345,135 335,128 334,115 339,107" />
   </g>
-  <!-- Summer: wayfarer sunglasses on his eyes, following the head tilt, arms back to the ears. -->
+  <!-- Summer: wayfarer sunglasses in black paper on his eyes, following the head tilt, arms back to the ears,
+       a pale sliver of glint on each lens. -->
   <g class="g-shades">
-    <path class="sh-arm" d="M192 147 L164 152 M298 153 L316 158" />
-    <path class="sh-lens" d="M190 143 L237 141 C241 141 242 144 241 148 L237 163 C235 170 230 172 223 172 L204 172 C197 172 193 168 192 162 Z" />
-    <path class="sh-lens" d="M249 145 L296 148 C300 148 301 151 300 155 L295 170 C293 177 288 179 281 179 L262 178 C255 178 251 174 250 168 Z" />
-    <path class="sh-bridge" d="M241 147 C244 144 247 144 250 147" />
-    <path class="sh-glint" d="M199 166 L209 149 M258 172 L268 155" />
+    <polygon class="sh-arm" points="192,144 164,149 165,155 193,150" />
+    <polygon class="sh-arm" points="298,151 316,155 315,161 297,157" />
+    <polygon class="sh-lens" points="190,143 238,141 241,147 237,163 231,171 204,172 194,167" />
+    <polygon class="sh-lens" points="249,145 297,148 300,154 295,170 288,178 262,178 252,172" />
+    <polygon class="sh-bridge" points="239,144 251,145 250,151 240,150" />
+    <polygon class="sh-glint" points="199,166 208,149 211,150 202,167" />
+    <polygon class="sh-glint" points="258,172 267,155 270,156 261,173" />
   </g>
 </svg>
