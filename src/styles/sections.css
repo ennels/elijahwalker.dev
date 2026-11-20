@@ -29,13 +29,53 @@ main > section, .liner-notes, main.pp { position: relative; z-index: 0; } /* the
 #projects, main.pp { text-shadow: var(--grid-halo); }
 #projects .btn, main.pp .btn, main.pp .dg-wrap { text-shadow: none; }
 
-/* About on a band of cream liner-note paper across the window (a warm dark paper in dark mode). The section points
-   its own color tokens at the paper colors, so the heading, prose, rules, the credits list and the Now list all
-   switch with no rules of their own. */
-#about {
-  --color-ink: var(--color-about-ink); --color-ink-muted: var(--color-about-muted);
-  --color-rule: var(--color-about-rule); --color-focus: var(--color-about-ink);
-  color: var(--color-ink); padding-bottom: var(--space-section);
+/* ---------- Section backgrounds. Text on them gets the letter halo, as on the Projects grid. ---------- */
+/* About and Resume share the .liner-notes wrapper, so each is its own positioning context: its background stays
+   inside it (the Nov 20 cream band had spread over Resume too). */
+#about, #resume { position: relative; z-index: 0; }
+#about, #resume, .contact { text-shadow: var(--grid-halo); }
+#about mark.hl, #about .btn, #resume .btn, .contact .btn { text-shadow: none; }
+
+/* About: lab-notebook ruling across the window, and a red margin line just left of the text. */
+#about::before {
+  content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; width: 100vw; margin-left: -50vw;
+  --rule-gap: 2rem;
+  --margin-x: max(6px, calc(max(0px, (100vw - var(--page-max)) / 2) + var(--gutter-min) - var(--space-5)));
+  background:
+    linear-gradient(90deg, transparent calc(var(--margin-x) - 1px), var(--color-margin) 0 calc(var(--margin-x) + 1px), transparent 0),
+    repeating-linear-gradient(transparent 0 calc(var(--rule-gap) - 1px), var(--grid-major) 0 var(--rule-gap));
 }
-#about::before { content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; width: 100vw; margin-left: -50vw; background: var(--color-about); }
+
+/* Resume: a control chart down the right side (ControlChart.astro); in the empty margin on wide screens,
+   behind the text on narrow ones. */
+.spc {
+  position: absolute; z-index: -1; top: var(--space-section); bottom: var(--space-section);
+  right: calc(var(--space-6) - max(0px, (100vw - var(--page-max)) / 2)); width: min(15rem, 26vw);
+  color: var(--color-ink);
+}
+.spc svg { position: absolute; inset: var(--space-6) 0 0; width: 100%; height: calc(100% - var(--space-6)); overflow: visible; opacity: .24; }
+.spc path, .spc polyline { fill: none; stroke: currentColor; vector-effect: non-scaling-stroke; }
+.spc-lim { stroke-width: 1.2; stroke-dasharray: 6 5; }
+.spc-cl { stroke-width: 1.2; }
+.spc-trace { stroke-width: 1.4; stroke-linejoin: round; }
+.spc-pt { stroke-width: 6; stroke-linecap: round; }
+.spc-pt.is-out { stroke: #B3261E; stroke-width: 8; }
+.spc-l {
+  position: absolute; top: 0; left: var(--x); transform: translateX(-50%);
+  font: var(--weight-strong) var(--text-xs)/1 var(--font-text); letter-spacing: var(--tracking-edge); color: var(--color-ink-muted); opacity: .7;
+}
+/* Below ~1300px the chart sits behind the text: start it under the heading row and drop the labels. */
+@media (max-width: 1300px) { .spc { top: calc(var(--space-section) + 5rem); } .spc-l { display: none; } }
+
+/* Contact: signal rings spreading from the email address (motion.css sends one ring out at a time). */
+.mail { position: relative; }
+.mail::before, .mail::after {
+  content: ""; position: absolute; z-index: -1; left: 1.5rem; top: 50%; width: min(44rem, calc(200vw - 5rem)); aspect-ratio: 1; /* stays inside narrow screens */
+  translate: -50% -50%; border-radius: 50%; pointer-events: none;
+}
+.mail::before {
+  background: repeating-radial-gradient(circle, transparent 0 calc(2.75rem - 1px), var(--grid-major) 0 2.75rem);
+  -webkit-mask-image: radial-gradient(circle, #000 25%, transparent 70%); mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+}
+.mail::after { border: 1.5px solid var(--color-ink); opacity: 0; scale: .08; }
 

@@ -7,6 +7,7 @@ import FilmStrip from '../components/FilmStrip.astro';
 import Viewer from '../components/Viewer.astro';
 import SideB from '../components/SideB.astro';
 import SeasonGear from '../components/SeasonGear.astro';
+import ControlChart from '../components/ControlChart.astro';
 import '../styles/seasons.css';
 import { profile, projects, media, resume, now, studio, hasStudio } from '../lib/content.js';
 
@@ -35,6 +36,7 @@ const [user, domain] = profile.email.split('@');
         <div class="who">
           {cutout && <span class="who-fill" aria-hidden="true"></span>}
           {profile.photo && <img src={profile.photo} alt={`Portrait of ${profile.name}`} width="460" height="460" fetchpriority="high" data-fallback />}
+          {cutout && <span class="who-tint" aria-hidden="true"></span>}
           {cutout && <SeasonGear />}
         </div>
         {cutout && <div class="sky sky-front" aria-hidden="true"></div>}
@@ -89,6 +91,7 @@ const [user, domain] = profile.email.split('@');
     </section>
 
     <section class="sec" id="resume" aria-labelledby="h-resume">
+      <ControlChart />
       <div class="sec-head">
         <h2 class="sh" id="h-resume">Resume</h2>
         {profile.resume_pdf && (

@@ -50,6 +50,12 @@
 .copy-b path { stroke-dasharray: 1; stroke-dashoffset: 1; }
 .copy.is-done .copy-b path { stroke-dashoffset: 0; transition: stroke-dashoffset var(--dur-viewer) var(--ease-out) 60ms; }
 
+/* ---------- Contact: one signal ring at a time spreads out from the email address and fades ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .mail::after { animation: ping 4.2s var(--ease-out) infinite; }
+}
+@keyframes ping { from { scale: .08; opacity: .45; } to { scale: 1; opacity: 0; } }
+
 /* ---------- Studio (Side B, now playing): the preview cross-fades, the row marker slides, other titles dim ---------- */
 .pv-img, .trk-t { transition: opacity var(--dur-viewer) var(--ease-out); }
 .sideb-mark { transition: transform var(--dur-viewer) var(--ease-out), opacity var(--dur-hover) var(--ease-out); }

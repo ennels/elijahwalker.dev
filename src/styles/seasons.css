@@ -1,15 +1,20 @@
 /* The cover portrait as layers, and its seasonal scenes (seasons.js builds the particles and picks the season).
-   Back to front: the sleeve's gold, .sky-back (things behind him), .who (a gold silhouette, the photo cut out
-   by the same mask and multiplied onto it, then the accessories), .sky-front (things passing in front).
+   Back to front: the sleeve's square, .sky-back (things behind him), .who (a silhouette in the highlight color,
+   the photo cut out by the same mask and multiplied onto it, the shadow color lightened in, then the
+   accessories), .sky-front (things passing in front). Light mode: gold square, gold-and-black portrait. Dark
+   mode: deep teal square, cream-and-teal portrait (tokens --portrait-hi / --portrait-lo).
    motion.css moves the three layers at different speeds as the cover scrolls away. Sizes use cqi: the sleeve is
    a square size container, so 1cqi is 1% of its side, across and down. */
 
 .has-cutout .who { position: absolute; inset: 0; isolation: isolate; }
-.has-cutout .who-fill, .has-cutout .who img {
+.has-cutout .who-fill, .has-cutout .who img, .has-cutout .who-tint {
   -webkit-mask-image: var(--mask); mask-image: var(--mask);
   -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
 }
-.has-cutout .who-fill { position: absolute; inset: 0; background: var(--color-cover); }
+.has-cutout .who-fill { position: absolute; inset: 0; background: var(--portrait-hi); }
+/* Duotone: the photo multiplies onto the highlight color, then the shadow color is lightened in. On the gold
+   square (light mode) the shadow color is transparent, so this is the plain multiply look. */
+.has-cutout .who-tint { position: absolute; inset: 0; background: var(--portrait-lo); mix-blend-mode: lighten; }
 .sky { position: absolute; inset: 0; pointer-events: none; }
 
 /* ---------- Accessories (SeasonGear.astro) ---------- */
