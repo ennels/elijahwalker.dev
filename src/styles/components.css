@@ -230,7 +230,7 @@ a.trk { cursor: zoom-in; }
   .trk { padding-inline: var(--space-3); }
 }
 @media (max-width: 720px) {
-  .sideb-pv { top: calc(var(--header-h) + 46px); } /* the section nav adds a 46px row (base.css) */
+  .sideb-pv { top: calc(var(--header-h) + 46px); } /* the section nav adds a 44px row to the header (base.css) */
   .trk-pic { position: relative; display: block; flex: 0 0 4.5rem; aspect-ratio: 4 / 3; background: var(--color-film); border-radius: var(--radius-frame); }
   .trk-pic img { position: absolute; inset: 3px; width: calc(100% - 6px); height: calc(100% - 6px); object-fit: contain; }
   .trk-n { flex-basis: 2rem; }
