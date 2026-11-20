@@ -32,4 +32,6 @@ facts:
     value: Gaussian splats, PC builds, running, philosophy of mind
 
 contact_heading: Let's make something.
-contact_text: I'm in Boise, Idaho. Email is the fastest way to reach me.
+contact_text: |- # each line shows on its own line
+  I'm in Boise, Idaho.
+  Email is the fastest way to reach me.

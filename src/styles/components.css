@@ -298,6 +298,12 @@ a.pic:hover { box-shadow: 0 0 0 2px var(--color-film-edge); }
 .copy.is-done .copy-a { opacity: 0; transform: translateY(-6px); }
 .copy.is-done .copy-b { opacity: 1; transform: none; }
 .mail a { min-width: 0; font: var(--weight-heavy) clamp(1.6rem, .9rem + 3vw, 3.2rem)/1.1 var(--font-display); overflow-wrap: anywhere; text-decoration-thickness: .06em; text-underline-offset: .14em; }
+/* Phones: the email breaks over two lines at full size, so give each piece more room. */
+@media (max-width: 720px) {
+  .contact { padding-bottom: calc(var(--space-section) * 1.6); }
+  .mail { margin-top: var(--space-10); row-gap: var(--space-5); }
+  .contact .t-links { margin-top: var(--space-6); }
+}
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
