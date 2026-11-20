@@ -177,7 +177,7 @@ mark.hl:nth-of-type(3n) { background-image: url("data:image/svg+xml,%3Csvg xmlns
 
 /* Studio as Side B (SideB.astro): a numbered tracklist of short titles, and the active piece large beside it.
    One marker (side-b.js) draws the active row: a faint fill with an edge-gold bar, scaled from 1px tall. */
-.sideb { display: grid; grid-template-columns: minmax(16rem, 24rem) minmax(0, 1fr); gap: var(--space-12) var(--space-16); align-items: start; }
+.sideb { display: grid; grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr); gap: var(--space-12) var(--space-16); align-items: start; }
 .sideb-list { position: relative; }
 .sideb-group + .sideb-group { margin-top: var(--space-6); }
 .sideb-group h3 { margin-bottom: var(--space-2); font: var(--weight-strong) var(--text-xs)/1.4 var(--font-text); letter-spacing: var(--tracking-edge); text-transform: uppercase; color: var(--color-film-edge); }
@@ -199,16 +199,20 @@ a.trk { cursor: zoom-in; }
   opacity: 0; pointer-events: none;
 }
 .sideb-mark.is-on { opacity: 1; }
-/* The preview: a film-black mat, at most 520 x 390 (SideB.astro picks image files for that size). Sticks below
+/* The preview: a film-black mat at 4:3 that fills its column (at most 776 x 582, level with the list), and
+   shrinks to fit a short window with its caption (SideB.astro picks image files for that size). Sticks below
    the header while the list scrolls past. Mouse only (aria-hidden); keyboard users open pieces from the list. */
-.sideb-pv { position: sticky; top: calc(var(--header-h) + var(--space-8)); margin: 0; }
-.pv-box { position: relative; aspect-ratio: 4 / 3; max-width: 32.5rem; background: var(--color-film); border-radius: var(--radius-frame); cursor: zoom-in; }
+.sideb-pv {
+  position: sticky; top: calc(var(--header-h) + var(--space-8)); margin: 0;
+  --pv-w: min(100%, calc((100svh - var(--header-h) - 2 * var(--space-8) - 4.5rem) * 4 / 3));
+}
+.pv-box { position: relative; aspect-ratio: 4 / 3; width: var(--pv-w); background: var(--color-film); border-radius: var(--radius-frame); cursor: zoom-in; }
 .pv-img {
   position: absolute; inset: var(--space-5); width: calc(100% - 2 * var(--space-5)); height: calc(100% - 2 * var(--space-5));
   object-fit: contain; opacity: 0;
 }
 .pv-img.is-on { opacity: 1; }
-.pv-cap { display: grid; gap: var(--space-2); max-width: 32.5rem; margin-top: var(--space-4); font-size: var(--text-sm); line-height: var(--leading-ui); color: var(--color-band-ink-muted); }
+.pv-cap { display: grid; gap: var(--space-2); width: var(--pv-w); margin-top: var(--space-4); font-size: var(--text-sm); line-height: var(--leading-ui); color: var(--color-band-ink-muted); }
 .pv-n { font: var(--weight-strong) var(--text-xs)/1 var(--font-text); letter-spacing: var(--tracking-edge); text-transform: uppercase; color: var(--color-film-edge); }
 @media (forced-colors: active) { .sideb-mark { display: none; } .trk.is-active .trk-t { text-decoration: underline; } }
 /* Narrow screens: no room for the preview. Each row carries a small picture instead; a tap opens the viewer. */
@@ -223,7 +227,8 @@ a.trk { cursor: zoom-in; }
     margin-inline: calc(-1 * max(var(--gutter-min), env(safe-area-inset-left))); padding: var(--space-3) max(var(--gutter-min), env(safe-area-inset-left)) var(--space-3);
     background: var(--color-band);
   }
-  .pv-box { aspect-ratio: 3 / 2; max-width: none; }
+  .sideb-pv { --pv-w: auto; }
+  .pv-box { aspect-ratio: 3 / 2; }
   .pv-cap { display: flex; gap: var(--space-3); align-items: baseline; margin-top: var(--space-3); }
   .pv-name { display: inline; font: var(--weight-heavy) var(--text-base)/1.2 var(--font-display); color: var(--color-band-ink); }
   .pv-t { display: none; }
