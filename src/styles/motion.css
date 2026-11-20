@@ -98,6 +98,18 @@
 @media (hover: hover) and (pointer: fine) {
   .btn { transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-hover) var(--ease-out); }
   .nav a { transition: background-color var(--dur-hover) var(--ease-out); }
+  /* Square buttons and the theme toggle lift off the page like the cover's paper: up and left onto a hard ink
+     shadow, then press back down. Not the header tabs. */
+  .btn { transition: transform var(--dur-press) var(--ease-out), box-shadow var(--dur-press) var(--ease-out), background-color var(--dur-hover) var(--ease-out); }
+  .btn:hover { transform: translate(-2px, -2px); box-shadow: 2px 2px 0 var(--color-ink); }
+  .btn:active { transform: scale(var(--press-scale)); box-shadow: 0 0 0 var(--color-ink); }
+  .mode::before { transition: transform var(--dur-press) var(--ease-out), box-shadow var(--dur-press) var(--ease-out); }
+  .mode:hover::before { transform: translate(-1.5px, -1.5px); box-shadow: 1.5px 1.5px 0 currentColor; }
+  .mode:active::before { transform: none; box-shadow: 0 0 0 currentColor; }
+  @media (prefers-reduced-motion: no-preference) {
+    .mode.is-ready svg { transition: transform var(--dur-theme) var(--ease-out), opacity var(--dur-theme) var(--ease-out), rotate var(--dur-page) var(--ease-out); }
+    .mode:hover svg { rotate: 25deg; } /* the sun's rays turn; the moon tips */
+  }
   /* Download PDF: the arrow drops a little toward the download. */
   a.head-link svg { transition: transform var(--dur-press) var(--ease-out); }
   a.head-link:hover svg { transform: translateY(2px); }
@@ -212,5 +224,6 @@ html { timeline-scope: --cover-name; }
   a.head-link:hover svg, a.head-link:active svg { transform: none; }
   .cover .sleeve, .cover .sleeve-paper, .cover .cover-text { animation: fade var(--dur-page) var(--ease-out) both; }
   .btn:active, .mode:active, .lb-x:active, .lb-nav:active { transform: none; }
+  .btn:hover, .mode:hover::before { transform: none; } /* the shadow still shows; nothing moves */
   .lb-fig, .lb:not([open]) .lb-fig { transform: none; transition: none; }
 }

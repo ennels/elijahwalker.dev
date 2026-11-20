@@ -9,7 +9,7 @@
 #   screens_icon    -> optional app icon shown beside the Screens heading, a path under public/.
 
 - id: hermes
-  name: hermes
+  name: Hermes
   label: Trading bot
   icon: chart
   featured: true

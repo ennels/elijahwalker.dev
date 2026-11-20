@@ -77,6 +77,7 @@
    (Resume keeps --column: its control chart fills the right side.) From 900px, projects sit in two columns,
    read row by row in list order. */
 #projects, #about { --column: 100%; }
+#projects .tracks { padding-top: var(--space-4); } /* a little more room under the heading's rule */
 @media (min-width: 900px) {
   #projects .tracks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-16); }
 }
