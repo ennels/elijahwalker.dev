@@ -4,7 +4,7 @@
    Components read these through var(); no component sets a literal color.
 
    Direction: the site as a record. Cover = hero, Side A = engineering,
-   Side B = studio (contact-sheet film strips on the lake band), liner notes = the rest.
+   Side B = studio (between two film edges; its band tokens map to the page in components.css), liner notes = the rest.
    Light: tamarack gold (McCall larches in October). Dark: Payette Lake at night.
    ========================================================================== */
 
@@ -21,9 +21,10 @@
   --color-cover-ink:       #112F34; /* monogram printed on the cover when there is no photo */
   --portrait-hi:           var(--color-cover); /* cut-out portrait: highlights (seasons.css) */
   --portrait-lo:           transparent;        /* and shadows, lightened in; none on the gold */
-  --color-margin:          rgb(179 38 30 / .45); /* About's notebook margin line */
+  --color-margin:          rgb(30 74 80 / .55); /* About's notebook margin line: the accent teal */
+  --color-label:           #163A40; /* small teal labels on the page: Studio numbers and group names (5.4:1; 4.6:1 on the active row) */
 
-  --color-band:            #1E4A50; /* Studio band */
+  --color-band:            #1E4A50; /* the old Studio band; .side-b remaps the band tokens to the page */
   --color-band-ink:        #F2EAD6;
   --color-band-ink-muted:  #B9CDC8;
   --color-band-rule:       rgb(242 234 214 / .24);
@@ -143,7 +144,8 @@
     --color-cover:           #1A4146; /* deep teal square; the portrait turns cream on it */
     --portrait-hi:           #F0E4C6;
     --portrait-lo:           #0B1F22;
-    --color-margin:          rgb(224 100 90 / .4);
+    --color-margin:          rgb(224 172 72 / .5);
+  --color-label:           #E0AC48;
     --color-cover-ink:       #112F34;
     --color-band:            #1A4146; /* lifted from #081A1C: band vs page 1.42:1, film vs band 1.89:1 */
     --color-band-ink:        #F0E4C6;
@@ -171,7 +173,8 @@
   --color-cover:           #1A4146; /* deep teal square; the portrait turns cream on it */
   --portrait-hi:           #F0E4C6;
   --portrait-lo:           #0B1F22;
-  --color-margin:          rgb(224 100 90 / .4);
+  --color-margin:          rgb(224 172 72 / .5);
+  --color-label:           #E0AC48;
   --color-cover-ink:       #112F34;
   --color-band:            #1A4146;
   --color-band-ink:        #F0E4C6;

@@ -53,6 +53,11 @@
 /* ---------- Contact: one signal ring at a time spreads out from the email address and fades ---------- */
 @media (prefers-reduced-motion: no-preference) {
   .mail::after { animation: ping 4.2s var(--ease-out) infinite; }
+  /* With scroll-driven motion, the ring also drifts with the other rings (G, below). */
+  @supports (animation-timeline: view()) {
+    .mail::after { animation: ping 4.2s var(--ease-out) infinite, drift auto linear both; }
+    html .mail::after { animation-timeline: auto, --contact; animation-range: normal, cover; }
+  }
 }
 @keyframes ping { from { scale: .08; opacity: .45; } to { scale: 1; opacity: 0; } }
 
@@ -115,6 +120,7 @@
    D. The cover portrait moves in depth as the cover scrolls away: back scene 4%, person 12%, front 18%.
    E. The resume timeline draws down, entry by entry (below).
    F. About's key phrases get a highlighter swipe (below).
+   G. The other sections' background marks drift too (below).
    Each animation-timeline sits in its own, more specific rule: the animation shorthand resets it, and the
    minifier folds a longhand in the same rule into the shorthand, which browsers reject. */
 html { timeline-scope: --cover-name; }
@@ -123,6 +129,20 @@ html { timeline-scope: --cover-name; }
     #projects { --grid-drift: 10rem; view-timeline: --projects block; }
     #projects::before { animation: grid-drift auto linear both; }
     html #projects::before { animation-timeline: --projects; animation-range: cover; }
+
+    /* G. Every section's background mark drifts the same way as the grid, at about the same rate: about 12% of
+       the scroll as the section passes. --drift is the travel each way; shorter sections get less. Studio's film
+       edges advance sideways instead, as film runs through a camera. */
+    #about { --drift: 6.25rem; view-timeline: --about block; }
+    #resume { --drift: 7.5rem; view-timeline: --resume block; }
+    .contact { --drift: 5rem; view-timeline: --contact block; }
+    .side-b { view-timeline: --side-b block; }
+    #about::before, .spc, .mail::before { animation: drift auto linear both; }
+    .side-b::before, .side-b::after { animation: film-run auto linear both; }
+    html #about::before { animation-timeline: --about; animation-range: cover; }
+    html .spc { animation-timeline: --resume; animation-range: cover; }
+    html .mail::before { animation-timeline: --contact; animation-range: cover; }
+    html .side-b::before, html .side-b::after { animation-timeline: --side-b; animation-range: cover; }
 
     #name { view-timeline: --cover-name block; view-timeline-inset: var(--header-h) 0; }
     .brand { animation: brand-dock auto linear both; }
@@ -161,6 +181,8 @@ html { timeline-scope: --cover-name; }
     #name { view-timeline-inset: calc(var(--header-h) * 2) 0; }
   }
 }
+@keyframes drift { from { transform: translateY(calc(-1 * var(--drift))); } to { transform: translateY(var(--drift)); } }
+@keyframes film-run { to { transform: translateX(var(--film-run)); } }
 @keyframes grid-drift { from { transform: translateY(calc(-1 * var(--grid-drift))); } to { transform: translateY(var(--grid-drift)); } }
 @keyframes brand-dock { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes hl-swipe { from { background-size: 0% 76%; } to { background-size: 100% 76%; } }

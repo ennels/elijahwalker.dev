@@ -140,18 +140,27 @@ mark.hl:nth-of-type(3n) { background-image: url("data:image/svg+xml,%3Csvg xmlns
 .org { font-weight: var(--weight-strong); font-size: var(--text-ui); margin-top: 2px; }
 .cv li p:not(.when):not(.org) { margin-top: var(--space-2); max-width: var(--measure); }
 
-/* ---------- Side B: studio on the lake band ---------- */
+/* ---------- Side B: studio on the page color, between two film edges ---------- */
+/* Studio used to be a teal band. It now sits on the page color like every other section, so the band tokens are
+   remapped here, and the edge-print labels turn teal (dark: gold) to read on the page. */
 .side-b {
-  /* Film edges: a strip of film base along the top and bottom, with sprocket holes punched through to the page. */
-  --holes: repeating-linear-gradient(90deg, var(--color-ground) 0 10px, transparent 0 24px);
-  background:
-    var(--holes) 7px 8px / 100% 8px no-repeat,
-    var(--holes) 7px calc(100% - 8px) / 100% 8px no-repeat,
-    linear-gradient(var(--color-film), var(--color-film)) 0 0 / 100% 24px no-repeat,
-    linear-gradient(var(--color-film), var(--color-film)) 0 100% / 100% 24px no-repeat,
-    var(--color-band);
+  --color-band: var(--color-ground);
+  --color-band-ink: var(--color-ink);
+  --color-band-ink-muted: var(--color-ink-muted);
+  --color-band-rule: var(--color-rule);
+  --color-film-edge: var(--color-label);
+  --color-focus-band: var(--color-focus);
+  --film-run: 216px; /* how far the film edges advance as Studio scrolls past (motion.css) */
+  overflow-x: clip; /* the edges hang --film-run past the left side */
   color: var(--color-band-ink);
 }
+/* Film edges: a strip of film base along the top and bottom, with sprocket holes punched through to the page. */
+.side-b::before, .side-b::after {
+  content: ""; position: absolute; z-index: -1; left: calc(-1 * var(--film-run)); right: 0; height: 24px; pointer-events: none;
+  background: repeating-linear-gradient(90deg, var(--color-ground) 0 10px, transparent 0 24px) 7px 8px / 100% 8px no-repeat, var(--color-film);
+}
+.side-b::before { top: 0; }
+.side-b::after { bottom: 0; }
 .side-b-in { padding-block: calc(var(--space-section) * .75); }
 .side-b :focus-visible { outline-color: var(--color-focus-band); }
 .side-b .intro { max-width: var(--measure); margin: calc(-1 * var(--space-3)) 0 var(--space-10); color: var(--color-band-ink-muted); }
@@ -181,7 +190,7 @@ a.trk { cursor: zoom-in; }
 .trk-n { flex: 0 0 2.25rem; font: var(--weight-strong) var(--text-sm)/1 var(--font-text); letter-spacing: var(--tracking-edge); font-variant-numeric: tabular-nums; color: var(--color-film-edge); }
 .trk-t { min-width: 0; font: var(--weight-heavy) var(--text-md)/var(--leading-head) var(--font-display); }
 .trk-pic { display: none; }
-.sideb.is-live .trk:not(.is-active) .trk-t { opacity: .6; } /* dimmed titles keep 4:1 on the band (large text) */
+.sideb.is-live .trk:not(.is-active) .trk-t { opacity: .72; } /* dimmed titles keep 4:1 on the page (large text) */
 .sideb-mark {
   position: absolute; left: 0; right: 0; top: 0; height: 1px; transform-origin: 0 0;
   background: color-mix(in srgb, var(--color-band-ink) 9%, transparent); box-shadow: inset 3px 0 0 var(--color-film-edge);
