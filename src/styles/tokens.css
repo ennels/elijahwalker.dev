@@ -102,7 +102,7 @@
 
   /* ---------- Radius ---------- */
   --radius-frame: 2px;    /* film frames, figure panels */
-  --radius-pill:  999px;  /* buttons, tags */
+  --radius-pill:  999px;  /* tags (buttons are square, like the header tabs) */
   --radius-round: 50%;    /* side badges, icon buttons */
 
   /* ---------- Elevation ---------- */

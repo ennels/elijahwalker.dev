@@ -31,6 +31,8 @@ const [user, domain] = profile.email.split('@');
 <Base>
   <main id="main" tabindex="-1">
     <section class="cover" id="top" aria-labelledby="name">
+      <div class="sleeve-wrap">
+      <span class="sleeve-paper" aria-hidden="true"><i></i></span>
       <figure class={cutout ? 'sleeve has-cutout' : 'sleeve'} style={cutout ? `--mask: url(${profile.photo_mask})${paper ? `; --paper-a: url(${paper[0]}); --paper-b: url(${paper[1]})` : ''}` : undefined}>
         <span class="sleeve-mono" aria-hidden="true">{initials(profile.name)}</span>
         {cutout && <div class="sky sky-back" aria-hidden="true"></div>}
@@ -43,6 +45,7 @@ const [user, domain] = profile.email.split('@');
         </div>
         {cutout && <div class="sky sky-front" aria-hidden="true"></div>}
       </figure>
+      </div>
       <div class="cover-text">
         <h1 id="name">{profile.name.split(/\s+/).map((w, i) => <>{i > 0 && ' '}<span>{w}</span></>)}</h1>
         <p class="lede">{profile.headline}</p>
@@ -99,7 +102,7 @@ const [user, domain] = profile.email.split('@');
         {profile.resume_pdf && (
           <a class="head-link" href={profile.resume_pdf} download>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" /></svg>
-            <span>Download <span class="vh">resume </span>PDF</span>
+            <span>Download PDF</span><span class="vh"> of my resume</span>
           </a>
         )}
       </div>

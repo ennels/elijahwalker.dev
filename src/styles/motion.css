@@ -109,6 +109,7 @@
    Then the lede and the buttons fade in place. Plays once per page load; nothing waits on it. */
 @media (prefers-reduced-motion: no-preference) {
   .cover .sleeve { animation: sleeve-out var(--dur-sleeve) var(--ease-out) both; }
+  .cover .sleeve-paper { animation: fade var(--dur-sleeve) var(--ease-out) calc(var(--dur-sleeve) * .5) both; } /* lands as the square finishes sliding in */
   .cover h1 span { animation: rise var(--dur-rise) var(--ease-out) both; }
   .cover h1 span:nth-child(2) { animation-delay: var(--stagger); }
   .cover h1 span:nth-child(3) { animation-delay: calc(var(--stagger) * 2); }
@@ -209,7 +210,7 @@ html { timeline-scope: --cover-name; }
   .copy-b, .copy.is-done .copy-a { transform: none; }
   .copy-b path { stroke-dashoffset: 0; }
   a.head-link:hover svg, a.head-link:active svg { transform: none; }
-  .cover .sleeve, .cover .cover-text { animation: fade var(--dur-page) var(--ease-out) both; }
+  .cover .sleeve, .cover .sleeve-paper, .cover .cover-text { animation: fade var(--dur-page) var(--ease-out) both; }
   .btn:active, .mode:active, .lb-x:active, .lb-nav:active { transform: none; }
   .lb-fig, .lb:not([open]) .lb-fig { transform: none; transition: none; }
 }
