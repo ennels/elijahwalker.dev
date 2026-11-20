@@ -16,6 +16,12 @@ photo: /headshot.jpg
 # rembg (u2net_human_seg). Remake it, and refit SeasonGear.astro, whenever the photo changes. Leave it out to
 # show the plain photo.
 photo_mask: /headshot-mask.webp
+# The photo again with the backdrop's white taken out of its edge pixels (pymatting estimate_foreground_ml with
+# the mask above), so no light fringe shows around the hair. Used only under the mask.
+photo_cutout: /headshot-cutout.jpg
+# Two hand-cut paper shapes behind the cut-out (the silhouette grown ~8 px, traced as straight scissor cuts,
+# each cut a little differently); motion.css switches between them 4 times a second. Remake with the mask.
+photo_paper: [/headshot-paper-a.webp, /headshot-paper-b.webp]
 photo_caption: Boise, Idaho
 
 # ==Marked phrases== get a highlighter swipe as they scroll in. Keep it to three or four.

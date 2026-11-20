@@ -11,6 +11,16 @@
   -webkit-mask-image: var(--mask); mask-image: var(--mask);
   -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
 }
+/* The paper he is cut from: a cream shape a little larger than him, with a small cast shadow. Two cuts of it
+   (--paper-a, --paper-b); motion.css shows them in turn, like stop-motion. Without motion, only the first. */
+.who-paper { position: absolute; inset: 0; filter: drop-shadow(2px 3px 0 rgb(0 0 0 / .28)); }
+.who-paper i {
+  position: absolute; inset: 0; background: var(--portrait-paper);
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+}
+.who-paper i:first-child { -webkit-mask-image: var(--paper-a); mask-image: var(--paper-a); }
+.who-paper i:last-child { -webkit-mask-image: var(--paper-b); mask-image: var(--paper-b); opacity: 0; }
+.sleeve.is-still .who-paper i { animation-play-state: paused; }
 .has-cutout .who-fill { position: absolute; inset: 0; background: var(--portrait-hi); }
 /* Duotone: the photo multiplies onto the highlight color, then the shadow color is lightened in. On the gold
    square (light mode) the shadow color is transparent, so this is the plain multiply look. */

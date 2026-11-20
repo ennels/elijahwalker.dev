@@ -23,6 +23,7 @@ const initials = (name) => {
 const marks = (t) => t.split(/==(.+?)==/g);
 // The cover photo is layered (cut-out, seasonal scene, parallax) when a mask is given in profile.yaml.
 const cutout = Boolean(profile.photo && profile.photo_mask);
+const paper = cutout && Array.isArray(profile.photo_paper) && profile.photo_paper.length === 2 ? profile.photo_paper : null;
 // Media frames continue the Side B numbering after the art and photos.
 const mediaStart = 1 + studio.drawings.length + studio.photos.length;
 const [user, domain] = profile.email.split('@');
@@ -30,12 +31,13 @@ const [user, domain] = profile.email.split('@');
 <Base>
   <main id="main" tabindex="-1">
     <section class="cover" id="top" aria-labelledby="name">
-      <figure class={cutout ? 'sleeve has-cutout' : 'sleeve'} style={cutout ? `--mask: url(${profile.photo_mask})` : undefined}>
+      <figure class={cutout ? 'sleeve has-cutout' : 'sleeve'} style={cutout ? `--mask: url(${profile.photo_mask})${paper ? `; --paper-a: url(${paper[0]}); --paper-b: url(${paper[1]})` : ''}` : undefined}>
         <span class="sleeve-mono" aria-hidden="true">{initials(profile.name)}</span>
         {cutout && <div class="sky sky-back" aria-hidden="true"></div>}
         <div class="who">
+          {paper && <span class="who-paper" aria-hidden="true"><i></i><i></i></span>}
           {cutout && <span class="who-fill" aria-hidden="true"></span>}
-          {profile.photo && <img src={profile.photo} alt={`Portrait of ${profile.name}`} width="460" height="460" fetchpriority="high" data-fallback />}
+          {profile.photo && <img src={(cutout && profile.photo_cutout) || profile.photo} alt={`Portrait of ${profile.name}`} width="460" height="460" fetchpriority="high" data-fallback />}
           {cutout && <span class="who-tint" aria-hidden="true"></span>}
           {cutout && <SeasonGear />}
         </div>

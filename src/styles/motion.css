@@ -61,6 +61,14 @@
 }
 @keyframes ping { from { scale: .08; opacity: .45; } to { scale: 1; opacity: 0; } }
 
+/* ---------- Cover: the paper behind the cut-out switches between two cuts, 4 times a second ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .who-paper i:first-child { animation: paper-a .5s steps(1, end) infinite; }
+  .who-paper i:last-child { animation: paper-b .5s steps(1, end) infinite; }
+}
+@keyframes paper-a { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes paper-b { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+
 /* ---------- Studio (Side B, now playing): the preview cross-fades, the row marker slides, other titles dim ---------- */
 .pv-img, .trk-t { transition: opacity var(--dur-viewer) var(--ease-out); }
 .sideb-mark { transition: transform var(--dur-viewer) var(--ease-out), opacity var(--dur-hover) var(--ease-out); }

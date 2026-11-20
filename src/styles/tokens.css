@@ -20,6 +20,7 @@
   --color-cover:           #C88E28; /* cover square behind the portrait */
   --color-cover-ink:       #112F34; /* monogram printed on the cover when there is no photo */
   --portrait-hi:           var(--color-cover); /* cut-out portrait: highlights (seasons.css) */
+  --portrait-paper:        #F3E6C4; /* the paper the cut-out portrait is cut from (seasons.css) */
   --portrait-lo:           transparent;        /* and shadows, lightened in; none on the gold */
   --color-margin:          rgb(30 74 80 / .55); /* About's notebook margin line: the accent teal */
   --color-label:           #163A40; /* small teal labels on the page: Studio numbers and group names (5.4:1; 4.6:1 on the active row) */
@@ -144,6 +145,7 @@
     --color-cover:           #1A4146; /* deep teal square; the portrait turns cream on it */
     --portrait-hi:           #F0E4C6;
     --portrait-lo:           #0B1F22;
+    --portrait-paper:        #F0E4C6;
     --color-margin:          rgb(224 172 72 / .5);
   --color-label:           #E0AC48;
     --color-cover-ink:       #112F34;
@@ -173,6 +175,7 @@
   --color-cover:           #1A4146; /* deep teal square; the portrait turns cream on it */
   --portrait-hi:           #F0E4C6;
   --portrait-lo:           #0B1F22;
+  --portrait-paper:        #F0E4C6;
   --color-margin:          rgb(224 172 72 / .5);
   --color-label:           #E0AC48;
   --color-cover-ink:       #112F34;
