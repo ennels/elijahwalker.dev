@@ -95,6 +95,13 @@
 /* ---------- About (liner notes), resume ---------- */
 .liner { max-width: var(--column); display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(var(--space-7), 5vw, var(--space-16)); align-items: start; }
 .prose { display: grid; gap: 1em; max-width: var(--measure); font-size: var(--text-prose); line-height: var(--leading-prose); }
+/* About: highlighted key phrases (==phrase== in profile.yaml). A marker band over the lower half of the line;
+   motion.css swipes it in on scroll. */
+mark.hl {
+  color: inherit; padding-inline: .12em; margin-inline: -.12em;
+  background: linear-gradient(transparent 44%, var(--color-mark) 44%, var(--color-mark) 96%, transparent 96%) no-repeat 0 0 / 100% 100%;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
 .credits-list { display: grid; align-content: start; border-top: 1.5px solid var(--color-ink); }
 .credits-list div { display: grid; gap: 2px; padding-block: var(--space-3); border-bottom: 1px solid var(--color-rule); }
 .credits-list dt { font: italic var(--weight-medium) var(--text-base)/var(--leading-ui) var(--font-display); }
@@ -175,10 +182,25 @@ a.trk { cursor: zoom-in; }
 .pv-n { font: var(--weight-strong) var(--text-xs)/1 var(--font-text); letter-spacing: var(--tracking-edge); text-transform: uppercase; color: var(--color-film-edge); }
 @media (forced-colors: active) { .sideb-mark { display: none; } .trk.is-active .trk-t { text-decoration: underline; } }
 /* Narrow screens: no room for the preview. Each row carries a small picture instead; a tap opens the viewer. */
+.pv-name { display: none; }
+/* Narrow screens: "now playing". The preview sticks under the header, full band width at 3:2, on the band color
+   so rows scroll out of sight beneath it; side-b.js plays the row crossing a line just below it. Each row keeps
+   a small picture too. */
 @media (max-width: 860px) {
-  .sideb { grid-template-columns: minmax(0, 1fr); }
-  .sideb-pv, .sideb-mark { display: none; }
-  .trk { padding-inline: 0; }
+  .sideb { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  .sideb-pv {
+    order: -1; position: sticky; top: calc(var(--header-h) + 1px); z-index: 2; /* just under the header bar */
+    margin-inline: calc(-1 * max(var(--gutter-min), env(safe-area-inset-left))); padding: var(--space-3) max(var(--gutter-min), env(safe-area-inset-left)) var(--space-3);
+    background: var(--color-band);
+  }
+  .pv-box { aspect-ratio: 3 / 2; max-width: none; }
+  .pv-cap { display: flex; gap: var(--space-3); align-items: baseline; margin-top: var(--space-3); }
+  .pv-name { display: inline; font: var(--weight-heavy) var(--text-base)/1.2 var(--font-display); color: var(--color-band-ink); }
+  .pv-t { display: none; }
+  .trk { padding-inline: var(--space-3); }
+}
+@media (max-width: 720px) {
+  .sideb-pv { top: calc(var(--header-h) + 46px); } /* the section nav adds a 46px row (base.css) */
   .trk-pic { position: relative; display: block; flex: 0 0 4.5rem; aspect-ratio: 4 / 3; background: var(--color-film); border-radius: var(--radius-frame); }
   .trk-pic img { position: absolute; inset: 3px; width: calc(100% - 6px); height: calc(100% - 6px); object-fit: contain; }
   .trk-n { flex-basis: 2rem; }

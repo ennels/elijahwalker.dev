@@ -1,8 +1,8 @@
 ---
 // Studio as the record's Side B: a numbered list of short titles (B1, B2, ...) across the groups, with the
 // piece under the pointer or keyboard focus shown large beside it (side-b.js). Each row links to the full image
-// and opens the viewer. Phones (and no-JS) get the list with a small picture in each row; the large preview
-// needs room and a pointer or keyboard to follow.
+// and opens the viewer. Phones: the preview sticks at the top of the band ("now playing") and shows the row
+// that scrolls past a line below it; each row also keeps a small picture.
 //   groups: [{ label, items: { name, title, image, preview?, full?, width?, height? }[] }]
 import { webpSize } from '../lib/webp-size.js';
 const { groups } = Astro.props;
@@ -11,7 +11,9 @@ const ar = (it) => (it.width && it.height ? it.width / it.height : 1);
 // The preview mat is at most 640 x 480 CSS px with a 20 px margin, so an image shows within 600 x 440. Its shown
 // width there decides which file the browser picks (the thumbnail on most 1x screens, the preview file on 2x).
 const BOX_W = 600, BOX_H = 440;
-const sizes = (it) => `${Math.round(Math.min(BOX_W, BOX_H * ar(it)))}px`;
+// Phones (now playing, components.css): the mat spans the band at 3:2, so the image fits within
+// (100vw - 72px) x (66.67vw - 61px).
+const sizes = (it) => `(max-width: 860px) min(calc(100vw - 72px), calc((66.67vw - 61px) * ${ar(it).toFixed(3)})), ${Math.round(Math.min(BOX_W, BOX_H * ar(it)))}px`;
 const srcset = (it) => {
   const files = [it.image, it.preview].filter(Boolean).map((f) => [f, webpSize(f)?.w]);
   return files.every(([, w]) => w) && files.length > 1 ? files.map(([f, w]) => `${f} ${w}w`).join(', ') : undefined;
@@ -50,6 +52,6 @@ let k = 0;
           src={it.preview ?? it.image} srcset={srcset(it)} sizes={sizes(it)} width={it.width} height={it.height} alt="" />
       ))}
     </div>
-    <figcaption class="pv-cap"><span class="pv-n" data-pv-n>B1 · {rows[0]?.group}</span><span data-pv-t>{rows[0]?.title}</span></figcaption>
+    <figcaption class="pv-cap"><span class="pv-n" data-pv-n>B1 · {rows[0]?.group}</span><span class="pv-name" data-pv-name>{rows[0]?.name}</span><span class="pv-t" data-pv-t>{rows[0]?.title}</span></figcaption>
   </figure>
 </div>

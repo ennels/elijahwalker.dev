@@ -1,0 +1,85 @@
+/* The cover portrait as layers, and its seasonal scenes (seasons.js builds the particles and picks the season).
+   Back to front: the sleeve's gold, .sky-back (things behind him), .who (a gold silhouette, the photo cut out
+   by the same mask and multiplied onto it, then the accessories), .sky-front (things passing in front).
+   motion.css moves the three layers at different speeds as the cover scrolls away. Sizes use cqi: the sleeve is
+   a square size container, so 1cqi is 1% of its side, across and down. */
+
+.has-cutout .who { position: absolute; inset: 0; isolation: isolate; }
+.has-cutout .who-fill, .has-cutout .who img {
+  -webkit-mask-image: var(--mask); mask-image: var(--mask);
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+}
+.has-cutout .who-fill { position: absolute; inset: 0; background: var(--color-cover); }
+.sky { position: absolute; inset: 0; pointer-events: none; }
+
+/* ---------- Accessories (SeasonGear.astro) ---------- */
+.gear { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.gear g { display: none; }
+.sleeve[data-season="winter"] .g-scarf,
+.sleeve[data-hat] .g-hat,
+.sleeve[data-season="summer"] .g-shades { display: inline; }
+.sc-wrap, .sc-tail { fill: #1E4A50; }
+.sc-shade { fill: #153A3F; }
+.sc-roll { fill: #24565C; }
+.sc-band { fill: none; stroke: #F2EAD6; stroke-width: 7; stroke-linecap: round; }
+.sc-fringe { fill: none; stroke: #1E4A50; stroke-width: 4; stroke-linecap: round; }
+.ht-crown { fill: #B3261E; }
+.ht-fold { fill: #8A1C15; }
+.ht-brim, .ht-pom { fill: #F4EEE0; }
+.ht-brim-shade { fill: none; stroke: #D8CDB4; stroke-width: 5; stroke-linecap: round; }
+.sh-lens { fill: #141312; stroke: #141312; stroke-width: 3; stroke-linejoin: round; }
+.sh-arm, .sh-bridge { fill: none; stroke: #141312; stroke-width: 5; stroke-linecap: round; }
+.sh-glint { fill: none; stroke: rgb(255 255 255 / .22); stroke-width: 4; stroke-linecap: round; }
+
+/* ---------- Particles: an outer box travels, an inner box sways or turns ---------- */
+.sky .p { position: absolute; left: var(--x); top: var(--y); animation: var(--move) var(--d) linear var(--t) infinite; }
+.sky .p > i { display: block; animation: var(--sway) var(--d2) ease-in-out var(--t) infinite alternate; }
+
+/* Fall: leaves blown across on the wind, tumbling. */
+.leaf { --move: leaf-blow; --sway: leaf-tumble; }
+.leaf > i { width: calc(var(--s) * 1cqi); height: calc(var(--s) * .6cqi); background: var(--c); border-radius: 0 100% 0 100%; }
+@keyframes leaf-blow { from { transform: translate(0, 0); } 45% { transform: translate(60cqi, 10cqi); } to { transform: translate(130cqi, 3cqi); } }
+@keyframes leaf-tumble { from { transform: translateY(-5cqi) rotate(var(--r)); } to { transform: translateY(5cqi) rotate(calc(var(--r) + 240deg)); } }
+
+/* Fall also gets a few gusts: faint streaks that sweep across and fade. */
+.gust { --move: gust-sweep; --sway: gust-fade; }
+.gust > i { width: calc(var(--s) * 1cqi); height: 2px; border-radius: 1px; background: linear-gradient(90deg, transparent, rgb(250 244 230 / .7), transparent); opacity: 0; }
+@keyframes gust-sweep { from { transform: translateX(0); } to { transform: translateX(150cqi); } }
+@keyframes gust-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* Winter: snow, drifting side to side as it falls. */
+.flake { --move: snow-fall; --sway: snow-sway; }
+.flake > i { width: calc(var(--s) * 1cqi); aspect-ratio: 1; border-radius: 50%; background: #FBF6EA; opacity: var(--o); }
+@keyframes snow-fall { to { transform: translateY(118cqi); } }
+@keyframes snow-sway { from { transform: translateX(-3cqi); } to { transform: translateX(3cqi); } }
+
+/* Spring: light rain behind him, and blossom petals turning as they fall. */
+.drop { --move: rain-fall; --sway: none; }
+.drop > i { width: 2px; height: calc(var(--s) * 1cqi); border-radius: 1px; background: linear-gradient(transparent, rgb(250 244 230 / .9)); transform: rotate(14deg); }
+@keyframes rain-fall { to { transform: translate(-30cqi, 136cqi); } }
+.petal { --move: petal-fall; --sway: petal-turn; }
+.petal > i { width: calc(var(--s) * 1cqi); height: calc(var(--s) * .7cqi); background: var(--c); border-radius: 80% 0 80% 0; }
+@keyframes petal-fall { to { transform: translate(34cqi, 120cqi); } }
+@keyframes petal-turn { from { transform: translateX(-5cqi) rotate(var(--r)); } to { transform: translateX(5cqi) rotate(calc(var(--r) + 260deg)); } }
+
+/* Summer: clouds crossing behind him, and fireflies wandering and blinking. */
+.cloud { --move: cloud-drift; --sway: none; opacity: .88; }
+.cloud > i { position: relative; width: calc(var(--s) * 1cqi); height: calc(var(--s) * .3cqi); border-radius: 999px; background: #F7EFDC; }
+.cloud > i::before, .cloud > i::after { content: ""; position: absolute; aspect-ratio: 1; border-radius: 50%; background: inherit; }
+.cloud > i::before { width: 44%; left: 14%; bottom: 30%; }
+.cloud > i::after { width: 30%; left: 50%; bottom: 42%; }
+@keyframes cloud-drift { to { transform: translateX(calc(-130cqi - var(--s) * 1cqi)); } }
+.fly { --move: fly-wander; --sway: fly-blink; }
+.sky .fly { animation-timing-function: ease-in-out; animation-direction: alternate; }
+.fly > i { width: calc(var(--s) * 1cqi); aspect-ratio: 1; border-radius: 50%; background: #FFFBE0; box-shadow: 0 0 2cqi 1cqi rgb(255 246 190 / .85); }
+.sky .fly > i { animation-timing-function: ease-in-out; animation-direction: normal; }
+@keyframes fly-wander { 33% { transform: translate(var(--ax), var(--ay)); } 66% { transform: translate(var(--bx), var(--by)); } to { transform: translate(var(--cx), var(--cy)); } }
+@keyframes fly-blink { 0%, 100% { opacity: .15; } 45%, 60% { opacity: 1; } }
+
+/* Off screen, the scene holds still; for reduced motion it is a still picture. Negative start times (--t)
+   leave every particle at a different point on its path, so a held scene still looks scattered. */
+.sleeve.is-still .sky .p, .sleeve.is-still .sky .p > i { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .sky .p, .sky .p > i { animation-play-state: paused; }
+}
+@media (forced-colors: active) { .sky, .gear { display: none; } }

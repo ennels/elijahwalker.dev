@@ -1,0 +1,37 @@
+---
+// Seasonal accessories drawn over the cover portrait, in the photo's own pixel space (headshot.jpg, 460 x 460):
+// eyes at about (213, 155) and (270, 158), top of the hair at y 42, neck at y 260-290, head tilted ~3 degrees.
+// seasons.js sets data-season / data-hat on the sleeve and seasons.css shows the matching group.
+// Refit these coordinates whenever the photo changes.
+---
+<svg class="gear" viewBox="0 0 460 460" aria-hidden="true" focusable="false">
+  <!-- Winter: a knit scarf, teal with cream bands: a roll hugging the neck, a wider wrap over the collar, and the
+       tail hanging down his right side (viewer's left). -->
+  <g class="g-scarf">
+    <path class="sc-tail" d="M182 306 C186 340 190 380 192 426 L232 424 C230 380 226 342 220 308 Z" />
+    <path class="sc-band" d="M188 352 L224 350 M190 380 L228 378 M191 406 L230 404" />
+    <path class="sc-fringe" d="M196 426 v14 M204 426 v15 M212 426 v15 M220 426 v14 M228 425 v13" />
+    <path class="sc-wrap" d="M146 286 C196 306 268 304 316 282 C322 294 323 308 318 320 C270 344 192 344 140 322 C136 310 138 296 146 286 Z" />
+    <path class="sc-band" d="M142 304 C192 326 268 326 320 302" />
+    <path class="sc-shade" d="M140 322 C192 344 270 344 318 320 C314 328 308 334 300 337 C258 352 196 352 152 336 C146 332 142 328 140 322 Z" />
+    <path class="sc-roll" d="M170 262 C204 278 258 278 292 260 C298 270 300 282 296 292 C256 308 206 308 166 290 C162 280 164 270 170 262 Z" />
+    <path class="sc-band" d="M167 277 C206 293 256 293 296 275" />
+  </g>
+  <!-- December: a Santa hat. Brim on the hairline following the head's tilt, crown leaning to his left (viewer's
+       right), pompom hanging by his ear. -->
+  <g class="g-hat">
+    <path class="ht-crown" d="M160 96 C158 58 198 28 248 26 C292 24 326 46 340 80 C346 94 348 104 346 114 C336 102 326 94 318 90 C266 76 206 80 160 96 Z" />
+    <path class="ht-fold" d="M296 36 C320 50 336 72 344 106 C334 98 326 92 318 88 C314 66 306 50 296 36 Z" />
+    <path class="ht-brim" d="M150 98 C206 76 284 70 330 84 C336 86 338 92 337 98 L335 110 C334 116 329 118 324 116 C280 102 210 106 160 124 C154 126 149 123 148 117 L147 104 C146 100 147 99 150 98 Z" />
+    <path class="ht-brim-shade" d="M160 122 C210 104 280 100 324 114" />
+    <circle class="ht-pom" cx="348" cy="120" r="14" />
+  </g>
+  <!-- Summer: wayfarer sunglasses on his eyes, following the head tilt, arms back to the ears. -->
+  <g class="g-shades">
+    <path class="sh-arm" d="M192 147 L164 152 M298 153 L316 158" />
+    <path class="sh-lens" d="M190 143 L237 141 C241 141 242 144 241 148 L237 163 C235 170 230 172 223 172 L204 172 C197 172 193 168 192 162 Z" />
+    <path class="sh-lens" d="M249 145 L296 148 C300 148 301 151 300 155 L295 170 C293 177 288 179 281 179 L262 178 C255 178 251 174 250 168 Z" />
+    <path class="sh-bridge" d="M241 147 C244 144 247 144 250 147" />
+    <path class="sh-glint" d="M199 166 L209 149 M258 172 L268 155" />
+  </g>
+</svg>

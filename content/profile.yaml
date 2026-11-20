@@ -12,11 +12,16 @@ linkedin: https://www.linkedin.com/in/elijah-the-walker/
 resume_pdf: "/resume.pdf"
 
 photo: /headshot.jpg
+# Cut-out of the photo (alpha = the person), for the seasonal scenes and parallax on the cover. Made with
+# rembg (u2net_human_seg). Remake it, and refit SeasonGear.astro, whenever the photo changes. Leave it out to
+# show the plain photo.
+photo_mask: /headshot-mask.webp
 photo_caption: Boise, Idaho
 
+# ==Marked phrases== get a highlighter swipe as they scroll in. Keep it to three or four.
 about:
-  - I'm finishing an associate's degree in AI and cloud computing at the College of Western Idaho, wrapping up in May 2027. This past summer I interned as a process control technician at Micron's fab in Manassas, Virginia, reviewing metrology data and SPC charts on chemical vapor deposition tools.
-  - "Before that I spent ten years at Quaker Hill, a camp and conference center in McCall, Idaho. I started on support staff and left as the digital media manager. Most of what I build now is in Python: classifiers for class, LLM agents on my own hardware, and a scheduling app for the camp. Next fall I'm planning to start a B.S. at Boise State."
+  - I'm finishing an associate's degree in ==AI and cloud computing== at the College of Western Idaho, wrapping up in May 2027. This past summer I interned as a ==process control technician== at Micron's fab in Manassas, Virginia, reviewing metrology data and ==SPC charts== on chemical vapor deposition tools.
+  - "Before that I spent ==ten years== at Quaker Hill, a camp and conference center in McCall, Idaho. I started on support staff and left as the digital media manager. Most of what I build now is in Python: classifiers for class, LLM agents on my own hardware, and a scheduling app for the camp. Next fall I'm planning to start a B.S. at Boise State."
 
 facts:
   - label: School
