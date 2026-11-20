@@ -25,7 +25,9 @@
 }
 .sleeve-paper i {
   position: absolute; inset: 0; background: var(--sleeve-paper, var(--portrait-paper));
-  clip-path: polygon(1.4% 2.2%, 34% 0.6%, 71% 1.6%, 98.8% 0%, 100% 37%, 99% 72%, 100% 99%, 63% 98.4%, 28% 100%, 0.4% 98.8%, 1.2% 61%, 0% 26%);
+  /* Sharp corners at the box's corners; the scissor wobble lives along the edges only (a trimmed corner read as
+     a rendering fault). */
+  clip-path: polygon(0% 0%, 31% 0.7%, 66% 0.2%, 100% 0%, 99.4% 34%, 100% 67%, 100% 100%, 68% 99.5%, 33% 100%, 0% 100%, 0.6% 66%, 0% 32%);
 }
 /* Where the square sits near the window edge (up to 1240px), tilt less and shift right so the paper stays on
    screen. */
