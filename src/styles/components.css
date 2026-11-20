@@ -207,10 +207,10 @@ a.trk { cursor: zoom-in; }
 }
 .sideb-mark.is-on { opacity: 1; }
 /* The preview: a film-black mat at 4:3 that fills its column (at most 776 x 582, level with the list), and
-   shrinks to fit a short window with its caption (SideB.astro picks image files for that size). Sticks below
-   the header while the list scrolls past. Mouse only (aria-hidden); keyboard users open pieces from the list. */
+   shrinks to fit a short window with its caption (SideB.astro picks image files for that size). On wide
+   screens it scrolls with the list; on phones it sticks under the header (below). Mouse only (aria-hidden); keyboard users open pieces from the list. */
 .sideb-pv {
-  position: sticky; top: calc(var(--header-h) + var(--space-8)); margin: 0;
+  position: relative; margin: 0; /* level with the list on wide screens, so it stays put (sticking moved it a few px) */
   --pv-w: min(100%, calc((100svh - var(--header-h) - 2 * var(--space-8) - 4.5rem) * 4 / 3));
 }
 .pv-box { position: relative; aspect-ratio: 4 / 3; width: var(--pv-w); background: var(--color-film); border-radius: var(--radius-frame); cursor: zoom-in; }

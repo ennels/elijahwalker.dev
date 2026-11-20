@@ -1,6 +1,6 @@
-// Studio (Side B, SideB.astro): "now playing". Scrolling plays the row at a line in the large preview: on wide
-// screens the line is where the middle of the stuck preview sits beside the list; on phones, where the preview
-// sticks above the list, it sits 30% of the way down the space below it. Moving the mouse over a row shows that
+// Studio (Side B, SideB.astro): "now playing". Scrolling plays the row at a line: on wide screens, where the
+// preview sits level with the list, the middle of the window; on phones, where the preview sticks above the
+// list, 30% of the way down the space below it. Moving the mouse over a row shows that
 // row until the next scroll; a row with keyboard focus holds the preview. A marker slides to the active row and
 // the other titles dim (motion.css). A click on a row or on the preview opens the viewer (viewer.js handles the
 // rows). No dependencies.
@@ -63,9 +63,9 @@ if (root) {
     ticking = false;
     if (document.activeElement?.matches?.('.trk:focus-visible')) return;
     let line;
-    // Wide: a fixed line where the middle of the preview sits while it is stuck, so the last rows still play
-    // after the preview has scrolled on.
-    if (wide.matches) line = parseFloat(getComputedStyle(pv).top) + box.offsetHeight / 2;
+    // Wide: the middle of the window. The preview is as tall as the list and scrolls with it, so every row
+    // crosses this line while the preview is in view.
+    if (wide.matches) line = innerHeight / 2;
     else { const below = pv.getBoundingClientRect().bottom; line = below + (innerHeight - below) * 0.3; }
     let best = cur, gap = Infinity;
     rows.forEach((r, k) => {
