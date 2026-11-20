@@ -29,8 +29,9 @@ main > section, .liner-notes, main.pp { position: relative; z-index: 0; } /* the
 #projects, main.pp { text-shadow: var(--grid-halo); }
 #projects .btn, main.pp .btn, main.pp .dg-wrap { text-shadow: none; }
 
-/* About on an ink band across the window. The section points its own color tokens at the band colors, so the
-   heading, prose, rules, the credits list and the Now list all switch to cream on ink with no rules of their own. */
+/* About on a band of cream liner-note paper across the window (a warm dark paper in dark mode). The section points
+   its own color tokens at the paper colors, so the heading, prose, rules, the credits list and the Now list all
+   switch with no rules of their own. */
 #about {
   --color-ink: var(--color-about-ink); --color-ink-muted: var(--color-about-muted);
   --color-rule: var(--color-about-rule); --color-focus: var(--color-about-ink);
