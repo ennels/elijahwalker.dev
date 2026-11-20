@@ -58,6 +58,13 @@
 /* ---------- Projects: tracklist ---------- */
 .tracks { list-style: none; padding: 0; border-top: 1.5px solid var(--color-ink); max-width: var(--column); }
 .track { padding-block: var(--space-6) var(--space-8); } /* no dividers: they fought the grid; space separates projects */
+/* Home page: Projects and About use the full content width, the edge the cover, Studio and Contact reach.
+   (Resume keeps --column: its control chart fills the right side.) From 900px, projects sit in two columns,
+   read row by row in list order. */
+#projects, #about { --column: 100%; }
+@media (min-width: 900px) {
+  #projects .tracks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-16); }
+}
 .t-main { --indent: 2.75rem; display: grid; gap: var(--space-2); min-width: 0; max-width: var(--measure); padding-left: var(--indent); }
 .t-title { font: var(--weight-heavy) var(--text-lg)/var(--leading-snug) var(--font-display); letter-spacing: -.01em; }
 .is-feat .t-title { font-size: var(--text-xl); }
