@@ -158,7 +158,7 @@ const [user, domain] = profile.email.split('@');
     <section class="sec contact" id="contact" aria-labelledby="h-contact">
       <h2 class="sh" id="h-contact">{profile.contact_heading}</h2>
       <p class="muted">{profile.contact_text.split('\n').map((line, i) => <>{i > 0 && <br />}{line}</>)}</p>
-      <p class="mail"><a id="email" href={`mailto:${profile.email}`}>{user}<wbr />@{domain}</a><button type="button" class="btn copy" data-copy={profile.email} aria-controls="email"><span class="copy-a">Copy email</span><span class="copy-b" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1" /></svg><span data-copy-done>Copied</span></span></button><span class="vh" role="status" data-copy-status></span></p>
+      <p class="mail"><a id="email" href={`mailto:${profile.email}`}>{`${user}\u200B@${domain}`}</a><button type="button" class="btn copy" data-copy={profile.email} aria-controls="email"><span class="copy-a">Copy email</span><span class="copy-b" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1" /></svg><span data-copy-done>Copied</span></span></button><span class="vh" role="status" data-copy-status></span></p>
       <p class="t-links big"><a href={profile.github}>GitHub</a><a href={profile.linkedin}>LinkedIn</a></p>
     </section>
   </main>

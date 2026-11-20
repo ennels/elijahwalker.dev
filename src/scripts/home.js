@@ -23,6 +23,15 @@ document.querySelectorAll('[data-copy]').forEach((btn) => {
   });
 });
 
+// The address on the page has a zero-width space before "@": a line-break point for phones that, unlike <wbr>,
+// doesn't leave a gap in the underline. Take it out of anything copied by hand.
+document.addEventListener('copy', (e) => {
+  const text = getSelection()?.toString() ?? '';
+  if (!text.includes('\u200B') || !e.clipboardData) return;
+  e.clipboardData.setData('text/plain', text.replace(/\u200B/g, ''));
+  e.preventDefault();
+});
+
 // A missing image falls back to its frame text (or, for the headshot, the initials cover).
 const drop = (img) => {
   const fallback = img.previousElementSibling;
